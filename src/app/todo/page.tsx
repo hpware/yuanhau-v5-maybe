@@ -1,5 +1,7 @@
 "use server";
 import postgres from "postgres";
+import { unstable_ViewTransition as ViewTransition } from "react";
+import Link from "next/link";
 
 interface TodoItem {
   uuid: string;
@@ -23,9 +25,17 @@ export default async function Home() {
   const sqlData = await sql`SELECT * FROM todos`;
   return (
     <div className="justify-center align-center m-1 absolute inset-0 flex flex-col">
-      <h1 className="text-3xl text-bold text-center">
-        Server Management Todo List
-      </h1>
+      <ViewTransition name="title">
+        <h1 className="text-4xl text-bold text-center">
+          Server Management Todo List
+        </h1>
+        <Link
+          href="/"
+          className="text-blue-gray-500 hover:underline text-center"
+        >
+          ← Back
+        </Link>
+      </ViewTransition>
       <ul className="flex flex-row flex-wrap gap-1 justify-center align-center w-full">
         {sqlData.map((i) => (
           <TodoListDisplayComponent
