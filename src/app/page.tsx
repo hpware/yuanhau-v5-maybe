@@ -1,43 +1,20 @@
-interface TodoItem {
-  title: string;
-  content: string;
-}
-
-function TodoListDisplayComponent({ title, content }: TodoItem) {
-  return (
-    <li className="w-full md:w-1/2 lg:w-1/3">
-      <div className="p-4 m-2 rounded-lg shadow-md bg-white/10 backdrop-blur-sm hover:transform hover:-translate-y-1 border border-gray-400/60  hover:border-gray-400/40 transition-all duration-200">
-        <h3 className="text-xl font-semibold mb-2">{title}</h3>
-        <span className="text-gray-200">{content}</span>
-      </div>
-    </li>
-  );
-}
-
-const todoList: TodoItem[] = [
-  {
-    title: "Switch to traefik",
-    content:
-      "As time went on, I switched to all docker compose infra including all my apps. And it is needing a change.",
-  },
-  {
-    title: "Add more backups",
-    content:
-      "Storing most configs in a GitHub repo is not a backup, use rsync.",
-  },
-];
-
-export default function Home() {
+import Link from "next/link";
+export default async function Home() {
   return (
     <div className="justify-center align-center m-1 absolute inset-0 flex flex-col">
-      <h1 className="text-3xl text-bold text-center">
-        Server Management Todo List
-      </h1>
-      <ul className="flex flex-row flex-wrap gap-1 justify-center align-center w-full">
-        {todoList.map((i) => (
-          <TodoListDisplayComponent key={i.title} {...i} />
-        ))}
-      </ul>
+      <h1 className="text-3xl text-bold text-center">元皓的網站 v5</h1>
+      <div className="flex flex-row flex-wrap gap-1 m-1 justify-center align-center text-center">
+        <Link href="/todo">
+          <button className="p-2 bg-gray-300/50 backdrop-blur-sm rounded transition-all duration-200 hover:cursor-pointer hover:bg-gray-400/50">
+            Server ToDo List
+          </button>
+        </Link>
+        <Link href="/guestbook">
+          <button className="p-2 bg-gray-300/50 backdrop-blur-sm rounded transition-all duration-200 hover:cursor-pointer hover:bg-gray-400/50">
+            Guestbook
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }
