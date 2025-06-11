@@ -12,7 +12,9 @@ export default async function Page() {
   return (
     <div className="justify-center align-center text-center m-1 absolute inset-0 flex flex-col">
       <ViewTransition name="title">
-        <h1 className="text-4xl text-bold text-center">Guestbook</h1>
+        <h1 className="text-4xl font-bold text-center mb-4 dark:text-white">
+          Guestbook
+        </h1>
         <Link
           href="/"
           className="text-blue-gray-500 hover:underline text-center"
