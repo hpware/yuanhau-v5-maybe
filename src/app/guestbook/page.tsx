@@ -5,7 +5,7 @@ export default async function Page() {
     "use server";
     const sql = postgres(process.env.DATABASE_URL || "", { ssl: "require" });
     const comment = formData.get("comment");
-    await sql`INSERT INTO comments (comment) VALUES (${comment})`;
+    await sql`INSERT INTO comments (comment) VALUES (${String(comment)})`;
   }
   return (
     <div className="justify-center align-center text-center m-1 absolute inset-0 flex flex-col">

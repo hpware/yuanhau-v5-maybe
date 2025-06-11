@@ -2,11 +2,12 @@
 import postgres from "postgres";
 
 interface TodoItem {
+  uuid: string;
   title: string;
   content: string;
 }
 
-function TodoListDisplayComponent({ title, content }: TodoItem) {
+function TodoListDisplayComponent({ uuid, title, content }: TodoItem) {
   return (
     <li className="w-full md:w-1/2 lg:w-1/3">
       <div className="p-4 m-2 rounded-lg shadow-md bg-white/10 backdrop-blur-sm hover:-translate-y-1 border border-gray-400/60  hover:border-gray-400/40 transition-all duration-200">
@@ -27,7 +28,12 @@ export default async function Home() {
       </h1>
       <ul className="flex flex-row flex-wrap gap-1 justify-center align-center w-full">
         {sqlData.map((i) => (
-          <TodoListDisplayComponent key={i.title} {...i} />
+          <TodoListDisplayComponent
+            key={i.uuid}
+            uuid={i.uuid}
+            title={i.title}
+            content={i.content}
+          />
         ))}
       </ul>
     </div>
