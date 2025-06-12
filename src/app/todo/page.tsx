@@ -1,5 +1,5 @@
 import postgres from "postgres";
-import { unstable_ViewTransition as ViewTransition } from "react";
+import { unstable_ViewTransition as ViewTransition, Suspense } from "react";
 import Link from "next/link";
 export const dynamic = "force-dynamic";
 export const revalidate = 300;
@@ -22,32 +22,34 @@ function TodoListDisplayComponent({ uuid, title, content }: TodoItem) {
     </li>
   );
 }
-export default async function Home() {
+export default async function TodoPage() {
   const sql = postgres(process.env.DATABASE_URL || "", { ssl: "require" });
   const sqlData = await sql<TodoItem[]>`SELECT * FROM todos`;
   return (
-    <div className="justify-center align-center m-1 absolute inset-0 flex flex-col">
-      <ViewTransition name="title">
-        <h1 className="text-4xl font-bold text-center mb-4 dark:text-white">
-          Server Management Todo List
-        </h1>
-        <Link
-          href="/"
-          className="text-blue-500 dark:text-blue-400 hover:underline text-center mb-6 transition-colors duration-200"
-        >
-          ← Back
-        </Link>
-      </ViewTransition>
-      <ul className="flex flex-row flex-wrap gap-1 justify-center align-center w-full">
-        {sqlData.map((item: TodoItem) => (
-          <TodoListDisplayComponent
-            key={item.uuid}
-            uuid={item.uuid}
-            title={item.title}
-            content={item.content}
-          />
-        ))}
-      </ul>
-    </div>
+    <Suspense fallback={<div>Loading todos...</div>}>
+      <div className="justify-center align-center m-1 absolute inset-0 flex flex-col">
+        <ViewTransition name="title">
+          <h1 className="text-4xl font-bold text-center mb-4 dark:text-white">
+            Server Management Todo List
+          </h1>
+          <Link
+            href="/"
+            className="text-blue-500 dark:text-blue-400 hover:underline text-center mb-6 transition-colors duration-200"
+          >
+            ← Back
+          </Link>
+        </ViewTransition>
+        <ul className="flex flex-row flex-wrap gap-1 justify-center align-center w-full">
+          {sqlData.map((item: TodoItem) => (
+            <TodoListDisplayComponent
+              key={item.uuid}
+              uuid={item.uuid}
+              title={item.title}
+              content={item.content}
+            />
+          ))}
+        </ul>
+      </div>
+    </Suspense>
   );
 }
