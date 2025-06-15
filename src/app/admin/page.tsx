@@ -1,8 +1,18 @@
-import TodoForm from "./TodoForm";
 import { unstable_ViewTransition as ViewTransition } from "react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { currentUser } from "@clerk/nextjs/server";
 
-export default function Page() {
+export default async function Page() {
+  const user = await currentUser();
+  if (!user) {
+    redirect("/sign-in");
+  }
+  const isAdmin = user.publicMetadata.role === "admin";
+  if (!isAdmin) {
+    redirect("/");
+  }
+
   return (
     <div className="justify-center align-center text-center m-1 absolute inset-0 flex flex-col">
       <ViewTransition name="title">
@@ -16,7 +26,15 @@ export default function Page() {
           ← Back
         </Link>
       </ViewTransition>
-      <TodoForm />
+
+      {/* Add your admin panel content here */}
+      <div className="mt-8">
+        <h2 className="text-2xl mb-4">管理面板</h2>
+        {/* Add your admin controls here */}
+        <div className="flex flex-col space-y-4">
+          {/* Add your admin features here */}
+        </div>
+      </div>
     </div>
   );
 }

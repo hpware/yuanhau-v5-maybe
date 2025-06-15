@@ -1,6 +1,30 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
-export default clerkMiddleware();
+const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
+
+export default clerkMiddleware(async (auth, req) => {
+  if (isAdminRoute(req)) {
+    const { sessionClaims, userId } = await auth();
+
+    // Debug logging
+    console.log("userId:", userId);
+    console.log("sessionClaims:", sessionClaims);
+    console.log("metadata:", sessionClaims?.metadata);
+
+    if (!userId) {
+      return NextResponse.redirect(new URL("/sign-in", req.url));
+    }
+
+    const isAdmin = sessionClaims?.metadata?.role === "admin";
+
+    console.log(isAdmin);
+
+    if (!isAdmin) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+  }
+});
 
 export const config = {
   matcher: [

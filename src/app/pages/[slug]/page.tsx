@@ -3,6 +3,7 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 export const revalidate = 300;
 import sql from "@/components/pg";
+import { notFound } from "next/navigation";
 
 interface Article {
   uuid: string;
@@ -18,6 +19,9 @@ export default async function Page(props: {
   const findPages = await sql<Article[]>`
     SELECT * FROM pages
     WHERE slug = ${slug}`;
+  if (findPages.length === 0) {
+    notFound();
+  }
   return (
     <div>
       <ViewTransition name="title">
