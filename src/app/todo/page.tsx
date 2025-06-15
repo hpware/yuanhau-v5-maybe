@@ -1,8 +1,8 @@
-import postgres from "postgres";
 import { unstable_ViewTransition as ViewTransition, Suspense } from "react";
 import Link from "next/link";
 export const dynamic = "force-dynamic";
 export const revalidate = 300;
+import sql from "@/components/pg";
 
 interface TodoItem {
   uuid: string;
@@ -23,7 +23,6 @@ function TodoListDisplayComponent({ uuid, title, content }: TodoItem) {
   );
 }
 export default async function TodoPage() {
-  const sql = postgres(process.env.DATABASE_URL || "", { ssl: "require" });
   const sqlData = await sql<TodoItem[]>`SELECT * FROM todos`;
   return (
     <Suspense fallback={<div>Loading todos...</div>}>
