@@ -22,6 +22,7 @@ export default async function Page(props: {
   if (findPages.length === 0) {
     notFound();
   }
+  console.log(findPages);
   return (
     <div>
       <ViewTransition name="title">
@@ -36,7 +37,6 @@ export default async function Page(props: {
         </Link>
       </ViewTransition>
       <span>Hi {slug}</span>
-      <span>{findPages?.uuid}</span>
     </div>
   );
 }
