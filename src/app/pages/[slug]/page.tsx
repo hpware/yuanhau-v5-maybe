@@ -36,7 +36,7 @@ export default async function Page(props: {
         </Link>
       </ViewTransition>
       <span>Hi {slug}</span>
-      <span>{findPages}</span>
+      <span>{findPages?.uuid}</span>
     </div>
   );
 }

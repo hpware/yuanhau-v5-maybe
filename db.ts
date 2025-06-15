@@ -9,11 +9,14 @@ const createTodos = await sql`
 
 const createPages = await sql`
   CREATE TABLE IF NOT EXISTS pages (
-  uuid text primary key,
-  slug text unique not null,
-  title text not null,
-  content text not null
-  )
+      id INT PRIMARY KEY AUTO_INCREMENT,
+      title VARCHAR(255) NOT NULL,
+      slug VARCHAR(255) UNIQUE NOT NULL,
+      markdown_content LONGTEXT NOT NULL,
+      status ENUM('draft', 'published', 'archived') DEFAULT 'draft',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  );
   `;
 
 await sql.end();
