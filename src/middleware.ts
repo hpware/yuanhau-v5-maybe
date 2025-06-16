@@ -1,11 +1,5 @@
 import { NextResponse } from "next/server";
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-
-const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
-
-type ClerkMetadata = {
-  role?: string;
-};
+import { clerkMiddleware } from "@clerk/nextjs/server";
 
 function proxyMiddleware(req) {
   if (req.nextUrl.pathname.match("__clerk")) {
@@ -42,28 +36,11 @@ function proxyMiddleware(req) {
 
 const clerkHandler = clerkMiddleware();
 
-export default async function middleware(req) {
+export default function middleware(req) {
   // First check if it's a proxy request
   const proxyResponse = proxyMiddleware(req);
   if (proxyResponse) {
     return proxyResponse;
-  }
-
-  // For admin routes, check authorization
-  if (isAdminRoute(req)) {
-    const auth = req.auth;
-    const { sessionClaims, userId } = await auth();
-
-    if (!userId) {
-      return NextResponse.redirect(new URL("/sign-in", req.url));
-    }
-
-    const metadata = sessionClaims?.metadata as ClerkMetadata | undefined;
-    const isAdmin = metadata?.role === "admin";
-
-    if (!isAdmin) {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
   }
 
   // Otherwise, use Clerk's middleware
