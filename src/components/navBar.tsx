@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import "./globals.css";
 import ThemeToggle from "../app/ThemeToggle";
 import {
   SignInButton,
