@@ -8,7 +8,7 @@ interface DefaultLayoutProps extends PropsWithChildren {
 export default function DefaultLayout({ children, tab }: DefaultLayoutProps) {
   return (
     <div>
-      <div className="relative z-50">
+      <div className="relative z-50 max-h-full">
         <NavBar currentTab={tab} />
       </div>
       <main className="relative">{children}</main>

@@ -27,7 +27,7 @@ const tabs = [
 export default function NavBar(currentTab: { currentTab: string }) {
   const desktopSize = "50";
   return (
-    <div className="z-50">
+    <div>
       {/* Desktop */}
       <div className="hidden md:block">
         <div className="w-full m-2 p-1 flex flex-row absolute inset-x-0 justify-between">
@@ -44,25 +44,24 @@ export default function NavBar(currentTab: { currentTab: string }) {
               <Link
                 href={tab.url}
                 key={tab.url}
-                className={`px-3 py-2 ${currentTab.currentTab === tab.name ? "font-bold" : ""}`}
+                className={`px-3 py-2 ${currentTab.currentTab === tab.url ? "font-bold" : ""}`}
               >
                 {tab.name}
               </Link>
             ))}
-            <ThemeToggle />
             <SignedOut>
-              <SignInButton />
-              <SignUpButton />
+              <SignInButton>Login</SignInButton>
             </SignedOut>
             <SignedIn>
               <UserButton />
             </SignedIn>
+            <ThemeToggle />
           </div>
         </div>
       </div>
       {/* Mobile */}
       <div className="md:hidden block">
-        <div className="w-full m-2 p-1 flex flex-row absolute inset-x-0 justify-between">
+        <div className="w-full m-1 p-2 flex flex-row absolute inset-x-0 justify-between">
           <div>
             <div>
               <Image

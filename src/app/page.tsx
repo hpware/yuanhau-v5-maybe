@@ -3,7 +3,7 @@ import Layout from "@/layout/default";
 import { unstable_ViewTransition as ViewTransition } from "react";
 export default async function Home() {
   return (
-    <Layout tab="home">
+    <Layout tab="/">
       <div className="justify-center align-center m-1 fixed inset-0 flex flex-col">
         <ViewTransition name="title">
           <h1 className="text-4xl font-bold text-center mb-4 dark:text-white">
