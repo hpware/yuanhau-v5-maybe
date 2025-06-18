@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { unstable_ViewTransition as ViewTransition } from "react";
+import Layout from "@/layout/default";
 
 function LeftSideMenu() {
   return (
@@ -47,45 +48,49 @@ function LeftSideMenu() {
 export default function Page() {
   const slug = "3931";
   return (
-    // make this locate on top of the page when it's on mobile
-    <div className="flex flex-col md:flex-row min-h-screen ">
-      {/* Left Section */}
-      <ViewTransition name="left-side-bar">
-        <LeftSideMenu />
-      </ViewTransition>
+    <Layout currentTab="/3d">
+      {/*  make this locate on top of the page when it's on mobile*/}
+      <div className="flex flex-col md:flex-row min-h-screen ">
+        {/* Left Section */}
+        <ViewTransition name="left-side-bar">
+          <LeftSideMenu />
+        </ViewTransition>
 
-      {/* Right Section */}
-      <ViewTransition name="right-side-bar">
-        <div className="w-full md:w-1/2 p-2 md:p-8">
-          <h2 className="text-xl font-medium px-2 text-gray-700 mt-4">Spots</h2>
-          <div className="space-y-4 flex gap-8 p-2 flex-wrap">
-            <Link
-              key="0"
-              href={`/3d/${slug}`}
-              className="hover:bg-gray-50 transition-colors w-full md:w-[300px] h-[300px] items-stretch"
-            >
-              <div className="relative w-full h-full flex-shrink-0 overflow-clip rounded-lg group">
-                <ViewTransition name={`3d-image-${slug}`}>
-                  <Image
-                    loading="eager"
-                    decoding="sync"
-                    src={"/placeholder.svg"}
-                    alt={"name"}
-                    fill
-                    className="object-cover flex-1 transition-transform  overflow-clip rounded-lg group-hover:scale-110"
-                  />
-                </ViewTransition>
-                {/* name label */}
-                <ViewTransition name={`3d-name-${slug}`}>
-                  <div className="absolute bottom-4 right-4 text-gray-100 bg-opacity-50 rounded-xl text-3xl filter [text-shadow:0px_0px_8px_#111]">
-                    Hi
-                  </div>
-                </ViewTransition>
-              </div>
-            </Link>
+        {/* Right Section */}
+        <ViewTransition name="right-side-bar">
+          <div className="w-full md:w-1/2 p-2 md:p-8">
+            <h2 className="text-xl font-medium px-2 text-gray-700 mt-4">
+              Spots
+            </h2>
+            <div className="space-y-4 flex gap-8 p-2 flex-wrap">
+              <Link
+                key="0"
+                href={`/3d/${slug}`}
+                className="hover:bg-gray-50 transition-colors w-full md:w-[300px] h-[300px] items-stretch"
+              >
+                <div className="relative w-full h-full flex-shrink-0 overflow-clip rounded-lg group">
+                  <ViewTransition name={`3d-image-${slug}`}>
+                    <Image
+                      loading="eager"
+                      decoding="sync"
+                      src={"/placeholder.svg"}
+                      alt={"name"}
+                      fill
+                      className="object-cover flex-1 transition-transform  overflow-clip rounded-lg group-hover:scale-110"
+                    />
+                  </ViewTransition>
+                  {/* name label */}
+                  <ViewTransition name={`3d-name-${slug}`}>
+                    <div className="absolute bottom-4 right-4 text-gray-100 bg-opacity-50 rounded-xl text-3xl filter [text-shadow:0px_0px_8px_#111]">
+                      Hi
+                    </div>
+                  </ViewTransition>
+                </div>
+              </Link>
+            </div>
           </div>
-        </div>
-      </ViewTransition>
-    </div>
+        </ViewTransition>
+      </div>
+    </Layout>
   );
 }

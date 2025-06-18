@@ -25,13 +25,19 @@ const tabs = [
 ];
 
 export default function NavBar(currentTab: { currentTab: string }) {
+  const desktopSize = "50";
   return (
-    <div>
+    <div className="z-50">
       {/* Desktop */}
       <div className="hidden md:block">
         <div className="w-full m-2 p-1 flex flex-row absolute inset-x-0 justify-between">
           <div>
-            <Image src="/logo.png" width="200" alt="Profile Pic" />
+            <Image
+              src="/favicon.ico"
+              width={desktopSize}
+              height={desktopSize}
+              alt="Profile Pic"
+            />
           </div>
           <div className="gap-2">
             {tabs.map((tab) => (
@@ -58,7 +64,14 @@ export default function NavBar(currentTab: { currentTab: string }) {
       <div className="md:hidden block">
         <div className="w-full m-2 p-1 flex flex-row absolute inset-x-0 justify-between">
           <div>
-            <Image src="/logo.png" width="200" alt="Profile Pic" />
+            <div>
+              <Image
+                src="/favicon.ico"
+                width={desktopSize}
+                height={desktopSize}
+                alt="Profile Pic"
+              />
+            </div>
           </div>
           <div className="gap-2">
             {tabs.map((tab) => (

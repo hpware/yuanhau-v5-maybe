@@ -1,11 +1,17 @@
 import { PropsWithChildren } from "react";
 import NavBar from "@/components/navBar";
 
-export default function DefaultLayout({ children }: PropsWithChildren) {
+interface DefaultLayoutProps extends PropsWithChildren {
+  tab: string;
+}
+
+export default function DefaultLayout({ children, tab }: DefaultLayoutProps) {
   return (
     <div>
-      <NavBar currentTab="home" />
-      {children}
+      <div className="relative z-50">
+        <NavBar currentTab={tab} />
+      </div>
+      <main className="relative">{children}</main>
     </div>
   );
 }
