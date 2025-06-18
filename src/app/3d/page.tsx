@@ -48,7 +48,7 @@ function LeftSideMenu() {
 export default function Page() {
   const slug = "3931";
   return (
-    <Layout currentTab="/3d">
+    <Layout tab="/3d">
       {/*  make this locate on top of the page when it's on mobile*/}
       <div className="flex flex-col md:flex-row min-h-screen ">
         {/* Left Section */}

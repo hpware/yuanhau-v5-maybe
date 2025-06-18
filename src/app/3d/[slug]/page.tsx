@@ -2,6 +2,7 @@ import { unstable_ViewTransition as ViewTransition } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Placeholder from "@/app/placeholder.svg";
+import Layout from "@/layout/default";
 
 async function MainView({ slug }: { slug: string }) {
   return (
@@ -40,7 +41,9 @@ export default async function Page(props: {
 
   return (
     <div>
-      <MainView slug={slug} />
+      <Layout tab={`/3d/${slug}`}>
+        <MainView slug={slug} />
+      </Layout>
     </div>
   );
 }
