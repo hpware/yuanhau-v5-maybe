@@ -30,7 +30,7 @@ export default function NavBar(currentTab: { currentTab: string }) {
     <div>
       {/* Desktop */}
       <div className="hidden md:block">
-        <div className="w-full m-2 p-1 flex flex-row absolute inset-x-0 justify-between">
+        <div className="w-full p-2 flex flex-row fixed inset-x-0 justify-between">
           <div>
             <Image
               src="/favicon.ico"
@@ -61,7 +61,7 @@ export default function NavBar(currentTab: { currentTab: string }) {
       </div>
       {/* Mobile */}
       <div className="md:hidden block">
-        <div className="w-full m-1 p-2 flex flex-row absolute inset-x-0 justify-between">
+        <div className="w-full flex flex-row fixed inset-x-0 justify-between">
           <div>
             <div>
               <Image
