@@ -110,10 +110,10 @@ function ClientPage({
       <div className="h-screen"></div>
       {/* About me block */}
       <div className="justify-center flex flex-col">
-        <h2 class="text-3xl text-bold">關於我</h2>
-        <article className="prose">
+        <h2 className="text-3xl text-bold">關於我</h2>
+        <div className="prose lg:prose-xl">
           <Markdown>{content.content}</Markdown>
-        </article>
+        </div>
         <span>More</span>
         <span className="text-gray-600 text-sm">
           About system updates for every 2 hours. Last Update: {formatDate}
