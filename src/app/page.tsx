@@ -1,6 +1,8 @@
 import Layout from "@/layout/default";
 import { unstable_ViewTransition as ViewTransition } from "react";
-
+import sql from "@/components/pg";
+import { cache } from "react";
+import Markdown from "marked-react";
 // Icons
 import {
   GithubIcon,
@@ -10,8 +12,7 @@ import {
   MailIcon,
 } from "lucide-react";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 3000;
+export const revalidate = 9600;
 
 const socials = [
   {
@@ -51,19 +52,34 @@ const socials = [
   },
   {
     name: "email",
-    url: "mailto:public+yhcom-v5@yuanhau.com",
+    url: "mailto:yhcom+v5@yuanhau.com",
     icon: <MailIcon />,
   },
 ];
 
-export default function Page() {
-  const sqlContent = "Hi";
+let lastUpdateDate = "";
+const fetchFullAbout = cache(async () => {
+  const data = await sql`SELECT * FROM mdcontent
+    WHERE slug = 'about'`;
+  lastUpdateDate = new Date().toLocaleDateString("zh-TW", {
+    month: "2-digit",
+    day: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+  return data[0]?.content || "";
+});
+
+function ClientPage({ content }: { content: string }) {
   return (
     <Layout tab="/">
-      <div className="absolute inset-0 align-middle flex flex-col justify-center text-center">
+      <div className="absolute inset-0 align-middle flex flex-col justify-center text-center h-screen">
         <ViewTransition name="title">
           <h1 className="text-4xl font-bold text-center mb-4 dark:text-white">
-            元皓的網站 v5
+            Howard Wu
           </h1>
         </ViewTransition>
         <div className="flex flex-row justify-center align-middle text-center gap-2">
@@ -75,7 +91,23 @@ export default function Page() {
         </div>
       </div>
       <div className="h-screen"></div>
-      <div className="">{sqlContent}</div>
+      <div className="">
+        <article className="prose">
+          <Markdown>{content}</Markdown>
+        </article>
+        <span className="text-gray-600 text-sm">
+          About system updates for every 2 hours. Last Update: {lastUpdateDate}
+        </span>
+      </div>
     </Layout>
+  );
+}
+
+export default async function Page() {
+  const content = await fetchFullAbout();
+  return (
+    <div>
+      <ClientPage content={content} />
+    </div>
   );
 }
