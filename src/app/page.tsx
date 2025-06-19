@@ -1,7 +1,6 @@
 import Layout from "@/layout/default";
 import { unstable_ViewTransition as ViewTransition } from "react";
 import sql from "@/components/pg";
-import { cache } from "react";
 import Markdown from "marked-react";
 // Icons
 import {
@@ -11,6 +10,7 @@ import {
   TwitterIcon,
   MailIcon,
 } from "lucide-react";
+import { unstable_cache } from "next/cache";
 
 export const revalidate = 9600;
 
@@ -57,23 +57,40 @@ const socials = [
   },
 ];
 
-let lastUpdateDate = "";
-const fetchFullAbout = cache(async () => {
-  const data = await sql`SELECT * FROM mdcontent
+const fetchFullAbout = unstable_cache(
+  async () => {
+    const data = await sql`SELECT * FROM mdcontent
     WHERE slug = 'about'`;
-  lastUpdateDate = new Date().toLocaleDateString("zh-TW", {
-    month: "2-digit",
-    day: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  });
-  return data[0]?.content || "";
-});
 
-function ClientPage({ content }: { content: string }) {
+    return {
+      content: data[0]?.content || "",
+      lastUpdateDate: new Date().getTime(),
+    };
+  },
+  ["about-content"],
+  { revalidate: 9600 },
+);
+
+function ClientPage({
+  content,
+}: {
+  content: {
+    content: string;
+    lastUpdateDate: string;
+  };
+}) {
+  const formatDate = new Date(content.lastUpdateDate).toLocaleDateString(
+    "zh-TW",
+    {
+      month: "2-digit",
+      day: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    },
+  );
   return (
     <Layout tab="/">
       <div className="absolute inset-0 align-middle flex flex-col justify-center text-center h-screen">
@@ -91,12 +108,15 @@ function ClientPage({ content }: { content: string }) {
         </div>
       </div>
       <div className="h-screen"></div>
-      <div className="">
+      {/* About me block */}
+      <div className="justify-center flex flex-col">
+        <h2 class="text-3xl text-bold">關於我</h2>
         <article className="prose">
-          <Markdown>{content}</Markdown>
+          <Markdown>{content.content}</Markdown>
         </article>
+        <span>More</span>
         <span className="text-gray-600 text-sm">
-          About system updates for every 2 hours. Last Update: {lastUpdateDate}
+          About system updates for every 2 hours. Last Update: {formatDate}
         </span>
       </div>
     </Layout>
