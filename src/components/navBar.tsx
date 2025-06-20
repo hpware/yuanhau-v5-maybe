@@ -39,23 +39,28 @@ export default function NavBar(currentTab: { currentTab: string }) {
               alt="Profile Pic"
             />
           </div>
-          <div className="gap-2">
+          <div className="flex items-center gap-1 bg-gray-200/50 backdrop-blur-xl p-2 rounded">
             {tabs.map((tab) => (
               <Link
                 href={tab.url}
                 key={tab.url}
-                className={`px-3 py-2 ${currentTab.currentTab === tab.url ? "font-bold" : ""}`}
+                className={`mx-1 ${
+                  currentTab.currentTab === tab.url ? "font-bold" : ""
+                }
+                p-2 rounded-lg backdrop-blur-sm hover:bg-gray-500/20 hover:dark:bg-white/20 transition-colors duration-200`}
               >
                 {tab.name}
               </Link>
             ))}
+            <ThemeToggle />
+            <div className="pl-1"></div>
             <SignedOut>
               <SignInButton>Login</SignInButton>
             </SignedOut>
             <SignedIn>
               <UserButton />
             </SignedIn>
-            <ThemeToggle />
+            <div className="pl-1"></div>
           </div>
         </div>
       </div>

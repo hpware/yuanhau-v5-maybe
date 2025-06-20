@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react";
 import NavBar from "@/components/navBar";
+import Footer from "@/components/footer";
 
 interface DefaultLayoutProps extends PropsWithChildren {
   tab: string;
@@ -12,6 +13,7 @@ export default function DefaultLayout({ children, tab }: DefaultLayoutProps) {
         <NavBar currentTab={tab} />
       </div>
       <main className="relative">{children}</main>
+      <Footer currentTab={tab} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { unstable_cache } from "next/cache";
 import sql from "@/components/pg";
 
@@ -9,30 +9,33 @@ const fetchContent = unstable_cache(
       WHERE slug = ${slug}
     `;
 
+    // Process content before sending
+    const content = data[0]?.content || "";
+
     return {
-      content:
-        data[0]?.content
-          .replace(/\\n/g, "\n")
-          .replace(/\r\n/g, "\n")
-          .replace(/\r/g, "\n") || "",
+      content: content
+        .replace(/\\n/g, "\n")
+        .replace(/\r\n/g, "\n")
+        .replace(/\r/g, "\n"),
     };
   },
   ["mdcontent"],
   { revalidate: 9600 },
 );
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { slug: string } },
-) {
+type Props = {
+  params: Promise<{
+    slug: string;
+  }>;
+};
+
+export async function GET(request: NextRequest, context: Props) {
   try {
-    const content = await fetchContent(params.slug);
-    return NextResponse.json(content);
+    const { slug } = await context.params;
+    const content = await fetchContent(slug);
+    return Response.json(content);
   } catch (error) {
     console.error("Error fetching content:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch content" },
-      { status: 500 },
-    );
+    return Response.json({ error: "Failed to fetch content" }, { status: 500 });
   }
 }

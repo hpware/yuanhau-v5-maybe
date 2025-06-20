@@ -1,5 +1,5 @@
 "use client";
-import { useScroll, motion } from "motion/react";
+import { useScroll, motion, useSpring } from "motion/react";
 import Layout from "@/layout/default";
 import {
   unstable_ViewTransition as ViewTransition,
@@ -58,8 +58,21 @@ const socials = [
   },
 ];
 
+const points = [
+  {
+    name: "?",
+    content: "What?",
+    icon: <MailIcon />,
+  },
+];
+
 export default function Page() {
   const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
 
   const [content, setContent] = useState<string>("");
   const [displayFullAbout, setDisplayFullAbout] = useState<boolean>(false);
@@ -83,6 +96,10 @@ export default function Page() {
   }, []);
   return (
     <Layout tab="/">
+      <motion.div
+        className="fixed inset-x-0 top-0 h-1 bg-blue-500 origin-[0%] z-50"
+        style={{ scaleX }}
+      />
       <div className="absolute inset-0 align-middle flex flex-col justify-center text-center h-screen">
         <ViewTransition name="title">
           <h1 className="text-4xl font-bold text-center mb-4 dark:text-white">
@@ -98,22 +115,91 @@ export default function Page() {
         </div>
       </div>
       <div className="h-screen"></div>
-      <div className="justify-center flex flex-col">
-        <h2 className="text-3xl text-bold">關於我</h2>
-        <article className="prose">
-          <Markdown
-            value={content.replace(/\\n/g, "\n").replace(/\n/g, "  \n")}
-            breaks={true}
-            gfm={true}
-          />
-        </article>
-        <span>More</span>
-        <span className="text-gray-600 text-sm">
-          About content updates for every 2 hours.
-        </span>
+      <div className="flex flex-row flex-wrap gap-1">
+        <section id="about"></section>
+        <div className="justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl w-full md:w-[calc(50%-10px)] px-4 py-8 max-w-3xl mx-auto">
+          <h2 className="text-3xl text-bold">關於我</h2>
+          <div className="relative overflow-hidden">
+            <motion.article
+              className="prose m-3"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Markdown
+                value={
+                  displayFullAbout
+                    ? content.replace(/\\n/g, "\n").replace(/\n/g, "  \n")
+                    : content
+                        .split("\n")
+                        .slice(0, 20)
+                        .join("\n")
+                        .replace(/\\n/g, "\n")
+                        .replace(/\n/g, "  \n")
+                }
+                breaks={true}
+                gfm={true}
+              />
+            </motion.article>
+            <motion.div
+              initial={{ opacity: 0.5 }}
+              animate={{
+                opacity: !displayFullAbout ? 1 : 0,
+                height: !displayFullAbout ? "100%" : "0%",
+              }}
+              transition={{ duration: 0.5 }}
+              className="absolute inset-0"
+            >
+              {!displayFullAbout && (
+                <div className="h-full bg-gradient-to-b from-transparent via-white/30 to-white dark:via-gray-900/30 dark:to-gray-900" />
+              )}
+            </motion.div>
+          </div>
+          <button
+            onClick={() => setDisplayFullAbout(!displayFullAbout)}
+            className="p-2 bg-gray-300 dark:bg-gray-600 m-2 justify-center align-middle self-center content-center text-center border w-fit rounded hover:cursor-pointer hover:bg-gray-500/50 hover:dark:bg-gray-700/50 hover:border-gray-50 transition-all duration-300"
+          >
+            {displayFullAbout ? "Show Less" : "Show More"}
+          </button>
+          <motion.span
+            className="text-gray-600 text-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            About content updates for every 2 hours.
+          </motion.span>
+        </div>
+        <section id="education"></section>
+        <div className="justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl w-full md:w-[calc(50%-10px)] px-4 py-8 max-w-3xl mx-auto">
+          <h2 className="text-3xl text-bold">教育</h2>
+        </div>
       </div>
-      <div className="fixed inset-x-0 bottom-0">
-        <motion.div style={{ scaleX: scrollYProgress }} />
+      {/**
+        <section id="points"></section>
+        <div className="flex flex-col justify-center align-center text-center">
+          <div className="flex flex-row flex-wrap justify-center m-4">
+            {points.map((i) => (
+              <div
+                className="group flex flex-col p-5 m-1 bg-gray-200 dark:bg-gray-600 rounded min-w-[25%] min-h-[20%]"
+                key={i.name}
+              >
+                <span className="">{i.icon}</span>
+                <span className="text-xl m-1 text-left">{i.name}</span>
+                <span className="m-1 text-left">{i.content}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="h-[30dvh]"></div> */}
+      <div className="h-[10dvh]"></div>
+      <section id="blog"></section>
+      <div className="justfiy-center flex flex-col text-wrap p-2 backdrop-blur-lg bg-gray-300/10 rounded-lg m-2 md:m-4">
+        <h2 className="m-2 text-2xl text-bold">
+          <i>Blog Posts</i>
+        </h2>
+        <hr className="w-[70%] mx-2 my-1" />
+        <div></div>
       </div>
     </Layout>
   );
