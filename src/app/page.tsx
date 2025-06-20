@@ -1,8 +1,12 @@
+"use client";
+import { useScroll, motion } from "motion/react";
 import Layout from "@/layout/default";
-import { unstable_ViewTransition as ViewTransition } from "react";
-import sql from "@/components/pg";
+import {
+  unstable_ViewTransition as ViewTransition,
+  useState,
+  useEffect,
+} from "react";
 import Markdown from "marked-react";
-// Icons
 import {
   GithubIcon,
   YoutubeIcon,
@@ -10,9 +14,6 @@ import {
   TwitterIcon,
   MailIcon,
 } from "lucide-react";
-import { unstable_cache } from "next/cache";
-
-export const revalidate = 9600;
 
 const socials = [
   {
@@ -57,40 +58,29 @@ const socials = [
   },
 ];
 
-const fetchFullAbout = unstable_cache(
-  async () => {
-    const data = await sql`SELECT * FROM mdcontent
-    WHERE slug = 'about'`;
+export default function Page() {
+  const { scrollYProgress } = useScroll();
 
-    return {
-      content: data[0]?.content || "",
-      lastUpdateDate: new Date().getTime(),
+  const [content, setContent] = useState<string>("");
+  const [displayFullAbout, setDisplayFullAbout] = useState<boolean>(false);
+  // Loading statuses
+  const [aboutLoading, setAboutLoading] = useState<boolean>(false);
+  useEffect(() => {
+    const fetchcontent = async () => {
+      try {
+        const req = await fetch("/api/mdcontent/about");
+        const res = await req.json();
+        setContent(res.content || "");
+      } catch (e) {
+        console.log(e);
+      }
     };
-  },
-  ["about-content"],
-  { revalidate: 9600 },
-);
-
-function ClientPage({
-  content,
-}: {
-  content: {
-    content: string;
-    lastUpdateDate: string;
-  };
-}) {
-  const formatDate = new Date(content.lastUpdateDate).toLocaleDateString(
-    "zh-TW",
-    {
-      month: "2-digit",
-      day: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    },
-  );
+    fetchcontent();
+    const interval = setInterval(async () => {
+      fetchcontent();
+    }, 9600000);
+    return () => clearInterval(interval);
+  }, []);
   return (
     <Layout tab="/">
       <div className="absolute inset-0 align-middle flex flex-col justify-center text-center h-screen">
@@ -108,26 +98,23 @@ function ClientPage({
         </div>
       </div>
       <div className="h-screen"></div>
-      {/* About me block */}
       <div className="justify-center flex flex-col">
         <h2 className="text-3xl text-bold">關於我</h2>
-        <div className="prose lg:prose-xl">
-          <Markdown>{content.content}</Markdown>
-        </div>
+        <article className="prose">
+          <Markdown
+            value={content.replace(/\\n/g, "\n").replace(/\n/g, "  \n")}
+            breaks={true}
+            gfm={true}
+          />
+        </article>
         <span>More</span>
         <span className="text-gray-600 text-sm">
-          About system updates for every 2 hours. Last Update: {formatDate}
+          About content updates for every 2 hours.
         </span>
       </div>
+      <div className="fixed inset-x-0 bottom-0">
+        <motion.div style={{ scaleX: scrollYProgress }} />
+      </div>
     </Layout>
-  );
-}
-
-export default async function Page() {
-  const content = await fetchFullAbout();
-  return (
-    <div>
-      <ClientPage content={content} />
-    </div>
   );
 }

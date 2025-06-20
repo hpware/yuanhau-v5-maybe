@@ -16,7 +16,7 @@ const tabs = [
   },
   {
     name: "About",
-    url: "/about",
+    url: "/#about",
   },
   {
     name: "3D",
