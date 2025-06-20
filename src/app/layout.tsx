@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Maybe 元皓的網站 v5?",
+  title: "吳元皓",
 };
 
 export default function RootLayout({

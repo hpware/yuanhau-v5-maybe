@@ -33,12 +33,12 @@ export default function NavBar(currentTab: { currentTab: string }) {
       <div className="hidden md:block">
         <div className="w-full flex flex-row fixed inset-x-0 justify-between px-7 py-6">
           <div>
-            <Image
+            {/**            <Image
               src="/favicon.ico"
               width={desktopSize}
               height={desktopSize}
               alt="Profile Pic"
-            />
+            /> */}
           </div>
           <div className="flex items-center gap-1 bg-gray-100/5 border border-accent backdrop-blur-xl shadow-lg p-2 rounded-lg">
             {tabs.map((tab) => (
@@ -74,12 +74,12 @@ export default function NavBar(currentTab: { currentTab: string }) {
         <div className="w-full flex flex-row fixed inset-x-0 justify-between">
           <div>
             <div>
-              <Image
+              {/**            <Image
                 src="/favicon.ico"
                 width={desktopSize}
                 height={desktopSize}
                 alt="Profile Pic"
-              />
+              /> */}
             </div>
           </div>
           <div className="gap-2">

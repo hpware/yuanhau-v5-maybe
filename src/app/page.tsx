@@ -1,6 +1,7 @@
 "use client";
 import { useScroll, motion, useSpring } from "motion/react";
 import Layout from "@/layout/default";
+import Image from "next/image";
 import {
   unstable_ViewTransition as ViewTransition,
   useState,
@@ -13,7 +14,9 @@ import {
   InstagramIcon,
   TwitterIcon,
   MailIcon,
+  ChevronDownIcon,
 } from "lucide-react";
+import Head from "next/head";
 
 const socials = [
   {
@@ -96,11 +99,22 @@ export default function Page() {
   }, []);
   return (
     <Layout tab="/">
+      <Head>
+        <title>首頁 | 吳元皓</title>
+      </Head>
       <motion.div
         className="fixed inset-x-0 top-0 h-1 bg-blue-500 origin-[0%] z-50"
         style={{ scaleX }}
       />
       <div className="absolute inset-0 align-middle flex flex-col justify-center text-center h-screen">
+        <Image
+          src="/images/profile.jpg"
+          width="250"
+          height="250"
+          alt="Profile Picture"
+          draggable="false"
+          className="rounded-full justify-center align-middle content-center self-center text-center border shadow-lg border-gray-100/30 backdrop-blur-lg"
+        />
         <ViewTransition name="title">
           <h1 className="text-4xl font-bold text-center mb-4 dark:text-white">
             Howard Wu
@@ -118,6 +132,9 @@ export default function Page() {
             </a>
           ))}
         </div>
+      </div>
+      <div className="absolute inset-x-0 top-[90vh] md:top-[90dvh] flex flex-row text-center justify-center align-bottom">
+        Learn More <ChevronDownIcon />
       </div>
       <div className="h-screen"></div>
       <div className="flex flex-row flex-wrap gap-1">
