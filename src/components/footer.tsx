@@ -88,6 +88,10 @@ const col2Links = [
     name: "Source Code",
     link: "https://github.com/hpware/yuanhau-v5-maybe.git",
   },
+  {
+    name: "Email (No garbage)",
+    link: "mailto:h",
+  },
 ];
 
 export default function Footer(currentTab: { currentTab: string }) {
@@ -95,7 +99,7 @@ export default function Footer(currentTab: { currentTab: string }) {
     <div className="relative bottom-0 inset-x-0">
       <hr className="bg-black/50 dark:bg-white/50 w-[calc(100%-30px)] justify-center align-middle self-center content-center text-center m-auto" />
       <div className="justify-center align-middle flex flex-row gap-2 mt-4 mb-2 p-1">
-        <div className="flex flex-col w-[calc(50%-30px)] p-2 m-2 pl-4">
+        <div className="flex flex-col w-[calc(50%-30px)] p-2 m-2 pl-12">
           <Image
             src="/images/profile.jpg"
             width="60"
@@ -105,6 +109,12 @@ export default function Footer(currentTab: { currentTab: string }) {
             className="rounded"
           />
           <span className="text-xl">吳元皓</span>
+          <span className="text-sm">
+            <i>
+              Take risks in life. Your grand-grand-grandkids won't remember you,
+              so why not go and try to take some risks (not gamble)?
+            </i>
+          </span>
           <div className="flex flex-row ">
             {socials.map((i) => (
               <a
@@ -117,7 +127,7 @@ export default function Footer(currentTab: { currentTab: string }) {
               </a>
             ))}
           </div>
-          <div className="h-[60px]"></div>
+          <div className="h-[72px]"></div>
           <span className="text-right text-gray-500">
             &copy; {new Date().getFullYear()} Yuan-Hau Wu
           </span>
@@ -141,23 +151,6 @@ export default function Footer(currentTab: { currentTab: string }) {
             </div>
             {/**COL 2 */}
             <div className="flex flex-col mx-12 gap-2">
-              {/**
-               *               <Link href="/blog">Blog</Link>
-               <Link href="/3d">3D Stuff :D</Link>
-               <Link
-                 href="/projects"
-                 className="hover:text-gray-300/50 transition-all duration-300"
-               >
-                 My Projects
-               </Link>
-               <Link
-                 href="https://github.com/hpware/yuanhau-v5-maybe.git"
-                 className="flex flex-row hover:text-gray-300/50 transition-all duration-300"
-               >
-                 Source Code &nbsp;
-                 <ExternalLink className="w-4" />
-               </Link>
-               */}
               {col2Links.map((i) => (
                 <Link
                   key={i.link}
@@ -165,11 +158,18 @@ export default function Footer(currentTab: { currentTab: string }) {
                   className="hover:text-gray-300/50 transition-all duration-300 flex flex-row"
                 >
                   {i.name}
-                  {i.link.includes("//") && (
+                  {i.link.includes("//") ? (
                     <span className="flex flex-row">
                       {" "}
                       &nbsp; <ExternalLink className="w-4" />
                     </span>
+                  ) : i.link.includes("mailto:") ? (
+                    <span className="flex flex-row">
+                      {" "}
+                      &nbsp; <ExternalLink className="w-4" />
+                    </span>
+                  ) : (
+                    <span></span>
                   )}
                 </Link>
               ))}

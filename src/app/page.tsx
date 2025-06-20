@@ -2,11 +2,7 @@
 import { useScroll, motion, useSpring } from "motion/react";
 import Layout from "@/layout/default";
 import Image from "next/image";
-import {
-  unstable_ViewTransition as ViewTransition,
-  useState,
-  useEffect,
-} from "react";
+import { useState, useEffect } from "react";
 import Markdown from "marked-react";
 import {
   GithubIcon,
@@ -15,8 +11,11 @@ import {
   TwitterIcon,
   MailIcon,
   ChevronDownIcon,
+  UniversityIcon,
+  ScrollTextIcon,
 } from "lucide-react";
 import Head from "next/head";
+import HCIcons from "@hackclub/icons";
 
 const socials = [
   {
@@ -69,6 +68,24 @@ const points = [
   },
 ];
 
+const education = [
+  {
+    item: 2,
+    icon: <HCIcons glyph="clubs" size={24} />,
+    name: "Hack Club",
+    content: "Wait, so this counts?",
+    year: "Feburary 2025",
+  },
+  {
+    item: 1,
+    icon: <UniversityIcon />,
+    name: "五專生",
+    content:
+      "Fifth Vocational School Student (3 High School years + 2 University years)",
+    year: "September 2025",
+  },
+];
+
 export default function Page() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -97,6 +114,16 @@ export default function Page() {
     }, 9600000);
     return () => clearInterval(interval);
   }, []);
+
+  const transition = {
+    y: {
+      duration: 2,
+      repeat: Infinity,
+      repeatType: "reverse" as const,
+      ease: "easeInOut" as const,
+    },
+  };
+
   return (
     <Layout tab="/">
       <Head>
@@ -115,11 +142,9 @@ export default function Page() {
           draggable="false"
           className="rounded-full justify-center align-middle content-center self-center text-center border shadow-lg border-gray-100/30 backdrop-blur-lg"
         />
-        <ViewTransition name="title">
-          <h1 className="text-4xl font-bold text-center mb-4 dark:text-white">
-            Howard Wu
-          </h1>
-        </ViewTransition>
+        <h1 className="text-4xl font-bold text-center mb-4 dark:text-white">
+          Howard Wu
+        </h1>
         <div className="flex flex-row justify-center align-middle text-center gap-2">
           {socials.map((i) => (
             <a
@@ -133,14 +158,18 @@ export default function Page() {
           ))}
         </div>
       </div>
-      <div className="absolute inset-x-0 top-[90vh] md:top-[90dvh] flex flex-row text-center justify-center align-bottom">
+      <motion.div
+        animate={{ y: [0, 20] }}
+        transition={transition}
+        className="absolute inset-x-0 top-[90vh] md:top-[90dvh] flex flex-row text-center justify-center align-bottom"
+      >
         Learn More <ChevronDownIcon />
-      </div>
+      </motion.div>
       <div className="h-screen"></div>
       <div className="flex flex-row flex-wrap gap-1">
         <section id="about"></section>
         <div className="justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl w-full md:w-[calc(50%-10px)] px-4 py-8 max-w-3xl mx-auto">
-          <h2 className="text-3xl text-bold">關於我</h2>
+          <h2 className="text-3xl text-bold align-top">關於我</h2>
           <div className="relative overflow-hidden">
             <motion.article
               className="prose m-3"
@@ -194,7 +223,45 @@ export default function Page() {
         </div>
         <section id="education"></section>
         <div className="justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl w-full md:w-[calc(50%-10px)] px-4 py-8 max-w-3xl mx-auto">
-          <h2 className="text-3xl text-bold">教育</h2>
+          <h2 className="text-3xl text-bold align-top">教育</h2>
+          {education
+            .sort((a, b) => b.item - a.item)
+            .map((edu, index, array) => (
+              <div key={index} className="relative">
+                <div className="flex flex-row items-center gap-4 p-4">
+                  <div className="relative">
+                    <span className="border-4 border-orange-500 rounded-full flex justify-center items-center p-2 bg-white dark:bg-gray-800 z-10 relative">
+                      {edu.icon}
+                    </span>
+                    {index < array.length - 1 && (
+                      <svg
+                        className="absolute top-[50%] left-[50%] -translate-x-1/2 translate-y-0 z-0"
+                        width="2"
+                        height="80"
+                        viewBox="0 0 2 80"
+                      >
+                        <line
+                          x1="1"
+                          y1="0"
+                          x2="1"
+                          y2="80"
+                          stroke="orange"
+                          strokeWidth="3"
+                          strokeDasharray="4 4"
+                        />
+                      </svg>
+                    )}
+                  </div>
+                  <div className="flex flex-col items-start text-left">
+                    <span className="text-xl font-bold">{edu.name}</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      {edu.year}
+                    </span>
+                    <span className="text-sm">{edu.content}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
         </div>
       </div>
       {/**
