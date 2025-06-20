@@ -108,7 +108,12 @@ export default function Page() {
         </ViewTransition>
         <div className="flex flex-row justify-center align-middle text-center gap-2">
           {socials.map((i) => (
-            <a href={i.url} aria-label={i.name} key={i.url}>
+            <a
+              href={i.url}
+              aria-label={i.name}
+              key={i.url}
+              className="hover:text-gray-500/60 hover:dark:text-white/60 transition-all duration-300"
+            >
               {i.icon}
             </a>
           ))}
