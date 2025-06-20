@@ -8,6 +8,7 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+import { LogInIcon } from "lucide-react";
 
 const tabs = [
   {
@@ -47,7 +48,7 @@ export default function NavBar(currentTab: { currentTab: string }) {
                 className={`mx-1 ${
                   currentTab.currentTab === tab.url ? "font-bold" : ""
                 }
-                p-2 rounded-lg hover:bg-gray-500/20 hover:dark:bg-white/20 shadow-lg border border-accent dark:border-0 transition-all duration-300`}
+                  p-2 rounded-lg hover:bg-gray-500/20 hover:dark:bg-white/20 shadow-lg border border-accent dark:border-0 transition-all duration-300`}
               >
                 {tab.name}
               </Link>
@@ -55,7 +56,11 @@ export default function NavBar(currentTab: { currentTab: string }) {
             <ThemeToggle />
             <div className="pl-1"></div>
             <SignedOut>
-              <SignInButton>Login</SignInButton>
+              <SignInButton>
+                <button className="hover:cursor-pointer p-2 rounded-lg hover:bg-gray-500/20 hover:dark:bg-white/20 shadow-lg border border-accent dark:border-0 transition-all duration-300">
+                  <LogInIcon />
+                </button>
+              </SignInButton>
             </SignedOut>
             <SignedIn>
               <UserButton />
