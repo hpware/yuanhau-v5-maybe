@@ -1,6 +1,15 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@layer base {
+  html {
+    @apply bg-black scroll-smooth;
+  }
+  body {
+    @apply bg-black m-0 p-0 min-h-screen text-white;
+  }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

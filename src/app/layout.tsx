@@ -30,6 +30,13 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          <script
+            defer
+            src="https://data.yuanhau.com/script.js"
+            data-website-id="6f5e2db3-bb3b-4bda-938d-2b6a8b49476b"
+          ></script>
+        </head>
         <body
           className={`${dmSans.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
         >

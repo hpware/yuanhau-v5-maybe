@@ -52,54 +52,56 @@ const socials = [
   },
 ];
 
-const col1Links = [
-  {
-    name: "Home",
-    link: "/",
-  },
-  {
-    name: "About",
-    link: "/#about",
-  },
-  {
-    name: "Education",
-    link: "/#education",
-  },
-  {
-    name: "Points?",
-    link: "/#points",
-  },
-];
-
-const col2Links = [
-  {
-    name: "Blog",
-    link: "/blog",
-  },
-  {
-    name: "3D Stuff :D",
-    link: "/3d",
-  },
-  {
-    name: "My projects",
-    link: "https://yuanhau.com/projects",
-  },
-  {
-    name: "Source Code",
-    link: "https://github.com/hpware/yuanhau-v5-maybe.git",
-  },
-  {
-    name: "Email (No garbage)",
-    link: "mailto:h",
-  },
+const colLinks = [
+  [
+    {
+      name: "Home",
+      link: "/",
+    },
+    {
+      name: "About",
+      link: "/#about",
+    },
+    {
+      name: "Education",
+      link: "/#education",
+    },
+    {
+      name: "Points?",
+      link: "/#points",
+    },
+  ],
+  [
+    {
+      name: "Blog",
+      link: "/blog",
+    },
+    {
+      name: "3D Stuff :D",
+      link: "/3d",
+    },
+    {
+      name: "My projects",
+      link: "https://yuanhau.com/projects",
+    },
+    {
+      name: "Source Code",
+      link: "https://github.com/hpware/yuanhau-v5-maybe.git",
+    },
+    {
+      name: "Email (No garbage)",
+      link: "mailto:hw+yhv5@yuanhau.com",
+    },
+  ],
 ];
 
 export default function Footer(currentTab: { currentTab: string }) {
   return (
     <div className="relative bottom-0 inset-x-0">
-      <hr className="bg-black/50 dark:bg-white/50 w-[calc(100%-30px)] justify-center align-middle self-center content-center text-center m-auto" />
-      <div className="justify-center align-middle flex flex-row gap-2 mt-4 mb-2 p-1">
-        <div className="flex flex-col w-[calc(50%-30px)] p-2 m-2 pl-12">
+      <hr className="bg-black/50 dark:bg-white/50 flex-wrap w-[calc(100%-30px)] justify-center align-middle self-center content-center text-center m-auto" />
+      <div className="justify-center align-middle flex flex-row flex-wrap gap-2 mt-4 mb-2 p-1">
+        {/* Profile Section */}
+        <div className="flex flex-col w-full md:w-[calc(50%-30px)] p-2 m-2 md:pl-12">
           <Image
             src="/images/profile.jpg"
             width="60"
@@ -115,7 +117,7 @@ export default function Footer(currentTab: { currentTab: string }) {
               so why not go and try to take some risks (not gamble)?
             </i>
           </span>
-          <div className="flex flex-row ">
+          <div className="flex flex-row flex-wrap">
             {socials.map((i) => (
               <a
                 href={i.url}
@@ -127,60 +129,43 @@ export default function Footer(currentTab: { currentTab: string }) {
               </a>
             ))}
           </div>
-          <div className="h-[72px] hidden md:block"></div>
-          <span className="text-right text-gray-500 hidden md:block">
-            &copy; {new Date().getFullYear()} Yuan-Hau Wu
-          </span>
         </div>
-        <div className="flex flex-col w-[calc(50%-30px)] p-2 m-2">
+
+        {/* Links Section */}
+        <div className="flex flex-col w-full md:w-[calc(50%-30px)] p-2 m-2">
           <h3 className="text-xl m-2">
             <i>Links</i>
           </h3>
-          <div className="flex flex-row ml-4">
-            {/**COL 1 */}
-            <div className="flex flex-col gap-2 mr-12">
-              {col1Links.map((i) => (
-                <Link
-                  key={i.link}
-                  href={i.link}
-                  className="hover:text-gray-300/50 transition-all duration-300"
-                >
-                  {i.name}
-                </Link>
-              ))}
-            </div>
-            {/**COL 2 */}
-            <div className="flex flex-col mx-12 gap-2">
-              {col2Links.map((i) => (
-                <Link
-                  key={i.link}
-                  href={i.link}
-                  className="hover:text-gray-300/50 transition-all duration-300 flex flex-row"
-                >
-                  {i.name}
-                  {i.link.includes("//") ? (
-                    <span className="flex flex-row">
-                      {" "}
-                      &nbsp; <ExternalLink className="w-4" />
-                    </span>
-                  ) : i.link.includes("mailto:") ? (
-                    <span className="flex flex-row">
-                      {" "}
-                      &nbsp; <ExternalLink className="w-4" />
-                    </span>
-                  ) : (
-                    <span></span>
-                  )}
-                </Link>
-              ))}
-            </div>
+          <div className="flex flex-col md:flex-row ml-4">
+            {colLinks.map((idiv, index) => (
+              <div
+                className={`flex flex-col gap-2 ${
+                  index === 1 ? "mt-4 md:mt-0 md:ml-12" : "mr-12"
+                }`}
+                key={idiv[0].name}
+              >
+                {idiv.map((i) => (
+                  <Link
+                    key={i.link}
+                    href={i.link}
+                    className="hover:text-gray-600/50 hover:dark:text-gray-300/50 transition-all duration-300 flex flex-row items-center"
+                  >
+                    {i.name}
+                    {(i.link.includes("//") || i.link.includes("mailto:")) && (
+                      <ExternalLink className="w-4 ml-1" />
+                    )}
+                  </Link>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
       </div>
-      <div className="h-[72px] block md:hidden"></div>
-      <span className="text-right text-gray-500 block md:hidden">
+
+      {/* Copyright */}
+      <div className="text-center md:text-right text-gray-500 p-4">
         &copy; {new Date().getFullYear()} Yuan-Hau Wu
-      </span>
+      </div>
     </div>
   );
 }

@@ -2,6 +2,7 @@
 import { useScroll, motion, useSpring } from "motion/react";
 import Layout from "@/layout/default";
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import Markdown from "marked-react";
 import {
@@ -86,6 +87,26 @@ const education = [
   },
 ];
 
+// Fake Posts
+const posts = [
+  {
+    name: "Testing",
+    image: "",
+    content: "blah blah blah \n # blah blah",
+  },
+  {
+    name: "Testing 2",
+    image: "/img/profile.jpg",
+    content: "blah blah blah \n # blah blah",
+  },
+  {
+    name: "Testing 3",
+    image: "",
+    content:
+      "# What is life? I think life is just a game, a fun one. \n I guess tea is good? \n  Also football is dancing.",
+  },
+];
+
 export default function Page() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -158,14 +179,17 @@ export default function Page() {
           ))}
         </div>
       </div>
-      <motion.div
-        animate={{ y: [0, 20] }}
-        transition={transition}
-        className="absolute inset-x-0 top-[90vh] md:top-[90dvh] flex flex-row text-center justify-center align-bottom"
-      >
-        Learn More <ChevronDownIcon />
-      </motion.div>
+      <Link href="/#learnmore">
+        <motion.div
+          animate={{ y: [0, 20] }}
+          transition={transition}
+          className="absolute inset-x-0 top-[90vh] md:top-[90dvh] flex flex-row text-center justify-center align-bottom"
+        >
+          Learn More <ChevronDownIcon />
+        </motion.div>
+      </Link>
       <div className="h-screen"></div>
+      <section id="learnmore"></section>
       <div className="flex flex-row flex-wrap gap-1">
         <section id="about"></section>
         <div className="justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl w-full md:w-[calc(50%-10px)] px-4 py-8 max-w-3xl mx-auto">
@@ -237,14 +261,14 @@ export default function Page() {
                       <svg
                         className="absolute top-[50%] left-[50%] -translate-x-1/2 translate-y-0 z-0"
                         width="2"
-                        height="80"
-                        viewBox="0 0 2 80"
+                        height="100"
+                        viewBox="0 0 2 100"
                       >
                         <line
                           x1="1"
                           y1="0"
                           x2="1"
-                          y2="80"
+                          y2="100"
                           stroke="orange"
                           strokeWidth="3"
                           strokeDasharray="4 4"
