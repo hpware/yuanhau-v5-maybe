@@ -71,6 +71,14 @@ const points = [
 
 const education = [
   {
+    item: 3,
+    icon: <ScrollTextIcon />,
+    name: "文書處理丙級證照",
+    content:
+      "This is not even worth the 1000+ NTD I paid. It cannot even help me find a job bro.",
+    year: "June 2025",
+  },
+  {
     item: 2,
     icon: <HCIcons glyph="clubs" size={24} />,
     name: "Hack Club",
@@ -80,10 +88,10 @@ const education = [
   {
     item: 1,
     icon: <UniversityIcon />,
-    name: "五專生",
+    name: "五專",
     content:
       "Fifth Vocational School Student (3 High School years + 2 University years)",
-    year: "September 2025",
+    year: "September 2024",
   },
 ];
 
@@ -190,102 +198,111 @@ export default function Page() {
       </Link>
       <div className="h-screen"></div>
       <section id="learnmore"></section>
-      <div className="flex flex-row flex-wrap gap-1">
-        <section id="about"></section>
-        <div className="justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl w-full md:w-[calc(50%-10px)] px-4 py-8 max-w-3xl mx-auto">
-          <h2 className="text-3xl text-bold align-top">關於我</h2>
-          <div className="relative overflow-hidden">
-            <motion.article
-              className="prose m-3"
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-auto">
+          <div className="h-fit justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl px-4 py-8">
+            <section id="about"></section>
+            <h2 className="text-3xl text-bold align-top">關於我</h2>
+            <div className="relative overflow-hidden">
+              <motion.article
+                className="prose m-3"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Markdown
+                  value={
+                    displayFullAbout
+                      ? content.replace(/\\n/g, "\n").replace(/\n/g, "  \n")
+                      : content
+                          .split("\n")
+                          .slice(0, 20)
+                          .join("\n")
+                          .replace(/\\n/g, "\n")
+                          .replace(/\n/g, "  \n")
+                  }
+                  breaks={true}
+                  gfm={true}
+                />
+              </motion.article>
+              <motion.div
+                initial={{ opacity: 0.5 }}
+                animate={{
+                  opacity: !displayFullAbout ? 1 : 0,
+                  height: !displayFullAbout ? "100%" : "0%",
+                }}
+                transition={{ duration: 0.5 }}
+                className="absolute inset-0"
+              >
+                {!displayFullAbout && (
+                  <div className="h-full bg-gradient-to-b from-transparent via-white/30 to-white dark:via-gray-900/30 dark:to-gray-900" />
+                )}
+              </motion.div>
+            </div>
+            <button
+              onClick={() => setDisplayFullAbout(!displayFullAbout)}
+              className="p-2 bg-gray-300 dark:bg-gray-600 m-2 justify-center align-middle self-center content-center text-center border w-fit rounded hover:cursor-pointer hover:bg-gray-500/50 hover:dark:bg-gray-700/50 hover:border-gray-50 transition-all duration-300"
+            >
+              {displayFullAbout ? "Show Less" : "Show More"}
+            </button>
+            <motion.span
+              className="text-gray-600 text-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <Markdown
-                value={
-                  displayFullAbout
-                    ? content.replace(/\\n/g, "\n").replace(/\n/g, "  \n")
-                    : content
-                        .split("\n")
-                        .slice(0, 20)
-                        .join("\n")
-                        .replace(/\\n/g, "\n")
-                        .replace(/\n/g, "  \n")
-                }
-                breaks={true}
-                gfm={true}
-              />
-            </motion.article>
-            <motion.div
-              initial={{ opacity: 0.5 }}
-              animate={{
-                opacity: !displayFullAbout ? 1 : 0,
-                height: !displayFullAbout ? "100%" : "0%",
-              }}
-              transition={{ duration: 0.5 }}
-              className="absolute inset-0"
-            >
-              {!displayFullAbout && (
-                <div className="h-full bg-gradient-to-b from-transparent via-white/30 to-white dark:via-gray-900/30 dark:to-gray-900" />
-              )}
-            </motion.div>
+              About content updates for every 2 hours.
+            </motion.span>
           </div>
-          <button
-            onClick={() => setDisplayFullAbout(!displayFullAbout)}
-            className="p-2 bg-gray-300 dark:bg-gray-600 m-2 justify-center align-middle self-center content-center text-center border w-fit rounded hover:cursor-pointer hover:bg-gray-500/50 hover:dark:bg-gray-700/50 hover:border-gray-50 transition-all duration-300"
-          >
-            {displayFullAbout ? "Show Less" : "Show More"}
-          </button>
-          <motion.span
-            className="text-gray-600 text-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            About content updates for every 2 hours.
-          </motion.span>
-        </div>
-        <section id="education"></section>
-        <div className="justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl w-full md:w-[calc(50%-10px)] px-4 py-8 max-w-3xl mx-auto">
-          <h2 className="text-3xl text-bold align-top">教育</h2>
-          {education
-            .sort((a, b) => b.item - a.item)
-            .map((edu, index, array) => (
-              <div key={index} className="relative">
-                <div className="flex flex-row items-center gap-4 p-4">
-                  <div className="relative">
-                    <span className="border-4 border-orange-500 rounded-full flex justify-center items-center p-2 bg-white dark:bg-gray-800 z-10 relative">
-                      {edu.icon}
-                    </span>
-                    {index < array.length - 1 && (
-                      <svg
-                        className="absolute top-[50%] left-[50%] -translate-x-1/2 translate-y-0 z-0"
-                        width="2"
-                        height="100"
-                        viewBox="0 0 2 100"
-                      >
-                        <line
-                          x1="1"
-                          y1="0"
-                          x2="1"
-                          y2="100"
-                          stroke="orange"
-                          strokeWidth="3"
-                          strokeDasharray="4 4"
-                        />
-                      </svg>
-                    )}
-                  </div>
-                  <div className="flex flex-col items-start text-left">
-                    <span className="text-xl font-bold">{edu.name}</span>
-                    <span className="text-sm text-gray-600 dark:text-gray-400">
-                      {edu.year}
-                    </span>
-                    <span className="text-sm">{edu.content}</span>
+          <div className="h-fit justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl px-4 py-8">
+            <section id="education"></section>
+            <h2 className="text-3xl text-bold align-top">教育</h2>
+            {education
+              .sort((a, b) => b.item - a.item)
+              .map((edu, index, array) => (
+                <div key={index} className="relative">
+                  <div className="flex flex-row items-center gap-4 p-4">
+                    <div className="relative">
+                      <span className="border-4 border-orange-500 rounded-full flex justify-center items-center p-2 bg-white dark:bg-gray-800 z-10 relative">
+                        {edu.icon}
+                      </span>
+                      {index < array.length - 1 && (
+                        <motion.svg
+                          className="absolute top-[50%] left-[50%] -translate-x-1/2 translate-y-0 z-0"
+                          width="2"
+                          height="100"
+                          viewBox="0 0 2 100"
+                        >
+                          <motion.line
+                            x1="1"
+                            y1="0"
+                            x2="1"
+                            y2="100"
+                            stroke="orange"
+                            strokeWidth="3"
+                            strokeDasharray="4"
+                            initial={{ strokeDashoffset: 0 }}
+                            animate={{ strokeDashoffset: 100 }}
+                            transition={{
+                              duration: 10,
+                              repeat: Infinity,
+                              ease: "linear",
+                            }}
+                          />
+                        </motion.svg>
+                      )}
+                    </div>
+                    <div className="flex flex-col items-start text-left">
+                      <span className="text-xl font-bold">{edu.name}</span>
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                        {edu.year}
+                      </span>
+                      <span className="text-sm">{edu.content}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+          </div>
         </div>
       </div>
       {/**
@@ -303,6 +320,7 @@ export default function Page() {
               </div>
             ))}
           </div>
+          </
         </div>
         <div className="h-[30dvh]"></div> */}
       <div className="h-[10dvh]"></div>

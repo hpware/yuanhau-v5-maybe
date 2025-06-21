@@ -162,9 +162,9 @@ export default function Footer(currentTab: { currentTab: string }) {
         </div>
       </div>
 
-      {/* Copyright */}
+      {/* Copyright & Version */}
       <div className="text-center md:text-right text-gray-500 p-4">
-        &copy; {new Date().getFullYear()} Yuan-Hau Wu
+        &copy; {new Date().getFullYear()} Yuan-Hau Wu || Website v5.0.1
       </div>
     </div>
   );

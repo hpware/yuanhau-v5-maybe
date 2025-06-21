@@ -12,7 +12,7 @@ export default function DefaultLayout({ children, tab }: DefaultLayoutProps) {
       <div className="relative z-50 max-h-full m-1">
         <NavBar currentTab={tab} />
       </div>
-      <main className="relative">{children}</main>
+      <main className="relative min-h-screen">{children}</main>
       <Footer currentTab={tab} />
     </div>
   );

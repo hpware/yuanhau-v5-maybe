@@ -16,12 +16,12 @@ const tabs = [
     url: "/",
   },
   {
-    name: "About",
-    url: "/#about",
+    name: "Blog",
+    url: "/blog",
   },
   {
-    name: "3D",
-    url: "/3d",
+    name: "Todo",
+    url: "/todo",
   },
 ];
 

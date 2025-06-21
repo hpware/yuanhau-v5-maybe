@@ -1,10 +1,14 @@
 "use server";
-export default async function Page(props: {
-  params: Promise<{ slug: string }>;
-}) {
+import Layout from "@/layout/default";
+export default async function Page(props: { params: { slug: string } }) {
+  const { slug } = props.params;
   return (
-    <div>
-      <span>Hi</span>
-    </div>
+    <Layout tab={`/blog/${slug}`}>
+      <div>
+        <span className="justify-center text-center align-center  text-6xl text-bold">
+          <i>You are here -&gt; {slug}</i>
+        </span>
+      </div>
+    </Layout>
   );
 }
