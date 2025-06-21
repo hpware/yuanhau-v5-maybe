@@ -127,8 +127,8 @@ export default function Footer(currentTab: { currentTab: string }) {
               </a>
             ))}
           </div>
-          <div className="h-[72px]"></div>
-          <span className="text-right text-gray-500">
+          <div className="h-[72px] hidden md:block"></div>
+          <span className="text-right text-gray-500 hidden md:block">
             &copy; {new Date().getFullYear()} Yuan-Hau Wu
           </span>
         </div>
@@ -177,6 +177,10 @@ export default function Footer(currentTab: { currentTab: string }) {
           </div>
         </div>
       </div>
+      <div className="h-[72px] block md:hidden"></div>
+      <span className="text-right text-gray-500 block md:hidden">
+        &copy; {new Date().getFullYear()} Yuan-Hau Wu
+      </span>
     </div>
   );
 }
