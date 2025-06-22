@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "bootstrap-icons/font/bootstrap-icons";
 
 @layer base {
   html {
