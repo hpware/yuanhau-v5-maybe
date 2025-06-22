@@ -1,5 +1,11 @@
 "use client";
-import { useScroll, motion, useSpring, useTransform } from "motion/react";
+import {
+  useScroll,
+  motion,
+  useSpring,
+  useTransform,
+  useMotionValue,
+} from "motion/react";
 import Layout from "@/layout/default";
 import Image from "next/image";
 import Link from "next/link";
@@ -139,7 +145,6 @@ const progressMap = [
     icon: (
       <svg
         viewBox="0 0 16 16"
-        fill="#000000"
         xmlns="http://www.w3.org/2000/svg"
         id="Tailwind-Css-Fill--Streamline-Remix-Fill"
         height="16"
@@ -161,6 +166,11 @@ const progressMap = [
   },
 ];
 
+const images = [
+  "https://s3.yhw.tw/scharchive/bgimage.jpg",
+  "https://s3.yhw.tw/data/bg/bryan-brittos-kNNJAN2jpTI-unsplash.jpg",
+];
+
 export default function Page() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -168,9 +178,15 @@ export default function Page() {
     damping: 30,
     restDelta: 0.001,
   });
-
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const handleMouseMove = (e) => {
+    x.set(e.clientX);
+    y.set(e.clientY);
+  };
   const [content, setContent] = useState<string>("");
   const [displayFullAbout, setDisplayFullAbout] = useState<boolean>(false);
+  const [randomImage, setRandomImage] = useState<string>("");
   // Loading statuses
   const [aboutLoading, setAboutLoading] = useState<boolean>(false);
   useEffect(() => {
@@ -199,6 +215,10 @@ export default function Page() {
     },
   };
 
+  useEffect(() => {
+    setRandomImage(images[0]);
+  }, []);
+
   return (
     <Layout tab="/">
       <Head>
@@ -208,6 +228,9 @@ export default function Page() {
         className="fixed inset-x-0 top-0 h-1 bg-blue-500 origin-[0%] z-50"
         style={{ scaleX }}
       />
+      <div className="absolute inset-0">
+        {randomImage && <img href={randomImage} alt="Background Image" />}
+      </div>
       <div className="absolute inset-0 align-middle flex flex-col justify-center text-center h-screen">
         <Image
           src="/images/profile.jpg"
@@ -242,12 +265,6 @@ export default function Page() {
           Learn More <ChevronDownIcon />
         </motion.div>
       </Link>
-      <div className="absolute left-0 bottom-0">
-        <motion.ul style={{ useTransform(scrollYProgress, [0, 1], [0, 360]) }}>
-          <li></li>
-          <li></li>
-        </motion.ul>
-      </div>
       <div className="h-screen"></div>
       <section id="learnmore"></section>
       <div className="container mx-auto px-4">
@@ -362,7 +379,9 @@ export default function Page() {
               {progressMap.map((i) => (
                 <div key={i.name} className="flex flex-col">
                   <div className="flex flex-row">
-                    <div className="w-7 p-1">{i.icon}</div>
+                    <div className="w-7 p-1 text-black dark:text-white fill-black dark:fill-white">
+                      {i.icon}
+                    </div>
                     <span className="text-lg">{i.name}:</span>
                   </div>
                   <div className="flex flex-row w-full">
