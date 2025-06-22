@@ -129,4 +129,14 @@
   body {
     @apply bg-background text-foreground;
   }
+  @keyframes ticker-to-left {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes ticker-to-right {
+    100% {
+      transform: translateX(5%);
+    }
+  }
 }

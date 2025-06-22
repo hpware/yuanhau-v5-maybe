@@ -266,6 +266,36 @@ export default function Page() {
         </motion.div>
       </Link>
       <div className="h-screen"></div>
+      <div className="h-[1dvh]"></div>
+      <div className="overflow-hidden w-full relative flex flex-col">
+        <ul className="flex whitespace-nowrap animate-[ticker-to-left_5s_linear_infinite] will-change-transform flex flex-row gap-2 transform-[translateX(0)]">
+          {Array.from({ length: 50 }).map((_, i) => (
+            <span key={i} className="text-5xl">
+              關於我
+            </span>
+          ))}
+        </ul>
+      </div>
+      <div className="overflow-hidden w-full relative">
+        <ul className="flex whitespace-nowrap animate-[ticker-to-right_20s_linear_infinite] will-change-transform flex flex-row gap-2 transform-[translateX(-150vw)]">
+          {Array.from({ length: 50 }).map((_, i) => (
+            <li key={i} className="mx-4 inline-block">
+              ABOUT ME
+            </li>
+          ))}
+          {Array.from({ length: 50 }).map((_, i) => (
+            <li
+              key={`dup-${i}`}
+              className="mx-4 inline-block"
+              aria-hidden="true"
+            >
+              ABOUT ME
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="h-[1dvh]"></div>
       <section id="learnmore"></section>
       <div className="container mx-auto px-4">
         <div className=" grid grid-cols-1 md:grid-cols-2 gap-2 auto-rows-auto">
