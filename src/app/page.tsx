@@ -1,11 +1,5 @@
 "use client";
-import {
-  useScroll,
-  motion,
-  useSpring,
-  useTransform,
-  useMotionValue,
-} from "motion/react";
+import { useScroll, motion, useSpring, useTransform } from "motion/react";
 import Layout from "@/layout/default";
 import Image from "next/image";
 import Link from "next/link";
@@ -178,12 +172,6 @@ export default function Page() {
     damping: 30,
     restDelta: 0.001,
   });
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const handleMouseMove = (e) => {
-    x.set(e.clientX);
-    y.set(e.clientY);
-  };
   const [content, setContent] = useState<string>("");
   const [displayFullAbout, setDisplayFullAbout] = useState<boolean>(false);
   const [randomImage, setRandomImage] = useState<string>("");
@@ -228,9 +216,6 @@ export default function Page() {
         className="fixed inset-x-0 top-0 h-1 bg-blue-500 origin-[0%] z-50"
         style={{ scaleX }}
       />
-      <div className="absolute inset-0">
-        {randomImage && <img href={randomImage} alt="Background Image" />}
-      </div>
       <div className="absolute inset-0 align-middle flex flex-col justify-center text-center h-screen">
         <Image
           src="/images/profile.jpg"
