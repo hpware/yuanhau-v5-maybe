@@ -124,7 +124,7 @@ const progressMap = [
       </svg>
     ),
     name: "VueJS",
-    percent: "60",
+    percent: 60,
   },
   {
     icon: (
@@ -133,7 +133,7 @@ const progressMap = [
       </svg>
     ),
     name: "React",
-    percent: "1",
+    percent: 1,
   },
   {
     icon: (
@@ -151,12 +151,12 @@ const progressMap = [
       </svg>
     ),
     name: "Tailwind",
-    percent: "50",
+    percent: 50,
   },
   {
     icon: <i className="bi bi-filetype-html"></i>,
     name: "HTML",
-    percent: "80",
+    percent: 80,
   },
 ];
 
