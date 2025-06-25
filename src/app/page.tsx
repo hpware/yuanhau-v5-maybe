@@ -6,7 +6,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import Markdown from "marked-react";
 import { Progress } from "@/components/ui/progress";
-import { v4 as uuidv4 } from "uuid";
+import getBlogContent from "./getBlogContent";
+import getAbout from "./getAbout";
 import {
   GithubIcon,
   YoutubeIcon,
@@ -19,6 +20,69 @@ import {
 } from "lucide-react";
 import Head from "next/head";
 import HCIcons from "@hackclub/icons";
+
+// USE ALL LOWERCASE
+const icons = [
+  {
+    name: "github",
+    component: <GithubIcon />,
+  },
+  {
+    name: "instagram",
+    component: <InstagramIcon />,
+  },
+  {
+    name: "threads",
+    component: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="currentColor"
+        viewBox="0 0 16 16"
+      >
+        <path d="M6.321 6.016c-.27-.18-1.166-.802-1.166-.802.756-1.081 1.753-1.502 3.132-1.502.975 0 1.803.327 2.394.948s.928 1.509 1.005 2.644q.492.207.905.484c1.109.745 1.719 1.86 1.719 3.137 0 2.716-2.226 5.075-6.256 5.075C4.594 16 1 13.987 1 7.994 1 2.034 4.482 0 8.044 0 9.69 0 13.55.243 15 5.036l-1.36.353C12.516 1.974 10.163 1.43 8.006 1.43c-3.565 0-5.582 2.171-5.582 6.79 0 4.143 2.254 6.343 5.63 6.343 2.777 0 4.847-1.443 4.847-3.556 0-1.438-1.208-2.127-1.27-2.127-.236 1.234-.868 3.31-3.644 3.31-1.618 0-3.013-1.118-3.013-2.582 0-2.09 1.984-2.847 3.55-2.847.586 0 1.294.04 1.663.114 0-.637-.54-1.728-1.9-1.728-1.25 0-1.566.405-1.967.868ZM8.716 8.19c-2.04 0-2.304.87-2.304 1.416 0 .878 1.043 1.168 1.6 1.168 1.02 0 2.067-.282 2.232-2.423a6.2 6.2 0 0 0-1.528-.161" />
+      </svg>
+    ),
+  },
+  {
+    name: "twitter",
+    component: <TwitterIcon />,
+  },
+  {
+    name: "x",
+    component: <TwitterIcon />,
+  },
+  {
+    name: "youtube",
+    component: <YoutubeIcon />,
+  },
+  {
+    name: "mail",
+    component: <MailIcon />,
+  },
+  {
+    name: "email",
+    component: <MailIcon />,
+  },
+  {
+    name: "scrolltexticon",
+    component: <ScrollTextIcon />,
+  },
+  {
+    name: "clubs24",
+    component: <HCIcons glyph="clubs" size={24} />,
+  },
+  {
+    name: "university",
+    component: <UniversityIcon />,
+  },
+];
+
+const getIcon = ({ name }: { name: string }) => {
+  const getIconComponent = icons.find((icon) => icon.name === name);
+  return getIconComponent;
+};
 
 const socials = [
   {
@@ -63,14 +127,6 @@ const socials = [
   },
 ];
 
-const points = [
-  {
-    name: "?",
-    content: "What?",
-    icon: <MailIcon />,
-  },
-];
-
 const education = [
   {
     item: 3,
@@ -94,26 +150,6 @@ const education = [
     content:
       "Fifth Vocational School Student (3 High School years + 2 University years)",
     year: "September 2024",
-  },
-];
-
-// Fake Posts
-const posts = [
-  {
-    name: "Testing",
-    image: "",
-    content: "blah blah blah \n # blah blah",
-  },
-  {
-    name: "Testing 2",
-    image: "/img/profile.jpg",
-    content: "blah blah blah \n # blah blah",
-  },
-  {
-    name: "Testing 3",
-    image: "",
-    content:
-      "# What is life? I think life is just a game, a fun one. \n I guess tea is good? \n  Also football is dancing.",
   },
 ];
 
@@ -166,20 +202,6 @@ const images = [
   "https://s3.yhw.tw/data/bg/bryan-brittos-kNNJAN2jpTI-unsplash.jpg",
 ];
 
-async function getBlogContent() {
-  "use server";
-  return {
-    items: [
-      {
-        id: 1,
-        contentId: uuidv4(),
-        title: "Hi",
-        content: "21922391",
-      },
-    ],
-  };
-}
-
 export default function Page() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -189,11 +211,10 @@ export default function Page() {
   });
   const [content, setContent] = useState<string>("");
   const [displayFullAbout, setDisplayFullAbout] = useState<boolean>(false);
-  const [randomImage, setRandomImage] = useState<string>("");
   const [blogContent, setBlogContent] = useState<[]>([]);
   // Loading statuses
-  const [aboutLoading, setAboutLoading] = useState<boolean>(false);
-  useEffect(() => {
+  const [aboutLoading, setAboutLoading] = useState<boolean>(true);
+  /*useEffect(() => {
     const fetchcontent = async () => {
       try {
         const req = await fetch("/api/mdcontent/about");
@@ -208,13 +229,20 @@ export default function Page() {
       fetchcontent();
     }, 9600000);
     return () => clearInterval(interval);
-  }, []);
+  }, []);*/
 
   useEffect(() => {
     async function getData() {
-      setBlogContent(await getBlogContent());
+      const bgContent = await getBlogContent();
+      setBlogContent(bgContent);
     }
     getData();
+    async function getAbout2() {
+      const about = await getAbout();
+      setContent(about.content);
+      setAboutLoading(false);
+    }
+    getAbout2();
   }, []);
 
   const transition = {
@@ -225,11 +253,6 @@ export default function Page() {
       ease: "easeInOut" as const,
     },
   };
-
-  useEffect(() => {
-    setRandomImage(images[0]);
-  }, []);
-
   return (
     <Layout tab="/">
       <Head>
@@ -276,7 +299,7 @@ export default function Page() {
       <div className="h-screen"></div>
       <div className="h-[1dvh]"></div>
       <div className="overflow-hidden w-full relative flex flex-col">
-        <ul className="flex whitespace-nowrap animate-[ticker-to-left_5s_linear_infinite] will-change-transform flex flex-row gap-2 transform-[translateX(0)]">
+        <ul className="whitespace-nowrap animate-[ticker-to-left_5s_linear_infinite] will-change-transform flex flex-row gap-2 transform-[translateX(0)]">
           {Array.from({ length: 50 }).map((_, i) => (
             <span key={i} className="text-5xl">
               關於我
@@ -310,42 +333,48 @@ export default function Page() {
           <div className="h-fit justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl px-4 py-8">
             <section id="about"></section>
             <h2 className="text-3xl text-bold align-top">關於我</h2>
-            <div className="relative overflow-hidden">
-              <motion.article
-                className="prose m-3"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                <Markdown
-                  value={
-                    displayFullAbout
-                      ? content.replace(/\\n/g, "\n").replace(/\n/g, "  \n")
-                      : content
-                          .split("\n")
-                          .slice(0, 20)
-                          .join("\n")
-                          .replace(/\\n/g, "\n")
-                          .replace(/\n/g, "  \n")
-                  }
-                  breaks={true}
-                  gfm={true}
-                />
-              </motion.article>
-              <motion.div
-                initial={{ opacity: 0.5 }}
-                animate={{
-                  opacity: !displayFullAbout ? 1 : 0,
-                  height: !displayFullAbout ? "100%" : "0%",
-                }}
-                transition={{ duration: 0.5 }}
-                className="absolute inset-0"
-              >
-                {!displayFullAbout && (
-                  <div className="h-full bg-gradient-to-b from-transparent via-white/30 to-white dark:via-gray-900/30 dark:to-gray-900" />
-                )}
-              </motion.div>
-            </div>
+            {aboutLoading ? (
+              <div className="relative overflow-hidden">
+                <div>Loading...</div>
+              </div>
+            ) : (
+              <div className="relative overflow-hidden">
+                <motion.article
+                  className="prose m-3"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Markdown
+                    value={
+                      displayFullAbout
+                        ? content.replace(/\\n/g, "\n").replace(/\n/g, "  \n")
+                        : content
+                            .split("\n")
+                            .slice(0, 20)
+                            .join("\n")
+                            .replace(/\\n/g, "\n")
+                            .replace(/\n/g, "  \n")
+                    }
+                    breaks={true}
+                    gfm={true}
+                  />
+                </motion.article>
+                <motion.div
+                  initial={{ opacity: 0.5 }}
+                  animate={{
+                    opacity: !displayFullAbout ? 1 : 0,
+                    height: !displayFullAbout ? "100%" : "0%",
+                  }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute inset-0"
+                >
+                  {!displayFullAbout && (
+                    <div className="h-full bg-gradient-to-b from-transparent via-white/30 to-white dark:via-gray-900/30 dark:to-gray-900" />
+                  )}
+                </motion.div>
+              </div>
+            )}
             <button
               onClick={() => setDisplayFullAbout(!displayFullAbout)}
               className="p-2 bg-gray-300 dark:bg-gray-600 m-2 justify-center align-middle self-center content-center text-center border w-fit rounded hover:cursor-pointer hover:bg-gray-500/50 hover:dark:bg-gray-700/50 hover:border-gray-50 transition-all duration-300"
