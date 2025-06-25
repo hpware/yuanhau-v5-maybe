@@ -211,7 +211,14 @@ export default function Page() {
   });
   const [content, setContent] = useState<string>("");
   const [displayFullAbout, setDisplayFullAbout] = useState<boolean>(false);
-  const [blogContent, setBlogContent] = useState<[]>([]);
+  const [blogContent, setBlogContent] = useState<{
+    items: {
+      id: number;
+      contentId: string;
+      title: string;
+      content: string;
+    }[];
+  }>();
   // Loading statuses
   const [aboutLoading, setAboutLoading] = useState<boolean>(true);
   /*useEffect(() => {
