@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import Markdown from "marked-react";
 import { Progress } from "@/components/ui/progress";
+import { v4 as uuidv4 } from "uuid";
 import {
   GithubIcon,
   YoutubeIcon,
@@ -165,6 +166,20 @@ const images = [
   "https://s3.yhw.tw/data/bg/bryan-brittos-kNNJAN2jpTI-unsplash.jpg",
 ];
 
+async function getBlogContent() {
+  "use server";
+  return {
+    items: [
+      {
+        id: 1,
+        contentId: uuidv4(),
+        title: "Hi",
+        content: "21922391",
+      },
+    ],
+  };
+}
+
 export default function Page() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -175,6 +190,7 @@ export default function Page() {
   const [content, setContent] = useState<string>("");
   const [displayFullAbout, setDisplayFullAbout] = useState<boolean>(false);
   const [randomImage, setRandomImage] = useState<string>("");
+  const [blogContent, setBlogContent] = useState<[]>([]);
   // Loading statuses
   const [aboutLoading, setAboutLoading] = useState<boolean>(false);
   useEffect(() => {
@@ -192,6 +208,13 @@ export default function Page() {
       fetchcontent();
     }, 9600000);
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    async function getData() {
+      setBlogContent(await getBlogContent());
+    }
+    getData();
   }, []);
 
   const transition = {
