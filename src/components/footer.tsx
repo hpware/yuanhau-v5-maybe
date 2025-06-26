@@ -164,7 +164,7 @@ export default function Footer(currentTab: { currentTab: string }) {
 
       {/* Copyright & Version */}
       <div className="text-center md:text-right text-gray-500 p-4">
-        &copy; {new Date().getFullYear()} Yuan-Hau Wu || Website v5.0.1
+        &copy; {new Date().getFullYear()} Yuan-Hau Wu || Website v5 Beta (rev 2)
       </div>
     </div>
   );

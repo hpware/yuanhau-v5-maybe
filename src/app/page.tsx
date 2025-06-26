@@ -472,17 +472,18 @@ export default function Page() {
         </div>
       </div>
       <div className="h-[10dvh]"></div>
-      <div className="flex flex-row">
-        <span className="text-[15dvw] dark:text-white/30 text-black/30 align-top translate-x-7">
+      <div className="flex flex-row items-start">
+        <span className="text-[10vw] m-0 p-0 dark:text-white/30 text-black/30 leading-none translate-x-7 -translate-y-8 select-none">
           “
         </span>
-        <div className="text-3xl text-bold">
+        <div className="text-3xl font-bold">
           This summer, Do something different.
         </div>
-        <span className="text-8xl dark:text-white/30 text-black/30 align-top -translate-x-7">
+        <span className="text-[8vw] m-0 p-0 dark:text-white/30 text-black/30 leading-none -translate-x-7 select-none">
           ”
         </span>
       </div>
+
       <div className="h-[10dvh]"></div>
       <section id="images"></section>
       <div className="flex flex-col justify-center align-center text-center">
