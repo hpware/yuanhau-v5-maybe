@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import getData from "@/configs";
 import {
   GithubIcon,
   YoutubeIcon,
@@ -164,7 +165,8 @@ export default function Footer(currentTab: { currentTab: string }) {
 
       {/* Copyright & Version */}
       <div className="text-center md:text-right text-gray-500 p-4">
-        &copy; {new Date().getFullYear()} Yuan-Hau Wu || Website v5 Beta (rev 2)
+        &copy; {new Date().getFullYear()} {getData("copyright_owner")} ||
+        Website {getData("version")}
       </div>
     </div>
   );
