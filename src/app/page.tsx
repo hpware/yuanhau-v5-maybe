@@ -315,7 +315,7 @@ export default function Page() {
         </ul>
       </div>
       <div className="overflow-hidden w-full relative">
-        <ul className="flex whitespace-nowrap animate-[ticker-to-right_20s_linear_infinite] will-change-transform flex flex-row gap-2 transform-[translateX(-150vw)]">
+        <ul className="whitespace-nowrap animate-[ticker-to-right_20s_linear_infinite] will-change-transform flex flex-row gap-2 transform-[translateX(-150vw)]">
           {Array.from({ length: 50 }).map((_, i) => (
             <li key={i} className="mx-4 inline-block">
               ABOUT ME
@@ -470,6 +470,18 @@ export default function Page() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="h-[10dvh]"></div>
+      <div className="flex flex-row">
+        <span className="text-[15dvw] dark:text-white/30 text-black/30 align-top translate-x-7">
+          “
+        </span>
+        <div className="text-3xl text-bold">
+          This summer, Do something different.
+        </div>
+        <span className="text-8xl dark:text-white/30 text-black/30 align-top -translate-x-7">
+          ”
+        </span>
       </div>
       <div className="h-[10dvh]"></div>
       <section id="images"></section>
