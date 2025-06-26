@@ -103,7 +103,7 @@ const progressMap = [
     percent: 1,
   },
   {
-    icon: <GetIcon name="tailwind" />
+    icon: <GetIcon name="tailwind" />,
     name: "Tailwind",
     percent: 50,
   },
