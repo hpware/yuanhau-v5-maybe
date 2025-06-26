@@ -31,6 +31,37 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <head>
+          <meta name="description" content="吳元皓的個人網站" />
+          <meta
+            name="keywords"
+            content="吳元皓, 吳元皓的個人網站, 吳元皓的個人網站首頁, Howard Wu, yuanhau, wuyuanhau, yuanhau.com, yuanh.xyz, Yuan-Hau Wu, 吳元皓, 元皓, 吳元皓, 吳元浩, 元浩, 吳元浩, 吳元浩, 五專生, ictechz, 台灣的五專生, 吴元皓, 吴元皓的网站,吴元浩,元浩,吴元浩的网站,吴元浩,五专生,ictechz,摄影,前端方面, 個人資料連結"
+          />
+          <meta name="author" content="吳元皓" />
+          <meta name="author-email" content="hw@yuanhau.com" />
+          <meta name="copyright" content="吳元皓" />
+          <meta name="twitter:creator" content="@ictechz" />
+          <meta name="twitter:site" content="https://yuanhau.com" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content="吳元皓" />
+          <meta name="twitter:description" content="吳元皓的個人網站" />
+          <meta
+            name="twitter:image"
+            content="https://yuanhau.com/favicon.jpg"
+          />
+          <meta name="og:title" content="吳元皓" />
+          <meta name="og:description" content="吳元皓的個人網站" />
+          <meta name="og:image" content="https://yuanhau.com/favicon.jpg" />
+          <meta name="og:url" content="https://yuanhau.com" />
+          <meta name="og:site_name" content="吳元皓" />
+          <meta name="og:type" content="website" />
+          <meta name="og:locale" content="zh_TW" />
+          <meta
+            name="og:keywords"
+            content="吳元皓, 吳元皓的個人網站, 吳元皓的個人網站首頁, Howard Wu, yuanhau, wuyuanhau, yuanhau.com, yuanh.xyz, Yuan-Hau Wu, 吳元皓, 元皓, 吳元皓, 吳元浩, 元浩, 吳元浩, 吳元浩, 五專生, ictechz, 台灣的五專生, 吴元皓, 吴元皓的网站,吴元浩,元浩,吴元浩的网站,吴元浩,五专生,ictechz,摄影,前端方面, 個人資料連結"
+          />
+          <meta name="og:author" content="吳元皓" />
+          <meta name="og:author:email" content="@yuanhau.com" />
+          <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
           <script
             defer
             src="https://data.yuanhau.com/script.js"

@@ -16,11 +16,9 @@ import {
   TwitterIcon,
   MailIcon,
   ChevronDownIcon,
-  UniversityIcon,
-  ScrollTextIcon,
 } from "lucide-react";
 import Head from "next/head";
-import HCIcons from "@hackclub/icons";
+import getEducationContent from "./getEducationContent";
 
 const socials = [
   {
@@ -65,32 +63,6 @@ const socials = [
   },
 ];
 
-const education = [
-  {
-    item: 3,
-    icon: <GetIcon name="scrolltexticon" />,
-    name: "文書處理丙級證照",
-    content:
-      "This is not even worth the 1000+ NTD I paid. It cannot even help me find a job bro.",
-    year: "June 2025",
-  },
-  {
-    item: 2,
-    icon: <GetIcon name="club24" />,
-    name: "Hack Club",
-    content: "Wait, so this counts?",
-    year: "Feburary 2025",
-  },
-  {
-    item: 1,
-    icon: <GetIcon name="university" />,
-    name: "五專",
-    content:
-      "Fifth Vocational School Student (3 High School years + 2 University years)",
-    year: "September 2024",
-  },
-];
-
 const progressMap = [
   {
     icon: <GetIcon name="vue" />,
@@ -128,6 +100,14 @@ export default function Page() {
   });
   const [content, setContent] = useState<string>("");
   const [displayFullAbout, setDisplayFullAbout] = useState<boolean>(false);
+  const [education, setEducationContent] = useState<{
+  item: number;
+  icon: string;
+  name: string;
+  content: string;
+  year: string;
+  }[]>();
+  const [educationLoading, setEducationLoading] = useState<boolean>(true);
   const [blogContent, setBlogContent] = useState<{
     items: {
       id: number;
@@ -136,37 +116,27 @@ export default function Page() {
       content: string;
     }[];
   }>();
-  // Loading statuses
   const [aboutLoading, setAboutLoading] = useState<boolean>(true);
-  /*useEffect(() => {
-    const fetchcontent = async () => {
-      try {
-        const req = await fetch("/api/mdcontent/about");
-        const res = await req.json();
-        setContent(res.content || "");
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    fetchcontent();
-    const interval = setInterval(async () => {
-      fetchcontent();
-    }, 9600000);
-    return () => clearInterval(interval);
-  }, []);*/
 
   useEffect(() => {
     async function getData() {
       const bgContent = await getBlogContent();
       setBlogContent(bgContent);
     }
-    getData();
     async function getAbout2() {
       const about = await getAbout();
       setContent(about.content);
       setAboutLoading(false);
     }
+    async function getEducationContent2() {
+      const educationContent = await getEducationContent();
+      setEducationContent(educationContent.items);
+      setEducationLoading(false);
+    }
+    // Run all
+    getData();
     getAbout2();
+    getEducationContent2();
   }, []);
 
   const transition = {
@@ -318,40 +288,42 @@ export default function Page() {
             <div className="h-fit justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl px-4 py-8">
               <section id="education"></section>
               <h2 className="text-3xl text-bold align-top">教育</h2>
-              {education
-                .sort((a, b) => b.item - a.item)
-                .map((edu, index, array) => (
-                  <div key={index} className="relative">
-                    <div className="flex flex-row items-center gap-4 p-4">
-                      <div className="relative">
-                        <span className="border-4 border-orange-500 rounded-full flex justify-center items-center p-2 bg-white dark:bg-gray-800 z-10 relative">
-                          {edu.icon}
-                        </span>
-                        {index < array.length - 1 && (
-                          <motion.svg
-                            className="absolute top-[50%] left-[50%] -translate-x-1/2 translate-y-0 z-0"
-                            width="2"
-                            height="100"
-                            viewBox="0 0 2 100"
-                          >
-                            <motion.line
-                              x1="1"
-                              y1="0"
-                              x2="1"
-                              y2="100"
-                              stroke="orange"
-                              strokeWidth="3"
-                              strokeDasharray="4"
-                              initial={{ strokeDashoffset: 0 }}
-                              animate={{ strokeDashoffset: 100 }}
-                              transition={{
-                                duration: 10,
-                                repeat: Infinity,
-                                ease: "linear",
-                              }}
-                            />
-                          </motion.svg>
-                        )}
+              {
+                educationLoading ? <span>Loading...</span> : {education
+                  .sort((a, b) => b.item - a.item)
+                  .map((edu, index, array) => (
+                    <div key={index} className="relative">
+                      <div className="flex flex-row items-center gap-4 p-4">
+                        <div className="relative">
+                          <span className="border-4 border-orange-500 rounded-full flex justify-center items-center p-2 bg-white dark:bg-gray-800 z-10 relative">
+                            <GetIcon name={edu.icon} />
+                          </span>
+                          {index < array.length - 1 && (
+                            <motion.svg
+                              className="absolute top-[50%] left-[50%] -translate-x-1/2 translate-y-0 z-0"
+                              width="2"
+                              height="100"
+                              viewBox="0 0 2 100"
+                            >
+                              <motion.line
+                                x1="1"
+                                y1="0"
+                                x2="1"
+                                y2="100"
+                                stroke="orange"
+                                strokeWidth="3"
+                                strokeDasharray="4"
+                                initial={{ strokeDashoffset: 0 }}
+                                animate={{ strokeDashoffset: 100 }}
+                                transition={{
+                                  duration: 10,
+                                  repeat: Infinity,
+                                  ease: "linear",
+                                }}
+                              />
+                            </motion.svg>
+                          )}
+              }
                       </div>
                       <div className="flex flex-col items-start text-left">
                         <span className="text-xl font-bold">{edu.name}</span>
