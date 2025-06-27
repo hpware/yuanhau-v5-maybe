@@ -58,11 +58,11 @@ async function getPostData(slug: string) {
   }
 
   return {
-    title: post[0].name,
-    publishDate: new Date(post[0].created_at).getTime(),
-    updateDate: new Date(post[0].updated_at || post[0].created_at).getTime(),
-    authorUser: post[0].author || "howard", // Fallback if author not in DB
-    markdownContent: post[0].content,
+    title: post[0].title,
+    publishDate: post[0].created_at || "Unknown",
+    updateDate: post[0].updated_at || post[0].created_at || "Unknown",
+    authorUser: post[0].author || "Unknown",
+    markdownContent: post[0].markdown_content,
   };
 }
 
