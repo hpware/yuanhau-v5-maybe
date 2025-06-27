@@ -69,7 +69,7 @@ export default function RootLayout({
           ></script>
         </head>
         <body
-          className={`${dmSans.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${dmSans.variable} ${geistSans.variable} ${geistMono.variable} antialiased m-0`}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}

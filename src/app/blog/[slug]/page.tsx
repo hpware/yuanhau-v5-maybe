@@ -108,7 +108,6 @@ ${textCodeContent}
 |-------|------|
 |  1    |  2   |
 `;
-
   return (
     <Layout tab={`/blog/${slug}`}>
       <div className="h-[70px]"></div>

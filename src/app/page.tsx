@@ -1,5 +1,5 @@
 "use client";
-import { useScroll, motion, useSpring, useTransform } from "motion/react";
+import { motion } from "motion/react";
 import Layout from "@/layout/default";
 import Image from "next/image";
 import Link from "next/link";
@@ -92,12 +92,6 @@ const images = [
 ];
 
 export default function Page() {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
   const [content, setContent] = useState<string>("");
   const [displayFullAbout, setDisplayFullAbout] = useState<boolean>(false);
   const [education, setEducationContent] = useState<
@@ -178,10 +172,6 @@ export default function Page() {
       <Head>
         <title>首頁 | 吳元皓</title>
       </Head>
-      <motion.div
-        className="fixed inset-x-0 top-0 h-1 bg-blue-500 origin-[0%] z-50"
-        style={{ scaleX }}
-      />
       <div className="absolute inset-0 align-middle flex flex-col justify-center text-center h-screen">
         <Image
           src="/images/profile.jpg"
