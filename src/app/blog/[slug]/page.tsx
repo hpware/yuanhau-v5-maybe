@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import Markdown from "marked-react";
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
 import sql from "@/components/pg";
 
 // Slugify function for heading IDs
@@ -44,24 +43,36 @@ const renderer = {
   },
 };
 
-type Props = {
-  params: { slug: string };
-};
-
 async function getPostData(slug: string) {
-  const fetchArticle = await sql`
-    SELECT * FROM blog
+  const post = await sql`
+    SELECT *
+    FROM blog
     WHERE slug = ${slug}
-    `;
-  if (fetchArticle.length === 0) {
-    notFound();
+    AND status = 'published'
+    ORDER BY created_at DESC
+    LIMIT 1
+  `;
+
+  if (post.length === 0) {
+    throw new Error("Post not found");
   }
-  return fetchArticle[0];
+
+  return {
+    title: post[0].name,
+    publishDate: new Date(post[0].created_at).getTime(),
+    updateDate: new Date(post[0].updated_at || post[0].created_at).getTime(),
+    authorUser: post[0].author || "howard", // Fallback if author not in DB
+    markdownContent: post[0].content,
+  };
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const data = await getPostData(slug);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const resolvedParams = await params;
+  const data = await getPostData(resolvedParams.slug);
 
   return {
     title: `${data.title} | 吳元皓's Blog`,
@@ -94,11 +105,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function Page({ params }: Props) {
-  const data = await getPostData(params.slug);
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const resolvedParams = await params;
+  const data = await getPostData(resolvedParams.slug);
 
   return (
-    <Layout tab={`/blog/${params.slug}`}>
+    <Layout tab={`/blog/${resolvedParams.slug}`}>
       <div className="h-[70px]"></div>
       <div className="flex flex-col flex-wrap justify-center align-middle">
         <div className="flex flex-col flex-wrap w-full md:w-2/3 p-2 m-auto">
@@ -108,25 +124,25 @@ export default async function Page({ params }: Props) {
           <div className="flex flex-row flex-wrap mb-2">
             <span className="flex flex-row">
               <UserIcon className="p-1" />
-              <span>{data.writer}</span>
+              <span>{data.authorUser}</span>
             </span>
             <DotIcon />
             <span className="flex flex-row flex-wrap">
               <CalendarIcon className="p-1" />
               <span>發布：</span>
-              {new Date(data.created_at).toLocaleDateString("zh-TW")}
+              {new Date(data.publishDate).toLocaleDateString("zh-TW")}
             </span>
             <DotIcon />
             <span className="flex flex-row flex-wrap">
               <CalendarCheckIcon className="p-1" />
               <span>更新：</span>
-              {new Date(data.updated_at).toLocaleDateString("zh-TW")}
+              {new Date(data.updateDate).toLocaleDateString("zh-TW")}
             </span>
           </div>
           <hr className="bg-black/50 dark:bg-white/50 w-full" />
           <section className="mt-2">
             <Markdown renderer={renderer} gfm={true}>
-              {data.markdown_content}
+              {data.markdownContent}
             </Markdown>
           </section>
           <div className="h-[40px]"></div>
