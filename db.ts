@@ -8,7 +8,8 @@ const createTodos = await sql`
 `;
 
 const createBlog = await sql`
-  CREATE TABLE IF NOT EXISTS blog (-- No period needed after PRIMARY KEY
+  CREATE TABLE IF NOT EXISTS blog (
+      uuid text primary key,
       title TEXT NOT NULL,
       slug TEXT UNIQUE NOT NULL,
       markdown_content TEXT NOT NULL,
@@ -18,6 +19,7 @@ const createBlog = await sql`
       updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
   );
   `;
+
 const createBlogTriggers = await sql`
   CREATE OR REPLACE FUNCTION update_updated_at_column()
   RETURNS TRIGGER AS $$

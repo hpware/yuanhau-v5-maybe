@@ -7,6 +7,9 @@ import {
   UserIcon,
 } from "lucide-react";
 import Markdown from "marked-react";
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import sql from "@/components/pg";
 
 // Slugify function for heading IDs
 function slugify(text: string) {
@@ -41,103 +44,88 @@ const renderer = {
   },
 };
 
-export default async function Page(props: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await props.params;
-  // Fake data for now.
-  const title = "What is a buffer overflow?";
-  const publishDate = 1735619100000;
-  const updateDate = 1735619100000;
-  const authorUser = "howard";
-  const textCodeContent = "`hi`";
-  const markdownContent = `
-# Hello World
+type Props = {
+  params: { slug: string };
+};
 
-## Heading 2
+async function getPostData(slug: string) {
+  const fetchArticle = await sql`
+    SELECT * FROM blog
+    WHERE slug = ${slug}
+    `;
+  if (fetchArticle.length === 0) {
+    notFound();
+  }
+  return fetchArticle[0];
+}
 
-Some **bold** text.
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const data = await getPostData(params.slug);
 
-# Some GFM
-## Disclaimer
-> [!CAUTION]
-> All of the contents in the Git repo is only for educational use only, DO NOT use it for illegal use. Like exploting people. If you found an expliot using something in this repo, please report it to Hackerone or HITCON Zeroday.
+  return {
+    title: `${data.title} | 吳元皓's Blog`,
+    description: "吳元皓的個人網站",
+    keywords:
+      "吳元皓, 吳元皓的個人網站, 吳元皓的個人網站首頁, Howard Wu, yuanhau, wuyuanhau, yuanhau.com, yuanh.xyz, Yuan-Hau Wu, 吳元皓, 元皓, 吳元皓, 吳元浩, 元浩, 吳元浩, 吳元浩, 五專生, ictechz, 台灣的五專生, 吴元皓, 吴元皓的网站,吴元浩,元浩,吴元浩的网站,吴元浩,五专生,ictechz,摄影,前端方面, 個人資料連結",
+    authors: [{ name: "吳元皓", url: "https://yuanhau.com" }],
+    creator: "@ictechz",
+    openGraph: {
+      title: "吳元皓",
+      description: "吳元皓的個人網站",
+      url: "https://yuanhau.com",
+      siteName: "吳元皓",
+      images: [
+        {
+          url: "https://yuanhau.com/favicon.jpg",
+        },
+      ],
+      locale: "zh_TW",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "吳元皓",
+      description: "吳元皓的個人網站",
+      creator: "@ictechz",
+      site: "https://yuanhau.com",
+      images: ["https://yuanhau.com/favicon.jpg"],
+    },
+  };
+}
 
-# List
-- Hi
-- Hi
-- Hi
+export default async function Page({ params }: Props) {
+  const data = await getPostData(params.slug);
 
-# Numbers
-1. Hi
-2. Two
-3. Three
-
-# Code
-${textCodeContent}
-
-# GFM Test
-
-- [x] Task list
-- [ ] Another task
-
-~~Strikethrough~~
-
-| Table | Test |
-|-------|------|
-|  1    |  2   |
-
-# GFM Test
-
-- [x] Task list
-- [ ] Another task
-
-~~Strikethrough~~
-
-| Table | Test |
-|-------|------|
-|  1    |  2   |
-# GFM Test
-
-- [x] Task list
-- [ ] Another task
-
-~~Strikethrough~~
-
-| Table | Test |
-|-------|------|
-|  1    |  2   |
-`;
   return (
-    <Layout tab={`/blog/${slug}`}>
+    <Layout tab={`/blog/${params.slug}`}>
       <div className="h-[70px]"></div>
       <div className="flex flex-col flex-wrap justify-center align-middle">
         <div className="flex flex-col flex-wrap w-full md:w-2/3 p-2 m-auto">
           <span className="text-3xl justify-center align-middle m-2">
-            {title}
+            {data.title}
           </span>
           <div className="flex flex-row flex-wrap mb-2">
             <span className="flex flex-row">
               <UserIcon className="p-1" />
-              <span>{authorUser}</span>
+              <span>{data.writer}</span>
             </span>
             <DotIcon />
             <span className="flex flex-row flex-wrap">
               <CalendarIcon className="p-1" />
               <span>發布：</span>
-              {new Date(publishDate).toLocaleDateString("zh-TW")}
+              {new Date(data.created_at).toLocaleDateString("zh-TW")}
             </span>
             <DotIcon />
             <span className="flex flex-row flex-wrap">
               <CalendarCheckIcon className="p-1" />
               <span>更新：</span>
-              {new Date(updateDate).toLocaleDateString("zh-TW")}
+              {new Date(data.updated_at).toLocaleDateString("zh-TW")}
             </span>
           </div>
           <hr className="bg-black/50 dark:bg-white/50 w-full" />
           <section className="mt-2">
             <Markdown renderer={renderer} gfm={true}>
-              {markdownContent}
+              {data.markdown_content}
             </Markdown>
           </section>
           <div className="h-[40px]"></div>
