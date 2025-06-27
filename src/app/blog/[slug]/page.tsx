@@ -61,7 +61,7 @@ async function getPostData(slug: string) {
     title: post[0].title,
     publishDate: post[0].created_at || "Unknown",
     updateDate: post[0].updated_at || post[0].created_at || "Unknown",
-    authorUser: post[0].author || "Unknown",
+    authorUser: post[0].writer || "Unknown",
     markdownContent: post[0].markdown_content,
   };
 }

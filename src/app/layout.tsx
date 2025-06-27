@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ClerkProvider } from "@clerk/nextjs";
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -52,6 +53,7 @@ export default function RootLayout({
           className={`${dmSans.variable} ${geistSans.variable} ${geistMono.variable} antialiased m-0`}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <SpeedInsights />
             {children}
           </ThemeProvider>
         </body>
