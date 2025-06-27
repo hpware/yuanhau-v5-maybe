@@ -1,5 +1,7 @@
 import Layout from "@/layout/default";
 import Link from "next/link";
+export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 // Fake Posts
 const posts = [
