@@ -60,7 +60,8 @@ async function getPostData(slug: string) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const data = await getPostData(params.slug);
+  const { slug } = await params;
+  const data = await getPostData(slug);
 
   return {
     title: `${data.title} | 吳元皓's Blog`,
