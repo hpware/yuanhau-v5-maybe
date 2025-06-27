@@ -11,7 +11,7 @@ export default function getEducationContent() {
       },
       {
         item: 2,
-        icon: "club24",
+        icon: "clubs24",
         name: "Hack Club",
         content: "Wait, so this counts?",
         year: "Feburary 2025",

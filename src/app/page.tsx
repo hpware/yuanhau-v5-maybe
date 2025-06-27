@@ -100,13 +100,39 @@ export default function Page() {
   });
   const [content, setContent] = useState<string>("");
   const [displayFullAbout, setDisplayFullAbout] = useState<boolean>(false);
-  const [education, setEducationContent] = useState<{
-  item: number;
-  icon: string;
-  name: string;
-  content: string;
-  year: string;
-  }[]>();
+  const [education, setEducationContent] = useState<
+    {
+      item: number;
+      icon: string;
+      name: string;
+      content: string;
+      year: string;
+    }[]
+  >([
+    {
+      item: 3,
+      icon: "scrolltexticon",
+      name: "文書處理丙級證照",
+      content:
+        "This is not even worth the 1000+ NTD I paid. It cannot even help me find a job bro.",
+      year: "June 2025",
+    },
+    {
+      item: 2,
+      icon: "club24",
+      name: "Hack Club",
+      content: "Wait, so this counts?",
+      year: "Feburary 2025",
+    },
+    {
+      item: 1,
+      icon: "university",
+      name: "五專",
+      content:
+        "Fifth Vocational School Student (3 High School years + 2 University years)",
+      year: "September 2024",
+    },
+  ]);
   const [educationLoading, setEducationLoading] = useState<boolean>(true);
   const [blogContent, setBlogContent] = useState<{
     items: {
@@ -219,7 +245,6 @@ export default function Page() {
           ))}
         </ul>
       </div>
-
       <div className="h-[1dvh]"></div>
       <section id="learnmore"></section>
       <div className="container mx-auto px-4">
@@ -288,8 +313,10 @@ export default function Page() {
             <div className="h-fit justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl px-4 py-8">
               <section id="education"></section>
               <h2 className="text-3xl text-bold align-top">教育</h2>
-              {
-                educationLoading ? <span>Loading...</span> : {education
+              {educationLoading ? (
+                <span>Loading...</span>
+              ) : (
+                education
                   .sort((a, b) => b.item - a.item)
                   .map((edu, index, array) => (
                     <div key={index} className="relative">
@@ -323,18 +350,18 @@ export default function Page() {
                               />
                             </motion.svg>
                           )}
-              }
-                      </div>
-                      <div className="flex flex-col items-start text-left">
-                        <span className="text-xl font-bold">{edu.name}</span>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
-                          {edu.year}
-                        </span>
-                        <span className="text-sm">{edu.content}</span>
+                        </div>
+                        <div className="flex flex-col items-start text-left">
+                          <span className="text-xl font-bold">{edu.name}</span>
+                          <span className="text-sm text-gray-600 dark:text-gray-400">
+                            {edu.year}
+                          </span>
+                          <span className="text-sm">{edu.content}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+              )}
             </div>
             <div className="flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl p-4 overflow-y-auto">
               <section id="code_progress"></section>
