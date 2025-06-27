@@ -31,7 +31,7 @@ const renderer = {
               ? "text-md"
               : "text-base";
     return (
-      <Tag id={id} className={`${size} font-bold mt-${6 - level} mb-2`}>
+      <Tag id={id} className={`${size} font-bold mt-2 mb-2`}>
         {text}
       </Tag>
     );
@@ -50,12 +50,63 @@ export default async function Page(props: {
   const publishDate = 1735619100000;
   const updateDate = 1735619100000;
   const authorUser = "howard";
+  const textCodeContent = "`hi`";
   const markdownContent = `
 # Hello World
 
 ## Heading 2
 
 Some **bold** text.
+
+# Some GFM
+## Disclaimer
+> [!CAUTION]
+> All of the contents in the Git repo is only for educational use only, DO NOT use it for illegal use. Like exploting people. If you found an expliot using something in this repo, please report it to Hackerone or HITCON Zeroday.
+
+# List
+- Hi
+- Hi
+- Hi
+
+# Numbers
+1. Hi
+2. Two
+3. Three
+
+# Code
+${textCodeContent}
+
+# GFM Test
+
+- [x] Task list
+- [ ] Another task
+
+~~Strikethrough~~
+
+| Table | Test |
+|-------|------|
+|  1    |  2   |
+
+# GFM Test
+
+- [x] Task list
+- [ ] Another task
+
+~~Strikethrough~~
+
+| Table | Test |
+|-------|------|
+|  1    |  2   |
+# GFM Test
+
+- [x] Task list
+- [ ] Another task
+
+~~Strikethrough~~
+
+| Table | Test |
+|-------|------|
+|  1    |  2   |
 `;
 
   return (
@@ -86,8 +137,11 @@ Some **bold** text.
           </div>
           <hr className="bg-black/50 dark:bg-white/50 w-full" />
           <section className="mt-2">
-            <Markdown renderer={renderer}>{markdownContent}</Markdown>
+            <Markdown renderer={renderer} gfm={true}>
+              {markdownContent}
+            </Markdown>
           </section>
+          <div className="h-[40px]"></div>
         </div>
       </div>
     </Layout>
