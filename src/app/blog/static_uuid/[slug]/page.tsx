@@ -9,7 +9,6 @@ import {
 import Markdown from "marked-react";
 import { Metadata } from "next";
 import sql from "@/components/pg";
-import Link from "next/link";
 
 // Slugify function for heading IDs
 function slugify(text: string) {
@@ -48,7 +47,7 @@ async function getPostData(slug: string) {
   const post = await sql`
     SELECT *
     FROM blog
-    WHERE slug = ${slug}
+    WHERE uuid = ${slug}
     AND status = 'published'
     ORDER BY created_at DESC
     LIMIT 1
@@ -115,7 +114,7 @@ export default async function Page({
   const data = await getPostData(resolvedParams.slug);
 
   return (
-    <Layout tab={`/blog/${resolvedParams.slug}`}>
+    <Layout tab={`/blog/static_uuid/${resolvedParams.slug}`}>
       <div className="h-[75px]"></div>
       <div className="flex flex-col flex-wrap justify-center align-middle">
         <div className="flex flex-col flex-wrap w-full md:w-2/3 p-2 m-auto">
