@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://v5.yuanhau.com
+
+# Sitemaps
+Sitemap: https://v5.yuanhau.com/sitemap.xml
