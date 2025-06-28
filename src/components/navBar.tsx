@@ -27,7 +27,7 @@ export default function NavBar(currentTab: { currentTab: string }) {
     <div>
       {/* Desktop */}
       <div className="hidden md:block">
-        <div className="w-full flex flex-row fixed inset-x-0 justify-between px-7 py-6">
+        <div className="w-full z-50 flex flex-row fixed inset-x-0 justify-between px-7 py-6">
           <div>
             {/**            <Image
               src="/favicon.ico"
@@ -67,7 +67,7 @@ export default function NavBar(currentTab: { currentTab: string }) {
       </div>
       {/* Mobile */}
       <div className="md:hidden block">
-        <div className="w-full flex flex-row fixed inset-x-0 justify-center mt-4">
+        <div className="w-full z-50 flex flex-row fixed inset-x-0 justify-center mt-4">
           <div className="flex items-center gap-1 bg-gray-100/5 border border-accent backdrop-blur-xl shadow-lg p-2 rounded-lg">
             {tabs.map((tab) => (
               <Link

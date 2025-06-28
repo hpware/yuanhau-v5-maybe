@@ -11,7 +11,7 @@ interface DefaultLayoutProps extends PropsWithChildren {
 export default function DefaultLayout({ children, tab }: DefaultLayoutProps) {
   return (
     <div>
-      <div className="relative z-50 max-h-full m-1">
+      <div className="relative max-h-full m-1">
         <NavBar currentTab={tab} />
       </div>
       <motion.main
