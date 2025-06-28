@@ -60,6 +60,14 @@ const colLinks = [
       link: "/",
     },
     {
+      name: "Blog",
+      link: "/blog",
+    },
+    {
+      name: "My projects",
+      link: "/projects",
+    },
+    {
       name: "About",
       link: "/#about",
     },
@@ -67,31 +75,19 @@ const colLinks = [
       name: "Education",
       link: "/#education",
     },
-    {
-      name: "Points?",
-      link: "/#points",
-    },
   ],
   [
     {
-      name: "Blog",
-      link: "/blog",
-    },
-    {
-      name: "3D Stuff :D",
-      link: "/3d",
-    },
-    {
-      name: "My projects",
-      link: "https://yuanhau.com/projects",
-    },
-    {
-      name: "Source Code",
+      name: "Website Source Code",
       link: "https://github.com/hpware/yuanhau-v5-maybe.git",
     },
     {
       name: "Email (No garbage)",
       link: "mailto:hw+yhv5@yuanhau.com",
+    },
+    {
+      name: "Status Page",
+      link: "https://status.yhw.tw/",
     },
   ],
 ];

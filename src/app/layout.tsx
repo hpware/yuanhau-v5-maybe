@@ -1,21 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, DM_Sans } from "next/font/google";
+import { Roboto_Condensed } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ClerkProvider } from "@clerk/nextjs";
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const robotoCondensed = Roboto_Condensed({
+  variable: "--font-roboto-condensed",
   subsets: ["latin"],
 });
 
@@ -50,7 +40,7 @@ export default function RootLayout({
           ></script>
         </head>
         <body
-          className={`${dmSans.variable} ${geistSans.variable} ${geistMono.variable} antialiased m-0`}
+          className={`${robotoCondensed.variable} font-['Huninn'] antialiased m-0`}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <SpeedInsights />

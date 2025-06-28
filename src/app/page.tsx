@@ -378,31 +378,30 @@ export default function Page() {
         </div>
       </div>
       <div className="h-[10dvh]"></div>
-      <div className="flex flex-row items-start">
-        <span className="text-[10vw] m-0 p-0 dark:text-white/30 text-black/30 leading-none translate-x-7 -translate-y-8 select-none">
+      <div className="flex flex-row item-center text-center justify-center algin-middle">
+        <span className="text-[10vw] m-0 p-0 dark:text-white/30 text-black/20 leading-none translate-x-8 -translate-y-8 select-none">
           “
         </span>
         <div className="text-3xl font-bold">
           This summer, Do something different.
         </div>
-        <span className="text-[8vw] m-0 p-0 dark:text-white/30 text-black/30 leading-none -translate-x-7 select-none">
+        <span className="text-[8vw] m-0 p-0 dark:text-white/30 text-black/20 leading-none -translate-x-8 select-none">
           ”
         </span>
       </div>
+      {/**      <section id="images"></section>
+<div className="flex flex-col justify-center align-center text-center">
+  <div className="flex flex-row flex-wrap justify-center m-4"></div>
+</div>
+<div className="h-[5dvh]"></div>
 
-      <div className="h-[10dvh]"></div>
-      <section id="images"></section>
-      <div className="flex flex-col justify-center align-center text-center">
-        <div className="flex flex-row flex-wrap justify-center m-4"></div>
-      </div>
-      <div className="h-[10dvh]"></div>
-      <section id="blog"></section>
+<section id="blog"></section>
       <div className="justfiy-center flex flex-col text-wrap p-2 backdrop-blur-lg bg-gray-300/10 rounded-lg m-2 md:m-4">
         <h2 className="m-2 text-2xl text-bold">
           <i>Blog Posts</i>
         </h2>
         <hr className="w-[70%] mx-2 my-1" />
-      </div>
+      </div> */}
     </Layout>
   );
 }

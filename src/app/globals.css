@@ -2,12 +2,23 @@
 @import "tw-animate-css";
 @import "bootstrap-icons/font/bootstrap-icons";
 
+@font-face {
+  font-family: "Huninn";
+  src: url("/fonts/Huninn-Regular.ttf") format("truetype");
+  font-weight: 400;
+}
+
 @layer base {
   html {
     @apply bg-black scroll-smooth;
   }
   body {
     @apply bg-black m-0 p-0 min-h-screen text-white;
+  }
+  .huninn-regular {
+    font-family: "Huninn", sans-serif;
+    font-weight: 400;
+    font-style: normal;
   }
 }
 
