@@ -1,5 +1,5 @@
 const jsonData = {
-  version: "v5 Beta (rev 2)",
+  version: "v5 Beta (rev 3)",
   copyright_owner: "Yuan-Hau Wu",
 };
 
