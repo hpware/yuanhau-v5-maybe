@@ -103,20 +103,6 @@ export default function Page() {
     }[]
   >([
     {
-      item: 3,
-      icon: "scrolltexticon",
-      name: "文書處理丙級證照",
-      content: "Yeah, This test is super outdated. It's so fucked.",
-      year: "June 2025",
-    },
-    {
-      item: 2,
-      icon: "club24",
-      name: "Hack Club",
-      content: "Wait, so this counts?",
-      year: "Feburary 2025",
-    },
-    {
       item: 1,
       icon: "university",
       name: "五專",

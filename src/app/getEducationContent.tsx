@@ -5,8 +5,7 @@ export default function getEducationContent() {
         item: 4,
         icon: "scrolltexticon",
         name: "電腦硬體裝修丙級證照",
-        content:
-          "This is not even worth the 1000+ NTD I paid. It cannot even help me find a job bro.",
+        content: "Yeah, This test is super outdated. It's so fucked.",
         year: "June 2025",
       },
       {
