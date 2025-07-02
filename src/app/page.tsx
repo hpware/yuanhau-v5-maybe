@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import Markdown from "marked-react";
 import { Progress } from "@/components/ui/progress";
-import getBlogContent from "./getBlogContent";
 import getAbout from "./getAbout";
 import { GetIcon } from "@/icons";
 import {
@@ -107,8 +106,7 @@ export default function Page() {
       item: 3,
       icon: "scrolltexticon",
       name: "文書處理丙級證照",
-      content:
-        "This is not even worth the 1000+ NTD I paid. It cannot even help me find a job bro.",
+      content: "Yeah, This test is super outdated. It's so fucked.",
       year: "June 2025",
     },
     {
@@ -379,13 +377,13 @@ export default function Page() {
       </div>
       <div className="h-[10dvh]"></div>
       <div className="flex flex-row item-center text-center justify-center algin-middle">
-        <span className="text-[10vw] m-0 p-0 dark:text-white/30 text-black/20 leading-none translate-x-8 -translate-y-8 select-none">
+        <span className="text-[150px] m-0 p-0 dark:text-white/30 text-black/20 leading-none translate-x-8 -translate-y-8 select-none">
           “
         </span>
         <div className="text-3xl font-bold">
           This summer, Do something different.
         </div>
-        <span className="text-[8vw] m-0 p-0 dark:text-white/30 text-black/20 leading-none -translate-x-8 select-none">
+        <span className="text-[150px] m-0 p-0 dark:text-white/30 text-black/20 leading-none -translate-x-8 -translate-y-2 select-none">
           ”
         </span>
       </div>
