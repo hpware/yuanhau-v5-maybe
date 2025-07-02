@@ -123,10 +123,6 @@ export default function Page() {
   const [aboutLoading, setAboutLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    async function getData() {
-      const bgContent = await getBlogContent();
-      setBlogContent(bgContent);
-    }
     async function getAbout2() {
       const about = await getAbout();
       setContent(about.content);
@@ -138,7 +134,6 @@ export default function Page() {
       setEducationLoading(false);
     }
     // Run all
-    getData();
     getAbout2();
     getEducationContent2();
   }, []);
