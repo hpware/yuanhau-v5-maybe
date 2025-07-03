@@ -75,7 +75,7 @@ function GalleryComponent({ db }: { db: GalleryInterface }) {
   return (
     <Link
       href={`/gallery/albums/${db.slug}`}
-      className="group relative overflow-hidden rounded-lg shadow-lg my-2 transition-all duration-300 bg-gray-100 dark:bg-gray-800"
+      className="group relative overflow-hidden rounded-lg shadow-lg my-2 mx-2 transition-all duration-300 bg-gray-100 dark:bg-gray-800"
     >
       <div className="aspect-video relative overflow-hidden">
         <img
@@ -84,7 +84,7 @@ function GalleryComponent({ db }: { db: GalleryInterface }) {
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
       </div>
-      <div className="flex flex-col p-2 bg-gray-100/30 backdrop-blur-sm bottom-0 inset-x-0 absolute text-black">
+      <div className="flex flex-col p-2 bg-gray-100/30 dark:bg-gray-700/30 backdrop-blur-sm bottom-0 inset-x-0 absolute text-black dark:text-white">
         <span className="text-lg font-semibold truncate">{db.name}</span>
         <span className="text-sm opacity-75 truncate">建立：{createdDate}</span>
         <span className="text-sm opacity-75 truncate">更新：{updatedDate}</span>

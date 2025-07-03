@@ -24,6 +24,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "convex": "^1.25.2",
+    "exif-js": "^2.3.0",
     "gsap": "^3.13.0",
     "lucide-react": "^0.514.0",
     "marked": "^15.0.12",

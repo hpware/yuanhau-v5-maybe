@@ -9,23 +9,41 @@ function Loading() {
   return <div>Hi</div>;
 }
 
-async function AlbumsPage({ slug }: { slug: string }) {
+type SearchParams = {
+  [key: string]: string | string[] | undefined;
+};
+
+async function AlbumsPage({
+  slug,
+  searchParams,
+}: {
+  slug: string;
+  searchParams: SearchParams;
+}) {
   return (
     <div>
-      <div>Hi {slug}</div>
+      <div>Slug: {slug}</div>
+      {Object.entries(searchParams || {}).map(([key, value]) => (
+        <div key={key} className="">
+          <span className="">{key}:</span> {String(value)}
+        </div>
+      ))}
     </div>
   );
 }
 
-export default async function Page(props: {
+export default async function Page({
+  params,
+  searchParams,
+}: {
   params: Promise<{ slug: string }>;
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const { slug } = await props.params;
+  const { slug } = await params;
   return (
     <Layout tab={`/gallery/albums/${slug}`}>
-      <div className="h-[20px]"></div>
       <Suspense fallback={<Loading />}>
-        <AlbumsPage slug={slug} />
+        <AlbumsPage slug={slug} searchParams={searchParams} />
       </Suspense>
     </Layout>
   );
