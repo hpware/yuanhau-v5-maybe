@@ -2,8 +2,14 @@ import Layout from "@/layout/default";
 import Link from "next/link";
 import sql from "@/components/pg";
 import { Suspense } from "react";
+import { Roboto } from "next/font/google";
 export const dynamic = "force-dynamic";
 export const revalidate = 3600;
+
+const roboto = Roboto({
+  variable: "--font-roboto",
+  subsets: ["latin"],
+});
 
 async function getPosts() {
   const fetchArticles = await sql`
@@ -89,7 +95,9 @@ export default function BlogPage() {
     <Layout tab="/blog">
       <div className="h-[20px]"></div>
       <div className="justify-center align-center text-center m-2 p-2">
-        <h1 className="text-4xl text-bold mt-12">Blog Posts</h1>
+        <h1 className={`text-4xl text-bold mt-12 ${roboto.variable}`}>
+          Blog Posts
+        </h1>
         <hr className="bg-gray-500/50 dark:bg-white/50 my-2 w-[80%] m-auto" />
         <Suspense fallback={<BlogPostsLoading />}>
           <BlogPosts />

@@ -1,13 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import ThemeToggle from "../app/ThemeToggle";
-import {
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { LogInIcon } from "lucide-react";
 
 const tabs = [
@@ -18,6 +11,10 @@ const tabs = [
   {
     name: "Blog",
     url: "/blog",
+  },
+  {
+    name: "Gallery",
+    url: "/gallery",
   },
 ];
 
