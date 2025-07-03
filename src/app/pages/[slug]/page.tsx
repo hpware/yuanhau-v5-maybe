@@ -1,9 +1,7 @@
-import { unstable_ViewTransition as ViewTransition, Suspense } from "react";
-import Link from "next/link";
-export const dynamic = "force-dynamic";
-export const revalidate = 300;
 import sql from "@/components/pg";
 import { notFound } from "next/navigation";
+export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 interface Article {
   uuid: string;
@@ -25,17 +23,6 @@ export default async function Page(props: {
   console.log(findPages);
   return (
     <div>
-      <ViewTransition name="title">
-        <h1 className="text-4xl font-bold text-center mb-4 dark:text-white">
-          Server Management Todo List
-        </h1>
-        <Link
-          href="/"
-          className="text-blue-500 dark:text-blue-400 hover:underline text-center mb-6 transition-colors duration-200"
-        >
-          ← Back
-        </Link>
-      </ViewTransition>
       <span>Hi {slug}</span>
     </div>
   );
