@@ -4,6 +4,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 300;
 import sql from "@/components/pg";
 import Layout from "@/layout/default";
+import Loading from "./loading";
 
 interface TodoItem {
   uuid: string;
@@ -56,7 +57,7 @@ async function ContentPage() {
 export default async function TodoPage() {
   return (
     <Layout tab="/todo">
-      <Suspense fallback={<div>Loading todos...</div>}>
+      <Suspense fallback={<Loading />}>
         <ContentPage />
       </Suspense>
     </Layout>
