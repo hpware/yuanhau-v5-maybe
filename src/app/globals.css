@@ -13,7 +13,7 @@
     @apply bg-black scroll-smooth;
   }
   body {
-    @apply bg-black m-0 p-0 min-h-screen text-white;
+    @apply transition-colors duration-200 m-0 p-0 min-h-screen text-white;
   }
   .huninn-regular {
     font-family: "Huninn", sans-serif;
@@ -66,7 +66,7 @@
 
 :root {
   --radius: 0.625rem;
-  --background: #F5FBFF;
+  --background: #f5fbff;
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);

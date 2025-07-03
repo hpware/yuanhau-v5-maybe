@@ -44,12 +44,20 @@ export default async function Page() {
               <TableRow key={post.uuid}>
                 <TableCell className="font-medium">{post.title}</TableCell>
                 <TableCell>
-                  <Badge variant={post.status === "published" ? "default" : "secondary"}>
+                  <Badge
+                    variant={
+                      post.status === "published" ? "default" : "secondary"
+                    }
+                  >
                     {post.status}
                   </Badge>
                 </TableCell>
-                <TableCell>{new Date(post.created_at).toLocaleDateString()}</TableCell>
-                <TableCell>{new Date(post.updated_at).toLocaleDateString()}</TableCell>
+                <TableCell>
+                  {new Date(post.created_at).toLocaleDateString()}
+                </TableCell>
+                <TableCell>
+                  {new Date(post.updated_at).toLocaleDateString()}
+                </TableCell>
                 <TableCell>
                   <Button asChild>
                     <Link href={`/admin/blog/${post.slug}`}>Edit</Link>

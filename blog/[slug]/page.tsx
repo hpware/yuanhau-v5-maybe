@@ -62,18 +62,26 @@ export default async function Page(props: { params: { slug: string } }) {
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="status">Status</Label>
-              <Badge variant={blog.status === "published" ? "default" : "secondary"}>
+              <Badge
+                variant={blog.status === "published" ? "default" : "secondary"}
+              >
                 {blog.status}
               </Badge>
             </div>
             <div className="flex justify-end space-x-2">
               <Button asChild variant="outline">
-                <Link href={`/admin/blog/${props.params.slug}/preview`}>Preview</Link>
+                <Link href={`/admin/blog/${props.params.slug}/preview`}>
+                  Preview
+                </Link>
               </Button>
               <Button variant="outline">Cancel</Button>
               <Button type="submit">Save</Button>
               <form action={togglePublish}>
-                <Button variant={blog.status === "published" ? "destructive" : "default"}>
+                <Button
+                  variant={
+                    blog.status === "published" ? "destructive" : "default"
+                  }
+                >
                   {blog.status === "published" ? "Unpublish" : "Publish"}
                 </Button>
               </form>

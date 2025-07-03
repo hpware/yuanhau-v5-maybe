@@ -46,7 +46,6 @@ export async function generateMetadata() {
   };
 }
 
-
 async function BlogPosts() {
   const posts = await getPosts();
   return (
@@ -73,7 +72,10 @@ function BlogPostsLoading() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-auto">
       {[...Array(6)].map((_, i) => (
-        <div key={i} className="p-4 backdrop-blur-lg bg-gray-500/10 dark:bg-gray-300/20 rounded-xl animate-pulse">
+        <div
+          key={i}
+          className="p-4 backdrop-blur-lg bg-gray-500/10 dark:bg-gray-300/20 rounded-xl animate-pulse"
+        >
           <div className="h-6 bg-gray-300/50 rounded w-3/4 mb-2"></div>
           <div className="h-4 bg-gray-300/50 rounded w-1/2"></div>
         </div>
@@ -81,7 +83,6 @@ function BlogPostsLoading() {
     </div>
   );
 }
-
 
 export default function BlogPage() {
   return (

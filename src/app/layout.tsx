@@ -41,9 +41,15 @@ export default function RootLayout({
         </head>
         <body
           className={`${robotoCondensed.variable} font-['Huninn'] antialiased m-0 p-0`}
+          suppressHydrationWarning
         >
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <SpeedInsights />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <SpeedInsights />
             {children}
           </ThemeProvider>
         </body>
