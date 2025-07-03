@@ -40,10 +40,10 @@ export default function RootLayout({
           ></script>
         </head>
         <body
-          className={`${robotoCondensed.variable} font-['Huninn'] antialiased m-0`}
+          className={`${robotoCondensed.variable} font-['Huninn'] antialiased m-0 p-0`}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <SpeedInsights />
+          <SpeedInsights />
             {children}
           </ThemeProvider>
         </body>

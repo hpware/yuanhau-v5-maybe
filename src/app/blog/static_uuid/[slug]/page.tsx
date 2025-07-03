@@ -10,6 +10,8 @@ import Markdown from "marked-react";
 import { Metadata } from "next";
 import sql from "@/components/pg";
 import Link from "next/link";
+export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 // Slugify function for heading IDs
 function slugify(text: string) {

@@ -2,7 +2,7 @@
 import { PropsWithChildren } from "react";
 import NavBar from "@/components/navBar";
 import Footer from "@/components/footer";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 interface DefaultLayoutProps extends PropsWithChildren {
   tab: string;
