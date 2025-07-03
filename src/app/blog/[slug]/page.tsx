@@ -199,11 +199,11 @@ async function BlogPost({ slug }: { slug: string }) {
   });
   return (
     <div className="flex flex-col flex-wrap justify-center align-middle">
-      <div className="flex flex-col flex-wrap w-full md:w-2/3 p-2 m-auto">
+      <div className="flex flex-col flex-wrap w-full md:w-2/3 p-2 m-auto z-5">
         <span>
           <Link
             href="/blog"
-            className="inline-flex items-center px-4 py-2 hover:underline text-primary hover:text-primary/80 transition-colors transform-x-3"
+            className="inline-flex items-center px-4 py-2 z-5 hover:underline text-primary hover:text-primary/80 transition-colors transform-x-3"
           >
             <i>← Back to Blog</i>
           </Link>
