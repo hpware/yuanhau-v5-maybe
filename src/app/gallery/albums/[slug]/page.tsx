@@ -45,9 +45,10 @@ export default async function Page({
   searchParams,
 }: {
   params: Promise<{ slug: string }>;
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const { slug } = await params;
+  const searchParam = await searchParams;
   return (
     <Layout tab={`/gallery/albums/${slug}`}>
       <div className="h-[90px]"></div>
@@ -63,7 +64,7 @@ export default async function Page({
         </div>
         <ClientPage
           slug={slug}
-          searchParams={searchParams}
+          searchParams={}
           db={{ id: uuidv4(), name: "Hi" }}
         />
       </Suspense>

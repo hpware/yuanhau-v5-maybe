@@ -1,5 +1,5 @@
-import { Suspense } from "react";
-import exif from "exif-js";
+//import { Suspense } from "react";
+//import exif from "exif-js";
 export default function ImageViewComponent({ id }: { id: string }) {
   const image = [
     {
