@@ -37,13 +37,14 @@ export default async function Page({
   searchParams,
 }: {
   params: Promise<{ slug: string }>;
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const { slug } = await params;
+  const searchParam = await searchParams;
   return (
     <Layout tab={`/gallery/albums/${slug}`}>
       <Suspense fallback={<Loading />}>
-        <AlbumsPage slug={slug} searchParams={searchParams} />
+        <AlbumsPage slug={slug} searchParams={} />
       </Suspense>
     </Layout>
   );
