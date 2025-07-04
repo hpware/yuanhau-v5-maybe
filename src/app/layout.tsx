@@ -34,6 +34,10 @@ export default function RootLayout({
           <meta name="og:author:email" content="yhcom+v5@yuanhau.com" />
           <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
           <script
+            crossOrigin="anonymous"
+            src="//unpkg.com/react-scan/dist/auto.global.js"
+          />
+          <script
             defer
             src="https://data.yuanhau.com/script.js"
             data-website-id="6f5e2db3-bb3b-4bda-938d-2b6a8b49476b"
