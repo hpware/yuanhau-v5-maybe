@@ -44,7 +44,7 @@ export default async function Page({
   return (
     <Layout tab={`/gallery/albums/${slug}`}>
       <Suspense fallback={<Loading />}>
-        <AlbumsPage slug={slug} searchParams={} />
+        <AlbumsPage slug={slug} searchParams={searchParam} />
       </Suspense>
     </Layout>
   );
