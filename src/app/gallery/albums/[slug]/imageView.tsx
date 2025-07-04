@@ -12,7 +12,7 @@ export default function ImageViewComponent({
   const image = {
     name: "A Dolphin",
     id: id,
-    imageUrl: "/image.jpg",
+    imageUrl: "https://s3.yhw.tw/data/_DSC3433.JPG",
   };
   const [exifData, setExifData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
