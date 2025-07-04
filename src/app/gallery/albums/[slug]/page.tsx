@@ -64,7 +64,7 @@ export default async function Page({
         </div>
         <ClientPage
           slug={slug}
-          searchParams={}
+          searchParams={searchParam}
           db={{ id: uuidv4(), name: "Hi" }}
         />
       </Suspense>
