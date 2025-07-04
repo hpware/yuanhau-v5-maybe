@@ -151,7 +151,7 @@ export default function ImageViewComponent({
                 <div>Loading...</div>
               ) : (
                 items.map((i) => (
-                  <div className="flex flex-col m-2">
+                  <div className="flex flex-col m-2" key={i.name}>
                     <span className="text-lg text-gray-400">{i.name}</span>
                     <span
                       className={`text-${i.contentsize || "lg"} text-white transition-all duration-200`}

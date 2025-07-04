@@ -27,7 +27,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const enableDebugging = true;
+  const enableDebugging = false;
   return (
     <ClerkProvider>
       <html lang="en">
