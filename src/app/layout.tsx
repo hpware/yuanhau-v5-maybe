@@ -27,16 +27,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const enableDebugging = true;
   return (
     <ClerkProvider>
       <html lang="en">
         <head>
           <meta name="og:author:email" content="yhcom+v5@yuanhau.com" />
           <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-          <script
-            crossOrigin="anonymous"
-            src="//unpkg.com/react-scan/dist/auto.global.js"
-          />
+          {enableDebugging && (
+            <script
+              crossOrigin="anonymous"
+              src="//unpkg.com/react-scan/dist/auto.global.js"
+            />
+          )}
           <script
             defer
             src="https://data.yuanhau.com/script.js"

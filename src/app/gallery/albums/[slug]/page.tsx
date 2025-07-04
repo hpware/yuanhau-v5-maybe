@@ -50,16 +50,16 @@ export default async function Page({
   const { slug } = await params;
   const searchParam = await searchParams;
   return (
-    <Layout tab={`/gallery/albums/${slug}`}>
+    <Layout tab={`/gallery/albums/${slug}`} disableanimation>
       <div className="h-[90px]"></div>
       <Suspense fallback={<Loading />}>
         <div className="md:block hidden fixed top-0 left-0 ml-6 mt-7">
           <div className="flex items-center gap-1 bg-gray-100/5 border border-accent backdrop-blur-xl shadow-lg p-2 rounded-lg">
-            <h2 className="text-2xl m-1">Album: 國中畢旅</h2>
+            <h2 className="text-2xl m-1">Album: {"Hi"}</h2>
           </div>
         </div>
         <div className="block md:hidden">
-          <h2 className="text-2xl">Album: 國中畢旅</h2>
+          <h2 className="text-2xl">Album: {"Hi"}</h2>
           <hr />
         </div>
         <ClientPage
