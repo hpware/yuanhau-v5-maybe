@@ -146,7 +146,7 @@ export default function ImageViewComponent({
             </div>
           </div>
           <div className="lg:mt-12 lg:w-1/4 ml-0 mb-12 h-full w-full">
-            <div className="flex flex-col lg:mt-[8vh]  bg-black/30 w-full mb-12 min-h-none max-h-[300px] md:max-h-[200px] lg:min-h-[69vh] lg:max-h-none rounded-lg ml-0 p-3 overflow-y-scroll">
+            <div className="flex flex-col lg:mt-[8vh]  bg-black/30 w-full mb-12 min-h-none max-h-[300px] md:max-h-[200px] lg:min-h-[69vh] lg:max-h-none rounded-lg ml-0 p-3 overflow-y-scroll lg:overflow-y-auto">
               {isLoading ? (
                 <div>Loading...</div>
               ) : (
