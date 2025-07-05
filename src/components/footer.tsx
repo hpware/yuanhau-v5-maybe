@@ -78,6 +78,10 @@ const colLinks = [
   ],
   [
     {
+      name: "Email @'s",
+      link: "/pages/email",
+    },
+    {
       name: "Website Source Code",
       link: "https://github.com/hpware/yuanhau-v5-maybe.git",
     },
