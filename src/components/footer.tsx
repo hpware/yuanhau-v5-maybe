@@ -9,6 +9,9 @@ import {
   GlobeIcon,
   ExternalLink,
 } from "lucide-react";
+import ThemeToggle from "../app/ThemeToggle";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { LogInIcon } from "lucide-react";
 
 const socials = [
   {
@@ -164,9 +167,26 @@ export default function Footer(currentTab: { currentTab: string }) {
       </div>
 
       {/* Copyright & Version */}
-      <div className="text-center md:text-right text-gray-500 p-4">
-        &copy; {new Date().getFullYear()} {getData("copyright_owner")} ||
-        Website {getData("version")}
+      <div className="flex flex-col">
+        <div className="text-center md:text-right align-middle md:align-right justify-center md:  justify-right flex flex-row">
+          <ThemeToggle />
+          <div className="pl-1"></div>
+          <SignedOut>
+            <SignInButton>
+              <button className="hover:cursor-pointer p-2 rounded-lg hover:bg-gray-500/20 hover:dark:bg-white/20 shadow-lg border border-accent dark:border-0 transition-all duration-300">
+                <LogInIcon />
+              </button>
+            </SignInButton>
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+          <div className="pl-1"></div>
+        </div>
+        <div className="text-center md:text-right text-gray-500 p-4">
+          &copy; {new Date().getFullYear()} {getData("copyright_owner")} ||
+          Website {getData("version")}
+        </div>
       </div>
     </div>
   );

@@ -5,6 +5,8 @@ import Link from "next/link";
 import Markdown from "marked-react";
 import { v4 as uuidv4 } from "uuid";
 import CodeRender from "./codeRenderer";
+import Footer from "@/components/footer";
+import { TriangleAlertIcon } from "lucide-react";
 
 function slugify(text: string) {
   return String(text)
@@ -19,23 +21,40 @@ export const renderer = {
     const id = slugify(text);
     const size =
       level === 1
-        ? "text-2xl"
+        ? "text-4xl mb-6"
         : level === 2
-          ? "text-xl"
+          ? "text-3xl mb-4"
           : level === 3
-            ? "text-lg"
+            ? "text-2xl mb-3"
             : level === 4
-              ? "text-md"
-              : "text-base";
+              ? "text-xl mb-2"
+              : "text-lg mb-2";
     return (
-      <Tag id={id} key={uuidv4()} className={`${size} font-bold mt-2 mb-2`}>
+      <Tag
+        id={id}
+        key={uuidv4()}
+        className={`${size} font-bold tracking-tight`}
+      >
         {text}
       </Tag>
     );
   },
+  paragraph(text: string) {
+    return (
+      <p
+        className="my-6 leading-relaxed text-gray-600 dark:text-gray-300"
+        key={uuidv4()}
+      >
+        {text}
+      </p>
+    );
+  },
+  text(text: string) {
+    return <span key={uuidv4()}>{text}</span>;
+  },
   strong(text: string) {
     return (
-      <b className="font-bold" key={uuidv4()}>
+      <b className="font-semibold text-gray-900 dark:text-white" key={uuidv4()}>
         {text}
       </b>
     );
@@ -46,7 +65,7 @@ export const renderer = {
         src={src}
         alt={alt}
         key={uuidv4()}
-        className="max-w-full h-auto rounded-lg p-1 m-1"
+        className="max-w-full h-auto rounded-xl shadow-md my-8"
       />
     );
   },
@@ -54,7 +73,7 @@ export const renderer = {
     return (
       <Link
         href={href}
-        className="text-blue-600 dark:text-sky-400 hover:text-blue-600/80 hover:dark:text-sky-400/80 hover:underline transition-all duration-200"
+        className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 underline decoration-2 underline-offset-2"
         target="_blank"
         key={uuidv4()}
       >
@@ -69,7 +88,7 @@ export const renderer = {
     return (
       <code
         key={uuidv4()}
-        className="px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 font-mono text-sm"
+        className="px-2 py-1 rounded-md bg-gray-100 dark:bg-gray-800 font-mono text-sm"
       >
         {code}
       </code>
@@ -77,103 +96,80 @@ export const renderer = {
   },
 };
 
-function PageArchivedBanner() {
+function PageArchivedBanner({ writer }: { writer: string }) {
   return (
-    <div className="flex flex-col z-50 fixed bg-red-600/90 justify-center align-center text-center p-2 text-white inset-x-0 w-full top-0">
-      <div>
-        <h2 className="text-lg">This page has been archived by it's owner</h2>
-      </div>
+    <div className="flex items-center justify-center fixed z-50 bg-red-600 p-4 text-white inset-x-0 top-0">
+      <TriangleAlertIcon />
+      <h2 className="text-lg font-medium">
+        This page has been archived by {writer}
+      </h2>
     </div>
   );
 }
 
 export default function Client({ db }: { db: dbTypes }) {
-  const [isArchived, SetIsArchived] = useState<boolean>(false);
-  useEffect(() => {
-    if (db.status === "archived") {
-      SetIsArchived(true);
-    }
-  }, []);
   return (
-    <div>
-      {isArchived && <PageArchivedBanner />}
+    <div className="min-h-screen bg-white dark:bg-gray-900">
       {db.page_type === "landing" ? (
         <Landing db={db} />
       ) : db.page_type === "simple" ? (
         <Simple db={db} />
       ) : (
-        <div className="flex flex-col justify-center align-center absolute inset-0 w-full h-screen text-center text-4xl">
-          Content N/A
+        <div className="flex flex-col items-center justify-center min-h-screen text-4xl font-bold text-gray-400">
+          Content Not Available
         </div>
       )}
+      {db.status === "archived" && <PageArchivedBanner writer={db.writer} />}
     </div>
   );
 }
 
-// Pages
 function Landing({ db }: { db: dbTypes }) {
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <div className="flex flex-row h-120 w-full">
-        {/* Left Content */}
-        <div className="flex flex-col justify-center w-1/2 p-4 bg-gray-300/60 backdrop-blur-lg shadow pl-7">
-          <h2 className="text-2xl mb-4">{db.title}</h2>
-          <div className="flex flex-row gap-2 pl-5">
-            <Link href="#learnmore">
-              <button className="p-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors">
-                Learn more
-              </button>
-            </Link>
-          </div>
-        </div>
-        {/* Right Image */}
-        <div className="w-1/2 relative">
+    <div className="relative">
+      <div className="relative">
+        <div className="w-full h-screen flex items-center justify-center p-4">
           <img
             src={db.landing_image}
             alt={`A hero image for ${db.title}`}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover rounded-2xl shadow-lg"
           />
+        </div>
+
+        <div className="absolute bottom-32 left-1/2 transform -translate-x-1/2">
+          <div className="-translate-y-12 justify-center text-center">
+            <h2 className="text-2xl font-bold backdrop-blur">{db.title}</h2>
+          </div>
+          <Link href="#learnmore">
+            <button className="px-8 py-3 rounded-full bg-white text-indigo-600 font-semibold hover:bg-gray-50 transition-all shadow-lg">
+              Learn more
+            </button>
+          </Link>
         </div>
       </div>
 
-      {/* Content Section */}
       <div id="learnmore" className="min-h-screen">
-        <section className="container mx-auto px-4 py-8 text-wrap">
-          <Markdown render={renderer} gfm={true}>
-            {db.markdown_content}
-          </Markdown>
+        <section className="container mx-auto px-4 py-16 max-w-4xl">
+          <article className="prose dark:prose-invert prose-lg max-w-none">
+            <Markdown renderer={renderer} gfm={true} breaks={true}>
+              {db.markdown_content}
+            </Markdown>
+          </article>
         </section>
       </div>
+      <Footer currentTab="/" />
     </div>
   );
 }
 
 function Simple({ db }: { db: dbTypes }) {
   return (
-    <div>
-      <div>Hello</div>
+    <div className="container mx-auto px-4 py-16 max-w-4xl">
+      <article className="prose dark:prose-invert prose-lg max-w-none">
+        <Markdown renderer={renderer} gfm={true} breaks={true}>
+          {db.markdown_content}
+        </Markdown>
+      </article>
     </div>
   );
 }
-
-/**
-const createPagesSystem = await sql`
-  CREATE TABLE IF NOT EXISTS pages (
-  uuid TEXT PRIMARY KEY,
-  slug TEXT unique not null,
-  title TEXT not null,
-  writer TEXT NOT NULL,
-  page_type varchar(20) default 'landing' CHECK (page_type IN ('landing', 'simple', 'info')),
-  status VARCHAR(20) DEFAULT 'draft' CHECK (status IN ('draft', 'published', 'archived')),
-  markdown_content text not null,
-  landing_image TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT check_landing_image CHECK (
-    (page_type = 'landing' AND landing_image IS NOT NULL) OR
-    (page_type != 'landing')
-  )
-  );
-  `;
- */

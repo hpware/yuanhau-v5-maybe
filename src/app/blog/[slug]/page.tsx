@@ -230,8 +230,8 @@ async function BlogPost({ slug }: { slug: string }) {
           </span>
         </div>
         <hr className="bg-black/50 dark:bg-white/50 w-full" />
-        <section className="mt-2 min-h-[300px]">
-          <Markdown renderer={renderer} gfm={true}>
+        <section className="mt-2 min-h-[300px] max-w-full">
+          <Markdown renderer={renderer} gfm={true} breaks={true}>
             {data.markdownContent}
           </Markdown>
         </section>
