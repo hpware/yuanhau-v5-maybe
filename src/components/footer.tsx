@@ -85,6 +85,22 @@ const colLinks = [
       link: "/pages/email",
     },
     {
+      name: "v4.1.3 網站",
+      link: "https://v4-1-3.yuanhau.com",
+    },
+    {
+      name: "v4.1.2 舊版 Blog",
+      link: "https://4-1-2.yuanhau.com/posts/",
+    },
+    {
+      name: "wp.yuanhau.com",
+      link: "https://wp.yuanhau.com",
+    },
+    {
+      name: "hwweb Wordpress",
+      link: "https://hwweb.i234.me/wordpress",
+    },
+    {
       name: "Website Source Code",
       link: "https://github.com/hpware/yuanhau-v5-maybe.git",
     },
