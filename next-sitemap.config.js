@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: process.env.SITE_URL || "https://v5.yuanhau.com",
+  siteUrl: process.env.SITE_URL || "https://yuanhau.com",
   generateRobotsTxt: true,
   robotsTxtOptions: {
     policies: [
