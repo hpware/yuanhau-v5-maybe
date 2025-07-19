@@ -2,6 +2,10 @@
 module.exports = {
   siteUrl: process.env.SITE_URL || "https://yuanhau.com",
   generateRobotsTxt: true,
+  additionalSitemaps: [
+    `${process.env.SITE_URL || "https://yuanhau.com"}/sitemap-blog.xml`,
+    `${process.env.SITE_URL || "https://yuanhau.com"}/sitemap-pages.xml`,
+  ],
   robotsTxtOptions: {
     policies: [
       {
