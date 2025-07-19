@@ -135,7 +135,9 @@ User-agent: *
 Disallow: /admin/
 
 # Host
-Host: https://v5.yuanhau.com
+Host: https://yuanhau.com
 
 # Sitemaps
-Sitemap: https://v5.yuanhau.com/sitemap.xml
+Sitemap: https://yuanhau.com/sitemap.xml
+Sitemap: https://yuanhau.com/sitemap-blog.xml
+Sitemap: https://yuanhau.com/sitemap-pages.xml
