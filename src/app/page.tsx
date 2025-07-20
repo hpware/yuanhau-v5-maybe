@@ -6,8 +6,9 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import Markdown from "marked-react";
 import { Progress } from "@/components/ui/progress";
-import getAbout from "./getAbout";
 import { GetIcon } from "@/icons";
+import { useQuery } from "convex/react";
+import { api } from "../../convex/_generated/api";
 import {
   GithubIcon,
   YoutubeIcon,
@@ -91,7 +92,6 @@ const images = [
 ];
 
 export default function Page() {
-  const [content, setContent] = useState<string>("");
   const [displayFullAbout, setDisplayFullAbout] = useState<boolean>(false);
   const [education, setEducationContent] = useState<
     {
@@ -120,21 +120,17 @@ export default function Page() {
       content: string;
     }[];
   }>();
+  const content = useQuery(api.functions.getMDContent);
   const [aboutLoading, setAboutLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    async function getAbout2() {
-      const about = await getAbout();
-      setContent(about.content);
-      setAboutLoading(false);
-    }
+    //setContent(about.content);
     async function getEducationContent2() {
       const educationContent = await getEducationContent();
       setEducationContent(educationContent.items);
       setEducationLoading(false);
     }
     // Run all
-    getAbout2();
     getEducationContent2();
   }, []);
 

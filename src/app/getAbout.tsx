@@ -4,12 +4,14 @@ import { unstable_cache } from "next/cache";
 import sql from "@/components/pg";
 
 const fetchContent = unstable_cache(
-  async (slug: string) => {
+  async () => {
+    /*
     const data = await sql`
       SELECT * FROM mdcontent
-      WHERE slug = ${slug}
+      WHERE slug = "about"
     `;
-    const content = data[0]?.content || "";
+    */
+    const content = "data[0]?.content";
     return {
       content: content
         .replace(/\\n/g, "\n")
@@ -22,6 +24,6 @@ const fetchContent = unstable_cache(
 );
 
 export default async function getData() {
-  const content = await fetchContent("about");
+  const content = await fetchContent();
   return content;
 }

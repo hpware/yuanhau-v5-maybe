@@ -40,4 +40,13 @@ export default defineSchema({
     created_at: v.string(),
     updated_at: v.string(),
   }).index("uuid", ["uuid", "slug"]),
+
+  // Comments system
+  comments: defineTable({
+    uuid: v.string(),
+    article_uuid: v.string(),
+    clerk_user: v.string(),
+    comment: v.string(),
+    thread: v.array(v.object({})),
+  }).index("uuid", ["uuid"]),
 });
