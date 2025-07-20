@@ -20,10 +20,10 @@ import {
 import Head from "next/head";
 import getEducationContent from "./getEducationContent";
 
-function getAboutMe() {
+function GetAboutMe() {
   const [displayFullAbout, setDisplayFullAbout] = useState<boolean>(false);
   const query = useQuery(api.app.getMDContent, { slug: "about" });
-  const content = query?.content || "Data not available.";
+  const content = query?.content || "Data not available (yet).";
 
   if (content === undefined) {
     return <div>Loading...</div>;
@@ -184,7 +184,6 @@ export default function Page() {
     }[];
   }>();
   useEffect(() => {
-    //setContent(about.content);
     async function getEducationContent2() {
       const educationContent = await getEducationContent();
       setEducationContent(educationContent.items);
@@ -277,7 +276,7 @@ export default function Page() {
           <div className="h-fit justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl px-4 py-8">
             <section id="about"></section>
             <h2 className="text-3xl text-bold align-top">關於我</h2>
-            {getAboutMe()}
+            <GetAboutMe />
           </div>
           <div className="flex flex-col flex-wrap gap-2">
             <div className="h-fit justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl px-4 py-8">
