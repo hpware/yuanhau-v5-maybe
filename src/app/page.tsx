@@ -23,49 +23,61 @@ import getEducationContent from "./getEducationContent";
 function GetAboutMe() {
   const [displayFullAbout, setDisplayFullAbout] = useState<boolean>(false);
   const query = useQuery(api.app.getMDContent, { slug: "about" });
-  const content = query?.content || "Data not available (yet).";
-
-  if (content === undefined) {
-    return <div>Loading...</div>;
+  if (query === undefined) {
+    return (
+      <div className="h-fit justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl px-4 py-8">
+        <section id="about"></section>
+        <h2 className="text-3xl text-bold align-top">關於我</h2>
+        <div className="relative overflow-hidden">
+          <div>Loading...</div>
+        </div>
+      </div>
+    );
   }
+  const content = query[0].content || "Data not available (yet).";
 
   // Safe to use content here
   return (
-    <div className="relative overflow-hidden flex flex-col">
-      <motion.article
-        className="prose m-3"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Markdown
-          value={
-            displayFullAbout
-              ? content.replace(/\\n/g, "\n").replace(/\n/g, "  \n")
-              : content
-                  .split("\n")
-                  .slice(0, 20)
-                  .join("\n")
-                  .replace(/\\n/g, "\n")
-                  .replace(/\n/g, "  \n")
-          }
-          breaks={true}
-          gfm={true}
-        />
-      </motion.article>
-      <motion.div
-        initial={{ opacity: 0.5 }}
-        animate={{
-          opacity: !displayFullAbout ? 1 : 0,
-          height: !displayFullAbout ? "100%" : "0%",
-        }}
-        transition={{ duration: 0.5 }}
-        className="absolute inset-0"
-      >
-        {!displayFullAbout && (
-          <div className="h-full bg-gradient-to-b from-transparent via-white/30 to-white dark:via-gray-900/30 dark:to-gray-900" />
-        )}
-      </motion.div>
+    <div className="h-fit justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl px-4 py-8">
+      <section id="about"></section>
+      <h2 className="text-3xl text-bold align-top">關於我</h2>
+      <div className="relative overflow-hidden">
+        <motion.article
+          className="prose m-3"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Markdown
+            value={
+              displayFullAbout
+                ? content.replace(/\\n/g, "\n").replace(/\n/g, "  \n")
+                : content
+                    .split("\n")
+                    .slice(0, 20)
+                    .join("\n")
+                    .replace(/\\n/g, "\n")
+                    .replace(/\n/g, "  \n")
+            }
+            breaks={true}
+            gfm={true}
+          />
+        </motion.article>
+        <motion.div
+          initial={{ opacity: 0.5 }}
+          animate={{
+            opacity: !displayFullAbout ? 1 : 0,
+            height: !displayFullAbout ? "100%" : "0%",
+          }}
+          transition={{ duration: 0.5 }}
+          className="absolute inset-0"
+        >
+          {!displayFullAbout && (
+            <div className="h-full bg-gradient-to-b from-transparent via-white/30 to-white dark:via-gray-900/30 dark:to-gray-900" />
+          )}
+        </motion.div>
+      </div>
+
       <button
         onClick={() => setDisplayFullAbout(!displayFullAbout)}
         className="p-2 bg-gray-300 dark:bg-gray-600 m-2 justify-center align-middle self-center content-center text-center border w-fit rounded hover:cursor-pointer hover:bg-gray-500/50 hover:dark:bg-gray-700/50 hover:border-gray-50 transition-all duration-300"
@@ -273,11 +285,7 @@ export default function Page() {
       <section id="learnmore"></section>
       <div className="container mx-auto px-4">
         <div className=" grid grid-cols-1 md:grid-cols-2 gap-2 auto-rows-auto">
-          <div className="h-fit justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl px-4 py-8">
-            <section id="about"></section>
-            <h2 className="text-3xl text-bold align-top">關於我</h2>
-            <GetAboutMe />
-          </div>
+          <GetAboutMe />
           <div className="flex flex-col flex-wrap gap-2">
             <div className="h-fit justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl px-4 py-8">
               <section id="education"></section>
