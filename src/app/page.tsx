@@ -8,7 +8,7 @@ import Markdown from "marked-react";
 import { Progress } from "@/components/ui/progress";
 import { GetIcon } from "@/icons";
 import { useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { api } from "../../convex/_generated/api.js";
 import {
   GithubIcon,
   YoutubeIcon,
@@ -19,6 +19,70 @@ import {
 } from "lucide-react";
 import Head from "next/head";
 import getEducationContent from "./getEducationContent";
+
+function getAboutMe() {
+  const [displayFullAbout, setDisplayFullAbout] = useState<boolean>(false);
+  const query = useQuery(api.app.getMDContent, { slug: "about" });
+  const content = query?.content || "Data not available.";
+
+  if (content === undefined) {
+    return <div>Loading...</div>;
+  }
+
+  // Safe to use content here
+  return (
+    <div className="relative overflow-hidden flex flex-col">
+      <motion.article
+        className="prose m-3"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Markdown
+          value={
+            displayFullAbout
+              ? content.replace(/\\n/g, "\n").replace(/\n/g, "  \n")
+              : content
+                  .split("\n")
+                  .slice(0, 20)
+                  .join("\n")
+                  .replace(/\\n/g, "\n")
+                  .replace(/\n/g, "  \n")
+          }
+          breaks={true}
+          gfm={true}
+        />
+      </motion.article>
+      <motion.div
+        initial={{ opacity: 0.5 }}
+        animate={{
+          opacity: !displayFullAbout ? 1 : 0,
+          height: !displayFullAbout ? "100%" : "0%",
+        }}
+        transition={{ duration: 0.5 }}
+        className="absolute inset-0"
+      >
+        {!displayFullAbout && (
+          <div className="h-full bg-gradient-to-b from-transparent via-white/30 to-white dark:via-gray-900/30 dark:to-gray-900" />
+        )}
+      </motion.div>
+      <button
+        onClick={() => setDisplayFullAbout(!displayFullAbout)}
+        className="p-2 bg-gray-300 dark:bg-gray-600 m-2 justify-center align-middle self-center content-center text-center border w-fit rounded hover:cursor-pointer hover:bg-gray-500/50 hover:dark:bg-gray-700/50 hover:border-gray-50 transition-all duration-300"
+      >
+        {displayFullAbout ? "Show Less" : "Show More"}
+      </button>
+      <motion.span
+        className="text-gray-600 text-sm"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+      >
+        About content updates for every 2 hours.
+      </motion.span>
+    </div>
+  );
+}
 
 const socials = [
   {
@@ -92,7 +156,6 @@ const images = [
 ];
 
 export default function Page() {
-  const [displayFullAbout, setDisplayFullAbout] = useState<boolean>(false);
   const [education, setEducationContent] = useState<
     {
       item: number;
@@ -120,9 +183,6 @@ export default function Page() {
       content: string;
     }[];
   }>();
-  const content = useQuery(api.functions.getMDContent);
-  const [aboutLoading, setAboutLoading] = useState<boolean>(true);
-
   useEffect(() => {
     //setContent(about.content);
     async function getEducationContent2() {
@@ -217,62 +277,7 @@ export default function Page() {
           <div className="h-fit justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl px-4 py-8">
             <section id="about"></section>
             <h2 className="text-3xl text-bold align-top">關於我</h2>
-            {aboutLoading ? (
-              <div className="relative overflow-hidden">
-                <div>Loading...</div>
-              </div>
-            ) : (
-              <div className="relative overflow-hidden">
-                <motion.article
-                  className="prose m-3"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <Markdown
-                    value={
-                      displayFullAbout
-                        ? content.replace(/\\n/g, "\n").replace(/\n/g, "  \n")
-                        : content
-                            .split("\n")
-                            .slice(0, 20)
-                            .join("\n")
-                            .replace(/\\n/g, "\n")
-                            .replace(/\n/g, "  \n")
-                    }
-                    breaks={true}
-                    gfm={true}
-                  />
-                </motion.article>
-                <motion.div
-                  initial={{ opacity: 0.5 }}
-                  animate={{
-                    opacity: !displayFullAbout ? 1 : 0,
-                    height: !displayFullAbout ? "100%" : "0%",
-                  }}
-                  transition={{ duration: 0.5 }}
-                  className="absolute inset-0"
-                >
-                  {!displayFullAbout && (
-                    <div className="h-full bg-gradient-to-b from-transparent via-white/30 to-white dark:via-gray-900/30 dark:to-gray-900" />
-                  )}
-                </motion.div>
-              </div>
-            )}
-            <button
-              onClick={() => setDisplayFullAbout(!displayFullAbout)}
-              className="p-2 bg-gray-300 dark:bg-gray-600 m-2 justify-center align-middle self-center content-center text-center border w-fit rounded hover:cursor-pointer hover:bg-gray-500/50 hover:dark:bg-gray-700/50 hover:border-gray-50 transition-all duration-300"
-            >
-              {displayFullAbout ? "Show Less" : "Show More"}
-            </button>
-            <motion.span
-              className="text-gray-600 text-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              About content updates for every 2 hours.
-            </motion.span>
+            {getAboutMe()}
           </div>
           <div className="flex flex-col flex-wrap gap-2">
             <div className="h-fit justify-center flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl px-4 py-8">

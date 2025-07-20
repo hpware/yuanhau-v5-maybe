@@ -7,6 +7,10 @@ export const getMDContent = query({
     slug: v.string(),
   },
   handler: async (ctx, args) => {
-    const content = await ctx.db.query("mdcontent").filter();
+    const content = await ctx.db
+      .query("mdcontent")
+      .filter((q) => q.eq(q.field("slug"), args.slug))
+      .collect();
+    return content;
   },
 });
