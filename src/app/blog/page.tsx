@@ -22,17 +22,17 @@ async function getPosts() {
 
 export async function generateMetadata() {
   return {
-    title: `吳元皓's Blog`,
-    description: "吳元皓的個人網站",
+    title: `Howard's Blog`,
+    description: "Howard的個人網站",
     keywords:
-      "吳元皓, 吳元皓的個人網站, 吳元皓的個人網站首頁, Howard Wu, yuanhau, wuyuanhau, yuanhau.com, yuanh.xyz, Yuan-Hau Wu, 吳元皓, 元皓, 吳元皓, 吳元浩, 元浩, 吳元浩, 吳元浩, 五專生, ictechz, 台灣的五專生, 吴元皓, 吴元皓的网站,吴元浩,元浩,吴元浩的网站,吴元浩,五专生,ictechz,摄影,前端方面, 個人資料連結",
-    authors: [{ name: "吳元皓", url: "https://yuanhau.com" }],
-    creator: "@ictechz",
+      "Howard, Howard的個人網站, Howard的個人網站首頁",
+    authors: [{ name: "Howard", url: "https://yuanhau.com" }],
+    
     openGraph: {
-      title: "吳元皓",
-      description: "吳元皓的個人網站",
+      title: "Howard",
+      description: "Howard的個人網站",
       url: "https://yuanhau.com",
-      siteName: "吳元皓",
+      siteName: "Howard",
       images: [
         {
           url: "https://yuanhau.com/favicon.jpg",
@@ -43,9 +43,9 @@ export async function generateMetadata() {
     },
     twitter: {
       card: "summary_large_image",
-      title: "吳元皓",
-      description: "吳元皓的個人網站",
-      creator: "@ictechz",
+      title: "Howard",
+      description: "Howard的個人網站",
+      
       site: "https://yuanhau.com",
       images: ["https://yuanhau.com/favicon.jpg"],
     },

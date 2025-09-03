@@ -39,12 +39,12 @@ export async function generateMetadata({
 
   return {
     title: `Pages`,
-    description: "吳元皓的個人網站",
+    description: "Howard的個人網站",
     openGraph: {
-      title: "吳元皓",
-      description: "吳元皓的個人網站",
+      title: "Howard",
+      description: "Howard的個人網站",
       url: "https://yuanhau.com",
-      siteName: "吳元皓",
+      siteName: "Howard",
       locale: "zh_TW",
       type: "website",
     },

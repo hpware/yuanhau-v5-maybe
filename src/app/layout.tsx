@@ -11,15 +11,10 @@ const robotoCondensed = Roboto_Condensed({
 });
 
 export const metadata: Metadata = {
-  title: "吳元皓",
-  description: "吳元皓的個人網站",
+  title: "Howard",
+  description: "Howard的個人網站",
   keywords:
-    "吳元皓, 吳元皓的個人網站, 吳元皓的個人網站首頁, Howard Wu, yuanhau, wuyuanhau, yuanhau.com, yuanh.xyz, Yuan-Hau Wu, 吳元皓, 元皓, 吳元皓, 吳元浩, 元浩, 吳元浩, 吳元浩, 五專生, ictechz, 台灣的五專生, 吴元皓, 吴元皓的网站,吴元浩,元浩,吴元浩的网站,吴元浩,五专生,ictechz,摄影,前端方面, 個人資料連結",
-  authors: [
-    {
-      name: "吳元皓",
-    },
-  ],
+    "Howard的個人網站, Howard的個人網站首頁",
   category: "Personal Website",
 };
 
@@ -33,7 +28,6 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <head>
-          <meta name="og:author:email" content="yhcom+v5@yuanhau.com" />
           <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
           {enableDebugging && (
             <script

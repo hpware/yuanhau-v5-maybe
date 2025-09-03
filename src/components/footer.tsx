@@ -130,7 +130,7 @@ export default function Footer(currentTab: { currentTab: string }) {
             draggable="false"
             className="rounded"
           />
-          <span className="text-xl">吳元皓</span>
+          <span className="text-xl">Howard</span>
           <span className="text-sm">
             <i>
               Take risks in life. Your grand-grand-grandkids won't remember you,

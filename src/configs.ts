@@ -1,6 +1,6 @@
 const jsonData = {
   version: "v5 Beta (rev 3)",
-  copyright_owner: "Yuan-Hau Wu",
+  copyright_owner: "Howard Wu",
 };
 
 type JsonDataKey = keyof typeof jsonData;

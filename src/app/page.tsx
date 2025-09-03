@@ -102,7 +102,8 @@ const socials = [
     url: "https://github.com/hpware",
     icon: <GithubIcon />,
   },
-  {
+/**
+ *   {
     name: "instagram",
     url: "https://instagram.com/yhw_tw",
     icon: <InstagramIcon />,
@@ -122,6 +123,7 @@ const socials = [
       </svg>
     ),
   },
+ */
   {
     name: "Twitter (X)",
     url: "https://twitter.com/ictechz",
@@ -134,7 +136,7 @@ const socials = [
   },
   {
     name: "email",
-    url: "mailto:yhcom+v5@yuanhau.com",
+    url: "mailto:pv@yuanhau.com",
     icon: <MailIcon />,
   },
 ];
@@ -216,7 +218,7 @@ export default function Page() {
   return (
     <Layout tab="/">
       <Head>
-        <title>首頁 | 吳元皓</title>
+        <title>首頁 | Howard</title>
       </Head>
       <div className="absolute inset-0 align-middle flex flex-col justify-center text-center h-screen">
         <Image
