@@ -10,12 +10,15 @@ import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { Suspense } from "react";
 import Markdown from "marked-react";
 import { Metadata } from "next";
-import sql from "@/components/pg";
+import { fetchQuery } from "convex/nextjs";
+import { api } from "../../../../convex/_generated/api";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 export const dynamic = "force-dynamic";
 export const revalidate = 3600;
 import CodeRender from "./codeRender";
 import { v4 as uuidv4 } from "uuid";
+import { normalizeWriter, normalizeTimestamp } from "@/lib/normalizeWriter";
 
 // Slugify function for heading IDs
 function slugify(text: string) {
@@ -90,25 +93,18 @@ const renderer = {
 };
 
 async function getPostData(slug: string) {
-  const post = await sql`
-    SELECT *
-    FROM blog
-    WHERE slug = ${slug}
-    AND status = 'published'
-    ORDER BY created_at DESC
-    LIMIT 1
-  `;
+  const post = await fetchQuery(api.blog.getPublishedBySlug, { slug });
 
-  if (post.length === 0) {
-    throw new Error("Post not found");
+  if (!post) {
+    return null;
   }
 
   return {
-    title: post[0].title,
-    publishDate: post[0].created_at || "Unknown",
-    updateDate: post[0].updated_at || post[0].created_at || "Unknown",
-    authorUser: post[0].writer || "Unknown",
-    markdownContent: post[0].markdown_content,
+    title: post.title,
+    publishDate: post.created_at,
+    updateDate: post.updated_at,
+    authorUser: normalizeWriter(post.writer),
+    markdownContent: post.markdown_content,
   };
 }
 
@@ -119,6 +115,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const resolvedParams = await params;
   const data = await getPostData(resolvedParams.slug);
+
+  if (!data) {
+    return {
+      title: "Post Not Found | Howard's Blog",
+    };
+  }
 
   return {
     title: `${data.title} | Howard's Blog`,
@@ -184,14 +186,19 @@ function BlogPostLoading() {
 
 async function BlogPost({ slug }: { slug: string }) {
   const data = await getPostData(slug);
-  const publishDate = new Date(data.publishDate).toLocaleDateString("en-US", {
+  
+  if (!data) {
+    notFound();
+  }
+
+  const publishDate = normalizeTimestamp(data.publishDate).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
     timeZone: "UTC",
   });
 
-  const updateDate = new Date(data.updateDate).toLocaleDateString("en-US", {
+  const updateDate = normalizeTimestamp(data.updateDate).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",

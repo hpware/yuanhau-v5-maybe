@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ConvexClientProvider } from "./ConvexClient";
+import { Toaster } from "sonner";
 const robotoCondensed = Roboto_Condensed({
   variable: "--font-roboto-condensed",
   subsets: ["latin"],
@@ -52,6 +53,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <SpeedInsights />
+            <Toaster richColors position="top-right" />
             <ConvexClientProvider>{children}</ConvexClientProvider>
           </ThemeProvider>
         </body>

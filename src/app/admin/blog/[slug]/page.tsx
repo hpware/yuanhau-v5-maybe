@@ -1,19 +1,19 @@
 import { Badge } from "@/components/ui/badge";
 import { fetchQuery } from "convex/nextjs";
-import { api } from "../../../../../../convex/_generated/api";
+import { api } from "../../../../../convex/_generated/api";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { EditPageForm } from "./EditPageForm";
+import { EditBlogForm } from "./EditBlogForm";
 
-export default async function EditPagePage({
+export default async function EditBlogPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const page = await fetchQuery(api.pages.getBySlug, { slug });
+  const blog = await fetchQuery(api.blog.getBySlug, { slug });
 
-  if (!page) {
+  if (!blog) {
     notFound();
   }
 
@@ -21,19 +21,18 @@ export default async function EditPagePage({
     <div>
       <div className="flex items-center gap-4 mb-6">
         <Link
-          href="/admin/pages"
+          href="/admin/blog"
           className="px-3 py-1.5 text-sm border rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
         >
           Back
         </Link>
-        <h1 className="text-3xl font-bold">Edit Page</h1>
-        <Badge variant={page.status === "published" ? "default" : "secondary"}>
-          {page.status}
+        <h1 className="text-3xl font-bold">Edit Post</h1>
+        <Badge variant={blog.status === "published" ? "default" : "secondary"}>
+          {blog.status}
         </Badge>
-        <Badge variant="outline">{page.page_type}</Badge>
       </div>
 
-      <EditPageForm page={page} />
+      <EditBlogForm blog={blog} />
     </div>
   );
 }

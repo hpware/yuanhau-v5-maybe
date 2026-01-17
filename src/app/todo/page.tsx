@@ -1,18 +1,19 @@
 import { unstable_ViewTransition as ViewTransition, Suspense } from "react";
 import Link from "next/link";
+import { fetchQuery } from "convex/nextjs";
+import { api } from "../../../convex/_generated/api";
 export const dynamic = "force-dynamic";
 export const revalidate = 300;
-import sql from "@/components/pg";
 import Layout from "@/layout/default";
 import Loading from "./loading";
 
 interface TodoItem {
-  uuid: string;
+  _id: string;
   title: string;
   content: string;
 }
 
-function TodoListDisplayComponent({ uuid, title, content }: TodoItem) {
+function TodoListDisplayComponent({ _id, title, content }: TodoItem) {
   return (
     <li className="w-full md:w-1/2 lg:w-1/3">
       <div className="p-4 m-2 rounded-lg shadow-md bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm hover:-translate-y-1 border border-gray-400/60 hover:border-gray-400/40 transition-all duration-200">
@@ -26,7 +27,7 @@ function TodoListDisplayComponent({ uuid, title, content }: TodoItem) {
 }
 
 async function ContentPage() {
-  const sqlData = await sql<TodoItem[]>`SELECT * FROM todos`;
+  const todos = await fetchQuery(api.todos.list, {});
   return (
     <div className="justify-center align-center m-1 absolute inset-0 flex flex-col">
       <ViewTransition name="title">
@@ -41,10 +42,10 @@ async function ContentPage() {
         </Link>
       </ViewTransition>
       <ul className="flex flex-row flex-wrap gap-1 justify-center align-center w-full">
-        {sqlData.map((item: TodoItem) => (
+        {todos.map((item) => (
           <TodoListDisplayComponent
-            key={item.uuid}
-            uuid={item.uuid}
+            key={item._id}
+            _id={item._id}
             title={item.title}
             content={item.content}
           />

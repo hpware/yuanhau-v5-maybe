@@ -14,6 +14,10 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as app from "../app.js";
+import type * as blog from "../blog.js";
+import type * as galleries from "../galleries.js";
+import type * as pages from "../pages.js";
+import type * as todos from "../todos.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -25,6 +29,10 @@ import type * as app from "../app.js";
  */
 declare const fullApi: ApiFromModules<{
   app: typeof app;
+  blog: typeof blog;
+  galleries: typeof galleries;
+  pages: typeof pages;
+  todos: typeof todos;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

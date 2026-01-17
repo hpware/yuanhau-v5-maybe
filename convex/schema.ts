@@ -1,52 +1,81 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
-// The schema is normally optional, but Convex Auth
-// requires indexes defined on `authTables`.
-// The schema provides more precise TypeScript types.
 export default defineSchema({
   blog: defineTable({
-    uuid: v.string(),
     title: v.string(),
     slug: v.string(),
     markdown_content: v.string(),
-    writer: v.array(v.string()),
-    status: v.string(),
-    created_at: v.number(),
-    updated_at: v.number(),
-  }).index("uuid", ["uuid", "slug"]),
-  // CREATED_AT THINGY
-  /**
-   * await ctx.db.insert("events", {
-     name: "My Event",
-     createdAt: Date.now(), // current UTC timestamp
-   });
-   */
-  mdcontent: defineTable({
-    uuid: v.string(),
-    slug: v.string(),
-    content: v.string(), // NOT NULL
-  }).index("uuid", ["uuid", "slug"]),
+    writer: v.union(
+      v.object({
+        name: v.string(),
+        id: v.optional(v.string()),
+      }),
+      v.array(v.string()) // Legacy format from PostgreSQL
+    ),
+    status: v.union(v.literal("draft"), v.literal("published"), v.literal("archived")),
+    created_at: v.union(v.number(), v.string()), // Can be number (new) or string (legacy from PostgreSQL)
+    updated_at: v.union(v.number(), v.string()), // Can be number (new) or string (legacy from PostgreSQL)
+  })
+    .index("by_slug", ["slug"])
+    .index("by_status", ["status"]),
 
   pages: defineTable({
-    uuid: v.string(),
     slug: v.string(),
     title: v.string(),
-    writer: v.array(v.string()),
-    page_type: v.string(),
-    status: v.string(),
+    writer: v.union(v.string(), v.array(v.string())), // Can be string (new) or array (legacy from PostgreSQL)
+    page_type: v.union(v.literal("landing"), v.literal("simple"), v.literal("info")),
+    status: v.union(v.literal("draft"), v.literal("published"), v.literal("archived")),
     markdown_content: v.string(),
-    landing_image: v.string(),
-    created_at: v.string(),
-    updated_at: v.string(),
-  }).index("uuid", ["uuid", "slug"]),
+    landing_image: v.optional(v.string()),
+    created_at: v.union(v.number(), v.string()), // Can be number (new) or string (legacy from PostgreSQL)
+    updated_at: v.union(v.number(), v.string()), // Can be number (new) or string (legacy from PostgreSQL)
+    uuid: v.optional(v.string()), // Legacy field from PostgreSQL migration
+  })
+    .index("by_slug", ["slug"])
+    .index("by_status", ["status"]),
 
-  // Comments system
+  galleries: defineTable({
+    name: v.string(),
+    slug: v.string(),
+    description: v.optional(v.string()),
+    index_image: v.optional(v.string()),
+    status: v.union(v.literal("draft"), v.literal("published"), v.literal("archived")),
+    created_at: v.union(v.number(), v.string()), // Can be number (new) or string (legacy from PostgreSQL)
+    updated_at: v.union(v.number(), v.string()), // Can be number (new) or string (legacy from PostgreSQL)
+  })
+    .index("by_slug", ["slug"])
+    .index("by_status", ["status"]),
+
+  gallery_images: defineTable({
+    gallery_id: v.union(v.id("galleries"), v.string()), // Can be Convex ID or legacy string ID
+    name: v.string(),
+    description: v.optional(v.string()),
+    image_url: v.string(),
+    sort_order: v.number(),
+    created_at: v.union(v.number(), v.string()), // Can be number (new) or string (legacy from PostgreSQL)
+  })
+    .index("by_gallery_sort", ["sort_order"]),
+
+  mdcontent: defineTable({
+    slug: v.string(),
+    content: v.string(),
+    uuid: v.optional(v.string()), // Legacy field from PostgreSQL migration
+  }).index("by_slug", ["slug"]),
+
   comments: defineTable({
-    uuid: v.string(),
-    article_uuid: v.string(),
+    article_id: v.string(),
     clerk_user: v.string(),
     comment: v.string(),
-    thread: v.array(v.object({})),
-  }).index("uuid", ["uuid"]),
+    parent_id: v.optional(v.id("comments")),
+    created_at: v.number(),
+  })
+    .index("by_article", ["article_id"])
+    .index("by_parent", ["parent_id"]),
+
+  todos: defineTable({
+    title: v.string(),
+    content: v.string(),
+    created_at: v.number(),
+  }),
 });

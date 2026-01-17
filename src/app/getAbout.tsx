@@ -1,29 +1,14 @@
 "use server";
-import { NextRequest } from "next/server";
-import { unstable_cache } from "next/cache";
-import sql from "@/components/pg";
-
-const fetchContent = unstable_cache(
-  async () => {
-    /*
-    const data = await sql`
-      SELECT * FROM mdcontent
-      WHERE slug = "about"
-    `;
-    */
-    const content = "data[0]?.content";
-    return {
-      content: content
-        .replace(/\\n/g, "\n")
-        .replace(/\r\n/g, "\n")
-        .replace(/\r/g, "\n"),
-    };
-  },
-  ["mdcontent"],
-  { revalidate: 9600 },
-);
+import { fetchQuery } from "convex/nextjs";
+import { api } from "../../convex/_generated/api";
 
 export default async function getData() {
-  const content = await fetchContent();
-  return content;
+  // TODO: Implement mdcontent fetching via Convex if needed
+  const content = "";
+  return {
+    content: content
+      .replace(/\\n/g, "\n")
+      .replace(/\r\n/g, "\n")
+      .replace(/\r/g, "\n"),
+  };
 }

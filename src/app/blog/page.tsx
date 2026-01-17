@@ -1,8 +1,10 @@
 import Layout from "@/layout/default";
 import Link from "next/link";
-import sql from "@/components/pg";
+import { fetchQuery } from "convex/nextjs";
+import { api } from "../../../convex/_generated/api";
 import { Suspense } from "react";
 import { Roboto } from "next/font/google";
+import { normalizeTimestamp } from "@/lib/normalizeWriter";
 export const dynamic = "force-dynamic";
 export const revalidate = 3600;
 
@@ -10,15 +12,6 @@ const roboto = Roboto({
   variable: "--font-roboto",
   subsets: ["latin"],
 });
-
-async function getPosts() {
-  const fetchArticles = await sql`
-    SELECT * FROM blog
-    WHERE status = 'published'
-    ORDER BY created_at DESC
-    `;
-  return fetchArticles;
-}
 
 export async function generateMetadata() {
   return {
@@ -53,15 +46,15 @@ export async function generateMetadata() {
 }
 
 async function BlogPosts() {
-  const posts = await getPosts();
+  const posts = await fetchQuery(api.blog.listPublished, {});
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-auto">
       {posts.map((i) => (
-        <Link href={`/blog/${i.slug}`} key={i.uuid} className="group">
+        <Link href={`/blog/${i.slug}`} key={i._id} className="group">
           <div className="p-4 backdrop-blur-lg bg-gray-500/10 dark:bg-gray-300/20 rounded-xl hover:bg-gray-500/20 transition-all duration-300 min-h-1/5">
             <span className="text-2xl block mb-2">{i.title}</span>
             <span className="text-sm text-gray-600 dark:text-gray-400">
-              {new Date(i.created_at).toLocaleDateString("en-US", {
+              {normalizeTimestamp(i.created_at).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
