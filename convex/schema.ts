@@ -16,6 +16,7 @@ export default defineSchema({
     status: v.union(v.literal("draft"), v.literal("published"), v.literal("archived")),
     created_at: v.union(v.number(), v.string()), // Can be number (new) or string (legacy from PostgreSQL)
     updated_at: v.union(v.number(), v.string()), // Can be number (new) or string (legacy from PostgreSQL)
+    uuid: v.optional(v.string()), // Legacy field from PostgreSQL migration
   })
     .index("by_slug", ["slug"])
     .index("by_status", ["status"]),
