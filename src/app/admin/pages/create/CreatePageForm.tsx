@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,8 +11,17 @@ import { createPage } from "../../actions";
 
 export function CreatePageForm() {
   const router = useRouter();
+  const [pageType, setPageType] = useState("simple");
+  const [landingImageError, setLandingImageError] = useState("");
 
   async function handleCreate(formData: FormData) {
+    const type = formData.get("page_type") as string;
+    const landingImage = (formData.get("landing_image") as string)?.trim();
+    if (type === "landing" && !landingImage) {
+      setLandingImageError("Landing Image URL is required for landing pages");
+      return;
+    }
+    setLandingImageError("");
     const result = await createPage(formData);
     if (result.success) {
       toast.success(result.message);
@@ -52,7 +62,11 @@ export function CreatePageForm() {
           <select
             id="page_type"
             name="page_type"
-            defaultValue="simple"
+            value={pageType}
+            onChange={(e) => {
+              setPageType(e.target.value);
+              if (e.target.value !== "landing") setLandingImageError("");
+            }}
             className="h-10 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-100"
           >
             <option value="landing">
@@ -71,7 +85,11 @@ export function CreatePageForm() {
             id="landing_image"
             name="landing_image"
             placeholder="https://example.com/hero.jpg"
+            required={pageType === "landing"}
           />
+          {landingImageError && (
+            <p className="text-sm text-red-500">{landingImageError}</p>
+          )}
         </div>
 
         <div className="flex flex-col space-y-2">

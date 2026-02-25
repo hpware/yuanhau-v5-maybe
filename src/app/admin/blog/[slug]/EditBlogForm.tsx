@@ -20,6 +20,7 @@ export function EditBlogForm({ blog }: { blog: any }) {
     const result = await updateBlogPost(blog.slug, formData);
     if (result.success) {
       toast.success(result.message);
+      router.refresh();
     } else {
       toast.error(result.message);
     }

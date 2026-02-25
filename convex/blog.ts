@@ -6,6 +6,8 @@ import { query, mutation } from "./_generated/server";
 export const list = query({
   args: {},
   handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthorized");
     const blogs = await ctx.db
       .query("blog")
       .order("desc")
@@ -29,6 +31,8 @@ export const listPublished = query({
 export const getBySlug = query({
   args: { slug: v.string() },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthorized");
     const blog = await ctx.db
       .query("blog")
       .withIndex("by_slug", (q) => q.eq("slug", args.slug))
@@ -54,6 +58,8 @@ export const getPublishedBySlug = query({
 export const getById = query({
   args: { id: v.id("blog") },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthorized");
     return await ctx.db.get(args.id);
   },
 });

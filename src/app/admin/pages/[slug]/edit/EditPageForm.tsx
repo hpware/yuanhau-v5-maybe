@@ -20,6 +20,7 @@ export function EditPageForm({ page }: { page: any }) {
     const result = await updatePage(page.slug, formData);
     if (result.success) {
       toast.success(result.message);
+      router.refresh();
     } else {
       toast.error(result.message);
     }
