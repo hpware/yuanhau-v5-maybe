@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
@@ -116,15 +117,9 @@ export function GalleryList({ galleries }: { galleries: any[] }) {
               <CardHeader className="pb-2">
                 <div className="flex justify-between items-start">
                   <CardTitle className="text-lg">{gallery.name}</CardTitle>
-                  <span
-                    className={`text-xs px-2 py-1 rounded ${
-                      gallery.status === "published"
-                        ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                        : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"
-                    }`}
-                  >
+                  <Badge variant={gallery.status === "published" ? "default" : "secondary"}>
                     {gallery.status}
-                  </span>
+                  </Badge>
                 </div>
                 <CardDescription>{gallery.slug}</CardDescription>
               </CardHeader>

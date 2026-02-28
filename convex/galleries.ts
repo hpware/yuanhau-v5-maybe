@@ -40,11 +40,11 @@ export const getBySlug = query({
 export const getImages = query({
   args: { galleryId: v.id("galleries") },
   handler: async (ctx, args) => {
-    const images = await ctx.db
+    return await ctx.db
       .query("gallery_images")
-      .filter((q) => q.eq(q.field("gallery_id"), args.galleryId))
+      .withIndex("by_gallery_sort", (q) => q.eq("gallery_id", args.galleryId))
+      .order("asc")
       .collect();
-    return images.sort((a, b) => a.sort_order - b.sort_order);
   },
 });
 
@@ -60,10 +60,11 @@ export const getBySlugWithImages = query({
 
     const images = await ctx.db
       .query("gallery_images")
-      .filter((q) => q.eq(q.field("gallery_id"), gallery._id))
+      .withIndex("by_gallery_sort", (q) => q.eq("gallery_id", gallery._id))
+      .order("asc")
       .collect();
 
-    return { ...gallery, images: images.sort((a, b) => a.sort_order - b.sort_order) };
+    return { ...gallery, images };
   },
 });
 
@@ -176,13 +177,13 @@ export const addImage = mutation({
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthorized");
-    // Get the current max sort order
-    const images = await ctx.db
+    // Get the current max sort order using the index
+    const lastImage = await ctx.db
       .query("gallery_images")
-      .filter((q) => q.eq(q.field("gallery_id"), args.gallery_id))
-      .collect();
-    
-    const maxOrder = images.reduce((max, img) => Math.max(max, img.sort_order), -1);
+      .withIndex("by_gallery_sort", (q) => q.eq("gallery_id", args.gallery_id))
+      .order("desc")
+      .first();
+    const maxOrder = lastImage ? lastImage.sort_order : -1;
 
     const id = await ctx.db.insert("gallery_images", {
       gallery_id: args.gallery_id,

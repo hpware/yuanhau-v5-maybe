@@ -56,7 +56,7 @@ export default defineSchema({
     sort_order: v.number(),
     created_at: v.union(v.number(), v.string()), // Can be number (new) or string (legacy from PostgreSQL)
   })
-    .index("by_gallery_sort", ["sort_order"]),
+    .index("by_gallery_sort", ["gallery_id", "sort_order"]),
 
   mdcontent: defineTable({
     slug: v.string(),

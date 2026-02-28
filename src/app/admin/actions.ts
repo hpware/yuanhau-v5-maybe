@@ -10,9 +10,12 @@ import { Id } from "../../../convex/_generated/dataModel";
 
 export async function createBlogPost(formData: FormData) {
   const user = await currentUser();
-  const slug = formData.get("slug") as string;
-  const title = formData.get("title") as string;
-  const markdown_content = formData.get("markdown_content") as string;
+  const slug = formData.get("slug")?.toString().trim();
+  const title = formData.get("title")?.toString().trim();
+  const markdown_content = formData.get("markdown_content")?.toString().trim();
+  if (!slug || !title || !markdown_content) {
+    return { success: false, message: "Missing required fields" };
+  }
   const writer = {
     name: user?.firstName
       ? `${user.firstName} ${user.lastName || ""}`.trim()
@@ -88,11 +91,19 @@ export async function deleteBlogPost(slug: string) {
 
 export async function createPage(formData: FormData) {
   const user = await currentUser();
-  const title = formData.get("title") as string;
-  const slug = formData.get("slug") as string;
-  const page_type = formData.get("page_type") as "landing" | "simple" | "info";
-  const markdown_content = formData.get("markdown_content") as string;
-  const landing_image = formData.get("landing_image") as string;
+  const title = formData.get("title")?.toString().trim();
+  const slug = formData.get("slug")?.toString().trim();
+  const page_type_raw = formData.get("page_type")?.toString().trim();
+  const markdown_content = formData.get("markdown_content")?.toString().trim();
+  const landing_image = formData.get("landing_image")?.toString().trim();
+  if (!title || !slug || !markdown_content) {
+    return { success: false, message: "Missing required fields" };
+  }
+  const validPageTypes = ["landing", "simple", "info"] as const;
+  if (!page_type_raw || !validPageTypes.includes(page_type_raw as any)) {
+    return { success: false, message: "Invalid page type" };
+  }
+  const page_type = page_type_raw as "landing" | "simple" | "info";
   const writer = user?.firstName
     ? `${user.firstName} ${user.lastName || ""}`.trim()
     : user?.emailAddresses?.[0]?.emailAddress || "Unknown";
@@ -114,10 +125,18 @@ export async function createPage(formData: FormData) {
 }
 
 export async function updatePage(slug: string, formData: FormData) {
-  const title = formData.get("title") as string;
-  const page_type = formData.get("page_type") as "landing" | "simple" | "info";
-  const markdown_content = formData.get("markdown_content") as string;
-  const landing_image = formData.get("landing_image") as string;
+  const title = formData.get("title")?.toString().trim();
+  const page_type_raw = formData.get("page_type")?.toString().trim();
+  const markdown_content = formData.get("markdown_content")?.toString().trim();
+  const landing_image = formData.get("landing_image")?.toString().trim();
+  if (!title || !markdown_content) {
+    return { success: false, message: "Missing required fields" };
+  }
+  const validPageTypes = ["landing", "simple", "info"] as const;
+  if (!page_type_raw || !validPageTypes.includes(page_type_raw as any)) {
+    return { success: false, message: "Invalid page type" };
+  }
+  const page_type = page_type_raw as "landing" | "simple" | "info";
 
   try {
     await fetchMutation(api.pages.update, {

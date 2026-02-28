@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -27,6 +29,7 @@ export function GalleryDetail({
   images: any[];
 }) {
   const router = useRouter();
+  const addImageFormRef = useRef<HTMLFormElement>(null);
 
   async function handleUpdateGallery(formData: FormData) {
     const result = await updateGallery(gallery._id, gallery.slug, formData);
@@ -43,9 +46,7 @@ export function GalleryDetail({
     if (result.success) {
       toast.success(result.message);
       router.refresh();
-      // Reset form
-      const form = document.getElementById("add-image-form") as HTMLFormElement;
-      form?.reset();
+      addImageFormRef.current?.reset();
     } else {
       toast.error(result.message);
     }
@@ -73,15 +74,9 @@ export function GalleryDetail({
           Back
         </Link>
         <h1 className="text-3xl font-bold">{gallery.name}</h1>
-        <span
-          className={`text-xs px-2 py-1 rounded ${
-            gallery.status === "published"
-              ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-              : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"
-          }`}
-        >
+        <Badge variant={gallery.status === "published" ? "default" : "secondary"}>
           {gallery.status}
-        </span>
+        </Badge>
       </div>
 
       {/* Gallery Settings */}
@@ -133,7 +128,7 @@ export function GalleryDetail({
         </CardHeader>
         <CardContent>
           <form
-            id="add-image-form"
+            ref={addImageFormRef}
             action={handleAddImage}
             className="space-y-4"
           >
