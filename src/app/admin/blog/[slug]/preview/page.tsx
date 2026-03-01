@@ -5,6 +5,7 @@ import Markdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
 
 export default async function PreviewBlogPage({
   params,
@@ -12,7 +13,9 @@ export default async function PreviewBlogPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const blog = await fetchQuery(api.blog.getBySlug, { slug });
+  const { getToken } = await auth();
+  const token = await getToken({ template: "convex" });
+  const blog = await fetchQuery(api.blog.getBySlug, { slug }, { token });
 
   if (!blog) {
     notFound();
