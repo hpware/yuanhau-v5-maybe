@@ -3,6 +3,7 @@ module.exports = {
   siteUrl: process.env.SITE_URL || "https://yuanhau.com",
   generateRobotsTxt: true,
   priority: 0.9,
+  exclude: ["/admin/*"],
   robotsTxtOptions: {
     additionalSitemaps: [
       `${process.env.SITE_URL || "https://yuanhau.com"}/sitemap-blog.xml`,

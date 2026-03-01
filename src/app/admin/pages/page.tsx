@@ -14,56 +14,58 @@ import { fetchQuery } from "convex/nextjs";
 import { api } from "../../../../convex/_generated/api";
 import { normalizeTimestamp } from "@/lib/normalizeWriter";
 
-export default async function BlogAdminPage() {
-  const blogs = await fetchQuery(api.blog.list, {});
+export default async function PagesAdminPage() {
+  const pages = await fetchQuery(api.pages.list, {});
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Blog Posts</h1>
+        <h1 className="text-3xl font-bold">Pages</h1>
         <Button asChild>
-          <Link href="/admin/blog/create">Create New Post</Link>
+          <Link href="/admin/pages/create">Create New Page</Link>
         </Button>
       </div>
 
       <Table>
-        <TableCaption>A list of all blog posts.</TableCaption>
+        <TableCaption>A list of all pages.</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>Title</TableHead>
             <TableHead>Slug</TableHead>
+            <TableHead>Type</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Created At</TableHead>
-            <TableHead>Updated At</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {blogs.map((post) => (
-            <TableRow key={post._id}>
-              <TableCell className="font-medium">{post.title}</TableCell>
-              <TableCell className="text-gray-500">{post.slug}</TableCell>
+          {pages.map((page) => (
+            <TableRow key={page._id}>
+              <TableCell className="font-medium">{page.title}</TableCell>
+              <TableCell className="text-gray-500">{page.slug}</TableCell>
+              <TableCell>
+                <Badge variant="outline">{page.page_type}</Badge>
+              </TableCell>
               <TableCell>
                 <Badge
                   variant={
-                    post.status === "published" ? "default" : "secondary"
+                    page.status === "published" ? "default" : "secondary"
                   }
                 >
-                  {post.status}
+                  {page.status}
                 </Badge>
               </TableCell>
               <TableCell>
-                {normalizeTimestamp(post.created_at).toLocaleDateString()}
-              </TableCell>
-              <TableCell>
-                {normalizeTimestamp(post.updated_at).toLocaleDateString()}
+                {normalizeTimestamp(page.created_at).toLocaleDateString()}
               </TableCell>
               <TableCell className="text-right space-x-2">
                 <Button asChild variant="outline" size="sm">
-                  <Link href={`/admin/blog/${post.slug}/preview`}>Preview</Link>
+                  <Link href={`/admin/pages/${page.slug}/preview`}>
+                    Preview
+                  </Link>
                 </Button>
                 <Button asChild size="sm">
-                  <Link href={`/admin/blog/${post.slug}`}>Edit</Link>
+                  <Link href={`/admin/pages/${page.slug}/edit`}>Edit</Link>
                 </Button>
               </TableCell>
             </TableRow>
@@ -71,9 +73,9 @@ export default async function BlogAdminPage() {
         </TableBody>
       </Table>
 
-      {blogs.length === 0 && (
+      {pages.length === 0 && (
         <div className="text-center py-10 text-gray-500">
-          No blog posts yet. Create your first post!
+          No pages yet. Create your first page!
         </div>
       )}
     </div>
