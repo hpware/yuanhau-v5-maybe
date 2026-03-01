@@ -14,7 +14,7 @@ export default async function PreviewBlogPage({
 }) {
   const { slug } = await params;
   const { getToken } = await auth();
-  const token = await getToken({ template: "convex" });
+  const token = await getToken({ template: "convex" }) ?? undefined;
   const blog = await fetchQuery(api.blog.getBySlug, { slug }, { token });
 
   if (!blog) {

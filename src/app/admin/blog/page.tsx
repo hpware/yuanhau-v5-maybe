@@ -17,7 +17,7 @@ import { auth } from "@clerk/nextjs/server";
 
 export default async function BlogAdminPage() {
   const { getToken } = await auth();
-  const token = await getToken({ template: "convex" });
+  const token = await getToken({ template: "convex" }) ?? undefined;
   const blogs = await fetchQuery(api.blog.list, {}, { token });
 
   return (
