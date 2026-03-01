@@ -113,6 +113,8 @@ export const update = mutation({
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthorized");
+    const gallery = await ctx.db.get(args.id);
+    if (!gallery) throw new Error("Gallery not found");
     await ctx.db.patch(args.id, {
       name: args.name,
       description: args.description,
@@ -127,6 +129,8 @@ export const publish = mutation({
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthorized");
+    const gallery = await ctx.db.get(args.id);
+    if (!gallery) throw new Error("Gallery not found");
     await ctx.db.patch(args.id, {
       status: "published",
       updated_at: Date.now(),
@@ -139,6 +143,8 @@ export const unpublish = mutation({
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthorized");
+    const gallery = await ctx.db.get(args.id);
+    if (!gallery) throw new Error("Gallery not found");
     await ctx.db.patch(args.id, {
       status: "draft",
       updated_at: Date.now(),
@@ -154,7 +160,7 @@ export const remove = mutation({
     // Delete all images in the gallery first
     const images = await ctx.db
       .query("gallery_images")
-      .filter((q) => q.eq(q.field("gallery_id"), args.id))
+      .withIndex("by_gallery_sort", (q) => q.eq("gallery_id", args.id))
       .collect();
     
     for (const image of images) {
