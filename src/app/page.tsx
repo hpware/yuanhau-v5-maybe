@@ -336,7 +336,7 @@ export default function Page() {
           “
         </span>
         <div className="text-3xl font-bold">
-          This summer, Do something different.
+          idk fancy text, use my ssh server ig
         </div>
         <span className="text-[150px] m-0 p-0 dark:text-white/30 text-black/20 leading-none -translate-x-8 -translate-y-2 select-none">
           ”
