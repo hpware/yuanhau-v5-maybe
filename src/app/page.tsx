@@ -211,10 +211,10 @@ export default function Page() {
         <div
           className={`flex flex-row justify-center space-x-3 border ${copyKeyAction ? "border-green-600 dark:border-green-500" : "border-black/70 dark:border-white/70"} transition-all duration-300i px-8 py-6 rounded`}
         >
-          <code>ssh me.yhw.tw</code>
+          <code>ssh go@to.yhw.tw</code>
           <button
             onClick={() => {
-              navigator.clipboard.writeText("ssh me.yhw.tw");
+              navigator.clipboard.writeText("ssh go@to.yhw.tw");
               setCopyKeyAction(true);
             }}
           >
