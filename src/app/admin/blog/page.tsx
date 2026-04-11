@@ -13,9 +13,12 @@ import Link from "next/link";
 import { fetchQuery } from "convex/nextjs";
 import { api } from "../../../../convex/_generated/api";
 import { normalizeTimestamp } from "@/lib/normalizeWriter";
+import { auth } from "@clerk/nextjs/server";
 
 export default async function BlogAdminPage() {
-  const blogs = await fetchQuery(api.blog.list, {});
+  const { getToken } = await auth();
+  const token = await getToken({ template: "convex" }) ?? undefined;
+  const blogs = await fetchQuery(api.blog.list, {}, { token });
 
   return (
     <div>

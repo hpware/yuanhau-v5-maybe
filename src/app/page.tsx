@@ -16,9 +16,12 @@ import {
   TwitterIcon,
   MailIcon,
   ChevronDownIcon,
+  CopyIcon,
+  CopyCheck,
 } from "lucide-react";
 import Head from "next/head";
 import getEducationContent from "./getEducationContent";
+import CodeRender from "./pages/[slug]/codeRenderer";
 
 function GetAboutMe() {
   const [displayFullAbout, setDisplayFullAbout] = useState<boolean>(false);
@@ -102,7 +105,7 @@ const socials = [
     url: "https://github.com/hpware",
     icon: <GithubIcon />,
   },
-/**
+  /**
  *   {
     name: "instagram",
     url: "https://instagram.com/yhw_tw",
@@ -141,35 +144,22 @@ const socials = [
   },
 ];
 
-const progressMap = [
-  {
-    icon: <GetIcon name="vue" />,
-    name: "VueJS",
-    percent: 60,
-  },
-  {
-    icon: <GetIcon name="react" />,
-    name: "React",
-    percent: 1,
-  },
-  {
-    icon: <GetIcon name="tailwind" />,
-    name: "Tailwind",
-    percent: 50,
-  },
-  {
-    icon: <i className="bi bi-filetype-html"></i>,
-    name: "HTML",
-    percent: 80,
-  },
-];
-
 const images = [
   "https://s3.yhw.tw/scharchive/bgimage.jpg",
   "https://s3.yhw.tw/data/bg/bryan-brittos-kNNJAN2jpTI-unsplash.jpg",
 ];
 
 export default function Page() {
+  const [copyKeyAction, setCopyKeyAction] = useState<boolean>(false);
+  useEffect(() => {
+    async function a() {
+      if (copyKeyAction !== false) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        setCopyKeyAction(false);
+      }
+    }
+    a();
+  }, [copyKeyAction]);
   const [education, setEducationContent] = useState<
     {
       item: number;
@@ -217,41 +207,36 @@ export default function Page() {
   };
   return (
     <Layout tab="/">
-      <Head>
-        <title>首頁 | Howard</title>
-      </Head>
-      <div className="absolute inset-0 align-middle flex flex-col justify-center text-center h-screen">
-        <Image
-          src="/images/profile.jpg"
-          width="250"
-          height="250"
-          alt="Profile Picture"
-          draggable="false"
-          className="rounded-full justify-center align-middle content-center self-center text-center border shadow-lg border-gray-100/30 backdrop-blur-lg"
-        />
-        <h1 className="text-4xl font-bold text-center mb-4 dark:text-white">
-          Howard Wu
-        </h1>
-        <div className="flex flex-row justify-center align-middle text-center gap-2">
-          {socials.map((i) => (
-            <a
-              href={i.url}
-              aria-label={i.name}
-              key={i.url}
-              className="hover:text-gray-500/60 hover:dark:text-white/60 transition-all duration-300"
-            >
-              {i.icon}
-            </a>
-          ))}
+      <div className="absolute inset-0 align-middle flex flex-col justify-center items-center h-screen text-center max-w-screen">
+        <div
+          className={`flex flex-row justify-center space-x-3 border ${copyKeyAction ? "border-green-600 dark:border-green-500" : "border-black/70 dark:border-white/70"} transition-all duration-300i px-8 py-6 rounded`}
+        >
+          <code>ssh me.yhw.tw</code>
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText("ssh me.yhw.tw");
+              setCopyKeyAction(true);
+            }}
+          >
+            {copyKeyAction ? (
+              <CopyCheck
+                className={`p-1 hover:rotate-5 hover:scale-110 transition-all duration-300`}
+              />
+            ) : (
+              <CopyIcon
+                className={`p-1 hover:rotate-5 hover:scale-110 transition-all duration-300`}
+              />
+            )}
+          </button>
         </div>
       </div>
       <Link href="/#learnmore">
         <motion.div
-          animate={{ y: [0, 20] }}
+          animate={{ y: [0, 10] }}
           transition={transition}
           className="absolute inset-x-0 top-[90vh] md:top-[90dvh] flex flex-row text-center justify-center align-bottom"
         >
-          Learn More <ChevronDownIcon />
+          View via HTTP instead <ChevronDownIcon />
         </motion.div>
       </Link>
       <div className="h-screen"></div>
@@ -341,27 +326,6 @@ export default function Page() {
                     </div>
                   ))
               )}
-            </div>
-            <div className="flex flex-col text-center text-wrap backdrop-blur-lg bg-gray-500/10 rounded-xl p-4 overflow-y-auto">
-              <section id="code_progress"></section>
-              <h2 className="text-3xl text-bold align-top">程式進度</h2>
-              {progressMap.map((i) => (
-                <div key={i.name} className="flex flex-col">
-                  <div className="flex flex-row">
-                    <div className="w-7 p-1 text-black dark:text-white fill-black dark:fill-white">
-                      {i.icon}
-                    </div>
-                    <span className="text-lg">{i.name}:</span>
-                  </div>
-                  <div className="flex flex-row w-full">
-                    <Progress
-                      value={i.percent}
-                      className="rounded border w-full mx-2 my-1 text-black h-4"
-                    />
-                    <span className="w-12">{i.percent}%</span>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
         </div>
