@@ -207,7 +207,7 @@ export default function Page() {
   };
   return (
     <Layout tab="/">
-      <div className="absolute inset-0 align-middle flex flex-col justify-center items-center h-screen text-center max-w-screen">
+      <dive className="absolute inset-0 align-middle flex flex-col justify-center items-center h-screen text-center max-w-screen">
         <div
           className={`flex flex-row justify-center space-x-3 border ${copyKeyAction ? "border-green-600 dark:border-green-500" : "border-black/70 dark:border-white/70"} transition-all duration-300i px-8 py-6 rounded`}
         >
@@ -229,7 +229,7 @@ export default function Page() {
             )}
           </button>
         </div>
-      </div>
+      </dive>
       <Link href="/#learnmore">
         <motion.div
           animate={{ y: [0, 10] }}

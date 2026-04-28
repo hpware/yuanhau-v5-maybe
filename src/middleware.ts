@@ -1,34 +1,50 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "").split(",").filter(Boolean);
 
-type ClerkMetadata = {
-  role?: string;
-};
+export async function middleware(req: NextRequest) {
+  const url = req.nextUrl.clone();
 
-export default clerkMiddleware(async (auth, req) => {
-  if (isAdminRoute(req)) {
-    const { sessionClaims, userId } = await auth();
+  if (url.pathname.startsWith("/admin")) {
+    const sessionToken = req.cookies.get("better-auth.session_token")?.value;
 
-    /*console.log("userId:", userId);
-    console.log("sessionClaims:", sessionClaims);
-    console.log("metadata:", sessionClaims?.metadata);*/
-
-    if (!userId) {
+    if (!sessionToken) {
       return NextResponse.redirect(new URL("/", req.url));
     }
 
-    const metadata = sessionClaims?.metadata as ClerkMetadata | undefined;
-    const isAdmin = metadata?.role === "admin";
+    try {
+      const baseUrl = process.env.BETTER_AUTH_URL || `http://localhost:${process.env.PORT || 3000}`;
+      const sessionRes = await fetch(`${baseUrl}/api/auth/get-session`, {
+        headers: {
+          cookie: req.headers.get("cookie") || "",
+        },
+      });
 
-    console.log(isAdmin);
+      if (!sessionRes.ok) {
+        return NextResponse.redirect(new URL("/", req.url));
+      }
 
-    if (!isAdmin) {
+      const session = await sessionRes.json();
+
+      if (!session?.user) {
+        return NextResponse.redirect(new URL("/", req.url));
+      }
+
+      const isAdmin =
+        session.user.role === "admin" ||
+        ADMIN_EMAILS.includes(session.user.email);
+
+      if (!isAdmin) {
+        return NextResponse.redirect(new URL("/", req.url));
+      }
+    } catch {
       return NextResponse.redirect(new URL("/", req.url));
     }
   }
-});
+
+  return NextResponse.next();
+}
 
 export const config = {
   matcher: [

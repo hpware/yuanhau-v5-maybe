@@ -78,9 +78,6 @@ export const create = mutation({
     index_image: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthorized");
-    // Check if slug already exists
     const existing = await ctx.db
       .query("galleries")
       .withIndex("by_slug", (q) => q.eq("slug", args.slug))
@@ -111,8 +108,6 @@ export const update = mutation({
     index_image: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthorized");
     const gallery = await ctx.db.get(args.id);
     if (!gallery) throw new Error("Gallery not found");
     await ctx.db.patch(args.id, {
@@ -127,8 +122,6 @@ export const update = mutation({
 export const publish = mutation({
   args: { id: v.id("galleries") },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthorized");
     const gallery = await ctx.db.get(args.id);
     if (!gallery) throw new Error("Gallery not found");
     await ctx.db.patch(args.id, {
@@ -141,8 +134,6 @@ export const publish = mutation({
 export const unpublish = mutation({
   args: { id: v.id("galleries") },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthorized");
     const gallery = await ctx.db.get(args.id);
     if (!gallery) throw new Error("Gallery not found");
     await ctx.db.patch(args.id, {
@@ -155,9 +146,6 @@ export const unpublish = mutation({
 export const remove = mutation({
   args: { id: v.id("galleries") },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthorized");
-    // Delete all images in the gallery first
     const images = await ctx.db
       .query("gallery_images")
       .withIndex("by_gallery_sort", (q) => q.eq("gallery_id", args.id))
@@ -181,9 +169,6 @@ export const addImage = mutation({
     image_url: v.string(),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthorized");
-    // Get the current max sort order using the index
     const lastImage = await ctx.db
       .query("gallery_images")
       .withIndex("by_gallery_sort", (q) => q.eq("gallery_id", args.gallery_id))
@@ -206,8 +191,6 @@ export const addImage = mutation({
 export const removeImage = mutation({
   args: { id: v.id("gallery_images") },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthorized");
     await ctx.db.delete(args.id);
   },
 });
@@ -218,8 +201,6 @@ export const updateImageOrder = mutation({
     sort_order: v.number(),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthorized");
     await ctx.db.patch(args.id, {
       sort_order: args.sort_order,
     });

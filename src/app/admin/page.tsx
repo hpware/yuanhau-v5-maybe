@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 import { fetchQuery } from "convex/nextjs";
 import { api } from "../../../convex/_generated/api";
 import { Button } from "@/components/ui/button";
@@ -12,12 +13,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "").split(",").filter(Boolean);
+
 export default async function AdminDashboard() {
-  const user = await currentUser();
-  if (!user) {
-    redirect("/sign-in");
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session?.user) {
+    redirect("/");
   }
-  const isAdmin = user.publicMetadata.role === "admin";
+  const isAdmin =
+    session.user.role === "admin" ||
+    ADMIN_EMAILS.includes(session.user.email);
   if (!isAdmin) {
     redirect("/");
   }
@@ -32,14 +39,13 @@ export default async function AdminDashboard() {
     <div>
       <div className="mb-8">
         <h1 className="text-3xl font-bold">
-          Welcome back, {user.firstName || "Admin"}
+          Welcome back, {session.user.name || "Admin"}
         </h1>
         <p className="text-gray-500 mt-1">
           Here&apos;s what&apos;s happening with your site
         </p>
       </div>
 
-      {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
         <Card>
           <CardHeader className="pb-2">
@@ -86,7 +92,6 @@ export default async function AdminDashboard() {
         </Card>
       </div>
 
-      {/* Quick Actions */}
       <div className="grid gap-4 md:grid-cols-2 mb-8">
         <Card>
           <CardHeader>

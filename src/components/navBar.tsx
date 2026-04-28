@@ -1,7 +1,6 @@
 import Link from "next/link";
 import ThemeToggle from "../app/ThemeToggle";
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { LogInIcon } from "lucide-react";
+import { AuthButtons } from "./auth-buttons";
 
 const tabs = [
   {
@@ -40,16 +39,7 @@ export default function NavBar(currentTab: { currentTab: string }) {
             ))}
             <ThemeToggle />
             <div className="pl-1"></div>
-            <SignedOut>
-              <SignInButton>
-                <button className="hover:cursor-pointer p-2 rounded-lg hover:bg-gray-500/20 hover:dark:bg-white/20 shadow-lg border border-accent dark:border-0 transition-all duration-300">
-                  <LogInIcon />
-                </button>
-              </SignInButton>
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
+            <AuthButtons />
             <div className="pl-1"></div>
           </div>
         </div>
@@ -72,16 +62,7 @@ export default function NavBar(currentTab: { currentTab: string }) {
             ))}
             <ThemeToggle />
             <div className="pl-1"></div>
-            <SignedOut>
-              <SignInButton>
-                <button className="hover:cursor-pointer p-2 rounded-lg hover:bg-gray-500/20 hover:dark:bg-white/20 shadow-lg border border-accent dark:border-0 transition-all duration-300">
-                  <LogInIcon />
-                </button>
-              </SignInButton>
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
+            <AuthButtons />
             <div className="pl-1"></div>
           </div>
         </div>

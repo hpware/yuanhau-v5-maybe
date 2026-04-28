@@ -1,7 +1,7 @@
 export default {
   providers: [
     {
-      domain: process.env.CLERK_FRONTEND_API_URL,
+      domain: process.env.CONVEX_BETTER_AUTH_URL || "http://localhost:3000",
       applicationID: "convex",
     },
   ],

@@ -2,14 +2,18 @@
 
 import { fetchMutation } from "convex/nextjs";
 import { api } from "../../../convex/_generated/api";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { Id } from "../../../convex/_generated/dataModel";
 
 // ============ BLOG ACTIONS ============
 
 export async function createBlogPost(formData: FormData) {
-  const user = await currentUser();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const user = session?.user;
   const slug = formData.get("slug")?.toString().trim();
   const title = formData.get("title")?.toString().trim();
   const markdown_content = formData.get("markdown_content")?.toString().trim();
@@ -17,9 +21,7 @@ export async function createBlogPost(formData: FormData) {
     return { success: false, message: "Missing required fields" };
   }
   const writer = {
-    name: user?.firstName
-      ? `${user.firstName} ${user.lastName || ""}`.trim()
-      : user?.emailAddresses?.[0]?.emailAddress || "Unknown",
+    name: user?.name || user?.email || "Unknown",
     id: user?.id,
   };
 
@@ -90,7 +92,10 @@ export async function deleteBlogPost(slug: string) {
 // ============ PAGES ACTIONS ============
 
 export async function createPage(formData: FormData) {
-  const user = await currentUser();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const user = session?.user;
   const title = formData.get("title")?.toString().trim();
   const slug = formData.get("slug")?.toString().trim();
   const page_type_raw = formData.get("page_type")?.toString().trim();
@@ -104,9 +109,7 @@ export async function createPage(formData: FormData) {
     return { success: false, message: "Invalid page type" };
   }
   const page_type = page_type_raw as "landing" | "simple" | "info";
-  const writer = user?.firstName
-    ? `${user.firstName} ${user.lastName || ""}`.trim()
-    : user?.emailAddresses?.[0]?.emailAddress || "Unknown";
+  const writer = user?.name || user?.email || "Unknown";
 
   try {
     await fetchMutation(api.pages.create, {

@@ -3,7 +3,7 @@ import { Roboto_Condensed } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { ClerkProvider } from "@clerk/nextjs";
+import { AuthSessionProvider } from "@/components/auth-session-provider";
 import { ConvexClientProvider } from "./ConvexClient";
 import { Toaster } from "sonner";
 const robotoCondensed = Roboto_Condensed({
@@ -26,38 +26,38 @@ export default function RootLayout({
 }>) {
   const enableDebugging = false;
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <head>
-          <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-          {enableDebugging && (
-            <script
-              crossOrigin="anonymous"
-              src="//unpkg.com/react-scan/dist/auto.global.js"
-            />
-          )}
+    <html lang="en">
+      <head>
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        {enableDebugging && (
           <script
-            defer
-            src="https://data.yuanhau.com/script.js"
-            data-website-id="6f5e2db3-bb3b-4bda-938d-2b6a8b49476b"
-          ></script>
-        </head>
-        <body
-          className={`${robotoCondensed.variable} font-['Huninn'] antialiased m-0 p-0`}
-          suppressHydrationWarning
+            crossOrigin="anonymous"
+            src="//unpkg.com/react-scan/dist/auto.global.js"
+          />
+        )}
+        <script
+          defer
+          src="https://data.yuanhau.com/script.js"
+          data-website-id="6f5e2db3-bb3b-4bda-938d-2b6a8b49476b"
+        ></script>
+      </head>
+      <body
+        className={`${robotoCondensed.variable} font-['Huninn'] antialiased m-0 p-0`}
+        suppressHydrationWarning
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <SpeedInsights />
-            <Toaster richColors position="top-right" />
+          <SpeedInsights />
+          <Toaster richColors position="top-right" />
+          <AuthSessionProvider>
             <ConvexClientProvider>{children}</ConvexClientProvider>
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+          </AuthSessionProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }

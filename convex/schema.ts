@@ -66,7 +66,7 @@ export default defineSchema({
 
   comments: defineTable({
     article_id: v.string(),
-    clerk_user: v.string(),
+    better_auth_user_id: v.optional(v.string()),
     comment: v.string(),
     parent_id: v.optional(v.id("comments")),
     created_at: v.number(),

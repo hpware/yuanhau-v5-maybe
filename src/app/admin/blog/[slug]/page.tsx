@@ -4,7 +4,6 @@ import { api } from "../../../../../convex/_generated/api";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { EditBlogForm } from "./EditBlogForm";
-import { auth } from "@clerk/nextjs/server";
 
 export default async function EditBlogPage({
   params,
@@ -12,9 +11,7 @@ export default async function EditBlogPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const { getToken } = await auth();
-  const token = await getToken({ template: "convex" }) ?? undefined;
-  const blog = await fetchQuery(api.blog.getBySlug, { slug }, { token });
+  const blog = await fetchQuery(api.blog.getBySlug, { slug });
 
   if (!blog) {
     notFound();
