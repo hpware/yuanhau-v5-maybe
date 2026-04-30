@@ -19,12 +19,25 @@ export const dynamic = "force-dynamic";
 
 export default async function BlogAdminPage() {
   let blogs: any[] = [];
+  let error: string | null = null;
   try {
     const { getToken } = await auth();
     const token = await getToken({ template: "convex" }) ?? undefined;
-    blogs = await fetchQuery(api.blog.list, {}, { token });
+    if (!token) {
+      console.warn("No Convex auth token from Clerk. Falling back to listPublished.");
+      blogs = await fetchQuery(api.blog.listPublished, {});
+    } else {
+      blogs = await fetchQuery(api.blog.list, {}, { token });
+    }
   } catch (err) {
     console.error("Failed to load blogs:", err);
+    error = err instanceof Error ? err.message : String(err);
+    // Fallback: fetch published posts without auth
+    try {
+      blogs = await fetchQuery(api.blog.listPublished, {});
+    } catch {
+      // ignore fallback error
+    }
   }
 
   return (
