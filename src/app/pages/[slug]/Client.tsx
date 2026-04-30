@@ -52,6 +52,29 @@ export const renderer = {
   text(text: string) {
     return <span key={uuidv4()}>{text}</span>;
   },
+  list(children: React.ReactNode, ordered: boolean, start?: number) {
+    const Tag = ordered ? "ol" : "ul";
+    return (
+      <Tag
+        key={uuidv4()}
+        start={ordered ? start : undefined}
+        className={
+          ordered
+            ? "my-6 ml-6 list-decimal space-y-2"
+            : "my-6 ml-6 list-disc space-y-2"
+        }
+      >
+        {children}
+      </Tag>
+    );
+  },
+  listItem(children: React.ReactNode) {
+    return (
+      <li key={uuidv4()} className="pl-1 leading-relaxed text-gray-600 dark:text-gray-300">
+        {children}
+      </li>
+    );
+  },
   strong(text: string) {
     return (
       <b className="font-semibold text-gray-900 dark:text-white" key={uuidv4()}>

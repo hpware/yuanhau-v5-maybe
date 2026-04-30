@@ -12,10 +12,6 @@ const tabs = [
     name: "Blog",
     url: "/blog",
   },
-  {
-    name: "Gallery",
-    url: "/gallery",
-  },
 ];
 
 export default function NavBar(currentTab: { currentTab: string }) {

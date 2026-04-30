@@ -6,7 +6,6 @@ import {
   DotIcon,
   UserIcon,
 } from "lucide-react";
-import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { Suspense } from "react";
 import Markdown from "marked-react";
 import { Metadata } from "next";
@@ -19,6 +18,7 @@ export const revalidate = 3600;
 import CodeRender from "./codeRender";
 import { v4 as uuidv4 } from "uuid";
 import { normalizeWriter, normalizeTimestamp } from "@/lib/normalizeWriter";
+import CommentSection from "./CommentSection";
 
 // Slugify function for heading IDs
 function slugify(text: string) {
@@ -53,6 +53,36 @@ const renderer = {
       <b className="font-bold" key={uuidv4()}>
         {text}
       </b>
+    );
+  },
+  paragraph(text: React.ReactNode) {
+    return (
+      <p className="my-4 leading-7" key={uuidv4()}>
+        {text}
+      </p>
+    );
+  },
+  list(children: React.ReactNode, ordered: boolean, start?: number) {
+    const Tag = ordered ? "ol" : "ul";
+    return (
+      <Tag
+        key={uuidv4()}
+        start={ordered ? start : undefined}
+        className={
+          ordered
+            ? "my-4 ml-6 list-decimal space-y-2"
+            : "my-4 ml-6 list-disc space-y-2"
+        }
+      >
+        {children}
+      </Tag>
+    );
+  },
+  listItem(children: React.ReactNode) {
+    return (
+      <li key={uuidv4()} className="pl-1 leading-7">
+        {children}
+      </li>
     );
   },
   image(src: string, alt: string) {
@@ -237,62 +267,13 @@ async function BlogPost({ slug }: { slug: string }) {
           </span>
         </div>
         <hr className="bg-black/50 dark:bg-white/50 w-full" />
-        <section className="mt-2 min-h-[300px] max-w-full">
+        <article className="prose prose-neutral dark:prose-invert mt-2 min-h-[300px] max-w-none prose-ul:list-disc prose-ol:list-decimal prose-li:marker:text-current">
           <Markdown renderer={renderer} gfm={true} breaks={true}>
             {data.markdownContent}
           </Markdown>
-        </section>
+        </article>
         <div className="h-[40px]"></div>
-        <div>
-          <h3 className="text-lg text-bold ml-3">Comments:</h3>
-          <SignedOut>
-            <form className="flex flex-col p-2">
-              <textarea
-                className="p-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 resize-none"
-                placeholder="Write your comment here..."
-                rows={4}
-                required
-                disabled
-              />
-              <p className="text-gray-500 dark:text-gray-400 ml-3">
-                Please sign in to comment on this post.
-              </p>
-              <div className="flex mt-2 self-right justify-end mr-2">
-                <button
-                  className="p-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors disabled:cursor-mot-allowed"
-                  disabled
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-          </SignedOut>
-          <SignedIn>
-            <form className="flex flex-col p-2">
-              <textarea
-                className="p-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 resize-none"
-                placeholder="Write your comment here..."
-                rows={4}
-                required
-                disabled
-              />
-              <div className="flex mt-2 self-right justify-end mr-2">
-                <button
-                  className="p-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors disabled:cursor-mot-allowed"
-                  disabled
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-          </SignedIn>
-        </div>
-        <hr className="bg-gray-700 dark:bg-gray-200/70 m-3" />
-        <div>
-          <p className="text-gray-500 dark:text-gray-400 ml-3">
-            Comments displaying are not yet implemented.
-          </p>
-        </div>
+        <CommentSection slug={slug} />
         <div className="h-[40px]"></div>
       </div>
     </div>
