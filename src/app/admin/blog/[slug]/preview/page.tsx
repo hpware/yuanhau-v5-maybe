@@ -5,7 +5,6 @@ import Markdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { auth } from "@clerk/nextjs/server";
 
 export const dynamic = "force-dynamic";
 
@@ -17,9 +16,7 @@ export default async function PreviewBlogPage({
   const { slug } = await params;
   let blog: any = null;
   try {
-    const { getToken } = await auth();
-    const token = await getToken({ template: "convex" }) ?? undefined;
-    blog = await fetchQuery(api.blog.getBySlug, { slug }, { token });
+    blog = await fetchQuery(api.blog.getBySlug, { slug });
   } catch (err) {
     console.error("Failed to load blog for preview:", err);
   }
