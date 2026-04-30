@@ -6,15 +6,22 @@ import { notFound } from "next/navigation";
 import { EditBlogForm } from "./EditBlogForm";
 import { auth } from "@clerk/nextjs/server";
 
+export const dynamic = "force-dynamic";
+
 export default async function EditBlogPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const { getToken } = await auth();
-  const token = await getToken({ template: "convex" }) ?? undefined;
-  const blog = await fetchQuery(api.blog.getBySlug, { slug }, { token });
+  let blog: any = null;
+  try {
+    const { getToken } = await auth();
+    const token = await getToken({ template: "convex" }) ?? undefined;
+    blog = await fetchQuery(api.blog.getBySlug, { slug }, { token });
+  } catch (err) {
+    console.error("Failed to load blog post:", err);
+  }
 
   if (!blog) {
     notFound();

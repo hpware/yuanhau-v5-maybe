@@ -6,13 +6,20 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function PreviewPagePage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const page = await fetchQuery(api.pages.getBySlug, { slug });
+  let page: any = null;
+  try {
+    page = await fetchQuery(api.pages.getBySlug, { slug });
+  } catch (err) {
+    console.error("Failed to load page for preview:", err);
+  }
 
   if (!page) {
     notFound();

@@ -5,13 +5,20 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { EditPageForm } from "./EditPageForm";
 
+export const dynamic = "force-dynamic";
+
 export default async function EditPagePage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const page = await fetchQuery(api.pages.getBySlug, { slug });
+  let page: any = null;
+  try {
+    page = await fetchQuery(api.pages.getBySlug, { slug });
+  } catch (err) {
+    console.error("Failed to load page for editing:", err);
+  }
 
   if (!page) {
     notFound();

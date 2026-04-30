@@ -2,8 +2,15 @@ import { fetchQuery } from "convex/nextjs";
 import { api } from "../../../../convex/_generated/api";
 import { GalleryList } from "./GalleryList";
 
+export const dynamic = "force-dynamic";
+
 export default async function GalleryAdminPage() {
-  const galleries = await fetchQuery(api.galleries.list, {});
+  let galleries: any[] = [];
+  try {
+    galleries = await fetchQuery(api.galleries.list, {});
+  } catch (err) {
+    console.error("Failed to load galleries:", err);
+  }
 
   return (
     <div>

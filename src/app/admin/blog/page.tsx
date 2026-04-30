@@ -15,10 +15,17 @@ import { api } from "../../../../convex/_generated/api";
 import { normalizeTimestamp } from "@/lib/normalizeWriter";
 import { auth } from "@clerk/nextjs/server";
 
+export const dynamic = "force-dynamic";
+
 export default async function BlogAdminPage() {
-  const { getToken } = await auth();
-  const token = await getToken({ template: "convex" }) ?? undefined;
-  const blogs = await fetchQuery(api.blog.list, {}, { token });
+  let blogs: any[] = [];
+  try {
+    const { getToken } = await auth();
+    const token = await getToken({ template: "convex" }) ?? undefined;
+    blogs = await fetchQuery(api.blog.list, {}, { token });
+  } catch (err) {
+    console.error("Failed to load blogs:", err);
+  }
 
   return (
     <div>
@@ -76,7 +83,7 @@ export default async function BlogAdminPage() {
 
       {blogs.length === 0 && (
         <div className="text-center py-10 text-gray-500">
-          No blog posts yet. Create your first post!
+          No blog posts found. Create your first post!
         </div>
       )}
     </div>
