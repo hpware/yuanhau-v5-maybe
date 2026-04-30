@@ -13,7 +13,6 @@ import Link from "next/link";
 import { fetchQuery } from "convex/nextjs";
 import { api } from "../../../../convex/_generated/api";
 import { normalizeTimestamp } from "@/lib/normalizeWriter";
-import { auth } from "@clerk/nextjs/server";
 
 export const dynamic = "force-dynamic";
 
@@ -21,18 +20,10 @@ export default async function BlogAdminPage() {
   let blogs: any[] = [];
   let error: string | null = null;
   try {
-    const { getToken } = await auth();
-    const token = await getToken({ template: "convex" }) ?? undefined;
-    if (!token) {
-      console.warn("No Convex auth token from Clerk. Falling back to listPublished.");
-      blogs = await fetchQuery(api.blog.listPublished, {});
-    } else {
-      blogs = await fetchQuery(api.blog.list, {}, { token });
-    }
+    blogs = await fetchQuery(api.blog.list, {});
   } catch (err) {
     console.error("Failed to load blogs:", err);
     error = err instanceof Error ? err.message : String(err);
-    // Fallback: fetch published posts without auth
     try {
       blogs = await fetchQuery(api.blog.listPublished, {});
     } catch {
@@ -97,6 +88,12 @@ export default async function BlogAdminPage() {
       {blogs.length === 0 && (
         <div className="text-center py-10 text-gray-500">
           No blog posts found. Create your first post!
+        </div>
+      )}
+
+      {error && blogs.length > 0 && (
+        <div className="mt-4 text-sm text-amber-600">
+          Loaded a fallback blog list after an error: {error}
         </div>
       )}
     </div>

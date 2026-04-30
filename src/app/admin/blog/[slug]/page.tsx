@@ -4,7 +4,6 @@ import { api } from "../../../../../convex/_generated/api";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { EditBlogForm } from "./EditBlogForm";
-import { auth } from "@clerk/nextjs/server";
 
 export const dynamic = "force-dynamic";
 
@@ -16,9 +15,7 @@ export default async function EditBlogPage({
   const { slug } = await params;
   let blog: any = null;
   try {
-    const { getToken } = await auth();
-    const token = await getToken({ template: "convex" }) ?? undefined;
-    blog = await fetchQuery(api.blog.getBySlug, { slug }, { token });
+    blog = await fetchQuery(api.blog.getBySlug, { slug });
   } catch (err) {
     console.error("Failed to load blog post:", err);
   }
