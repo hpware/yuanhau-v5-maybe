@@ -12,6 +12,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminDashboard() {
   const user = await currentUser();
   if (!user) {
@@ -22,11 +24,18 @@ export default async function AdminDashboard() {
     redirect("/");
   }
 
-  const [blogStats, pageStats, recentPosts] = await Promise.all([
-    fetchQuery(api.blog.getStats, {}),
-    fetchQuery(api.pages.getStats, {}),
-    fetchQuery(api.blog.getRecent, { limit: 5 }),
-  ]);
+  let blogStats = { total: 0, published: 0, drafts: 0 };
+  let pageStats = { total: 0, published: 0, drafts: 0 };
+  let recentPosts: any[] = [];
+  try {
+    [blogStats, pageStats, recentPosts] = await Promise.all([
+      fetchQuery(api.blog.getStats, {}),
+      fetchQuery(api.pages.getStats, {}),
+      fetchQuery(api.blog.getRecent, { limit: 5 }),
+    ]);
+  } catch (err) {
+    console.error("Failed to load dashboard stats:", err);
+  }
 
   return (
     <div>

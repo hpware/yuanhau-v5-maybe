@@ -14,8 +14,15 @@ import { fetchQuery } from "convex/nextjs";
 import { api } from "../../../../convex/_generated/api";
 import { normalizeTimestamp } from "@/lib/normalizeWriter";
 
+export const dynamic = "force-dynamic";
+
 export default async function PagesAdminPage() {
-  const pages = await fetchQuery(api.pages.list, {});
+  let pages: any[] = [];
+  try {
+    pages = await fetchQuery(api.pages.list, {});
+  } catch (err) {
+    console.error("Failed to load pages:", err);
+  }
 
   return (
     <div>
